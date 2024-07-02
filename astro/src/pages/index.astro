@@ -1,0 +1,10 @@
+---
+import Layout from '../layouts/Layout.astro';
+import metadataFetch from '@/utils/metadata.fetch';
+
+const metadata = await metadataFetch('Index_Page');
+---
+
+<Layout {...metadata} path="/">
+  <h1>Heading 1</h1>
+</Layout>

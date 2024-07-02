@@ -1,0 +1,21 @@
+---
+import '@/global/global.scss';
+import '@fontsource/poppins';
+import { LOCALE } from '../global/constants';
+import Head from './Head.astro';
+import type { HeadProps } from './Head.astro';
+
+const props = Astro.props as HeadProps;
+---
+
+<!doctype html>
+<html lang={LOCALE}>
+  <head>
+    <Head {...props} />
+  </head>
+  <body>
+    <main id="main">
+      <slot />
+    </main>
+  </body>
+</html>

@@ -1,0 +1,31 @@
+---
+import { marked, type Tokens } from 'marked';
+import { isExternalLink } from '@/utils/is-external-link';
+import type { HTMLAttributes } from 'astro/types';
+
+type Props = {
+  tag?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'span' | 'p' | 'div';
+} & HTMLAttributes<'div'>;
+
+const { tag, ...props } = Astro.props;
+
+const Tag = tag || (Object.keys(props).length > 0 ? 'div' : Fragment);
+
+class CustomRenderer extends marked.Renderer {
+  link({ href, text }: Tokens.Link) {
+    const externalLinkAttrs = isExternalLink(href)
+      ? 'target="_blank" rel="noopener"'
+      : '';
+    return `<a href="${href}" class="link" ${externalLinkAttrs}>${marked.parseInline(text)}</a>`;
+  }
+  listitem({ text }: { text: string }) {
+    return `<li><span>${marked.parseInline(text)}</span></li>`;
+  }
+}
+
+const content = marked.parse(await Astro.slots.render('default'), {
+  renderer: new CustomRenderer(),
+});
+---
+
+<Tag set:html={content} {...props} />

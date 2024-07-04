@@ -1,21 +1,21 @@
-import { createClient, type QueryParams } from '@sanity/client';
-import { isPreviewDeployment } from '@/utils/is-preview-deployment';
+import { createClient, type QueryParams } from "@sanity/client";
+import { isPreviewDeployment } from "@/utils/is-preview-deployment";
 
 const token = import.meta.env.SANITY_API_TOKEN;
-const projectId = 'k66izvou';
-const dataset = 'production';
-const apiVersion = '2024-07-02';
+const projectId = "k66izvou";
+const dataset = "production";
+const apiVersion = "2024-07-02";
 
 if (isPreviewDeployment && !token) {
-  throw new Error('The `SANITY_API_TOKEN` environment variable is required.');
+  throw new Error("The `SANITY_API_TOKEN` environment variable is required.");
 }
 
 const client = createClient({
   projectId,
   dataset,
   apiVersion,
-  useCdn: true,
-  perspective: isPreviewDeployment ? 'previewDrafts' : 'published',
+  useCdn: false,
+  perspective: isPreviewDeployment ? "previewDrafts" : "published",
   ...(isPreviewDeployment && { token }),
 });
 

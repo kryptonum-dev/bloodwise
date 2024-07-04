@@ -1,12 +1,14 @@
 import { defineConfig } from 'astro/config';
+import react from "@astrojs/react";
 import vercel from "@astrojs/vercel/serverless";
 import sitemap from "@astrojs/sitemap";
 import { DOMAIN } from './src/global/constants';
 import { isPreviewDeployment } from './src/utils/is-preview-deployment';
 
+// https://astro.build/config
 export default defineConfig({
   site: DOMAIN,
-  integrations: [sitemap()],
+  integrations: [sitemap(), react()],
   image: {
     remotePatterns: [{
       protocol: 'https',
@@ -15,10 +17,10 @@ export default defineConfig({
   },
   output: "server",
   adapter: vercel({
-    ...!isPreviewDeployment && {
+    ...(!isPreviewDeployment && {
       isr: {
-        bypassToken: import.meta.env.ISR_BYPASS_TOKEN,
+        bypassToken: import.meta.env.ISR_BYPASS_TOKEN
       }
-    }
+    })
   })
 });

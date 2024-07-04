@@ -1,0 +1,24 @@
+<section
+  class="cookie-consent"
+  role="dialog"
+  aria-live="polite"
+  is="cookie-consent"
+>
+  <h2>We're using cookies</h2>
+  <button type="button" aria-label="Accept Cookies">Accept</button>
+</section>
+
+<script>
+  customElements.define(
+    'cookie-consent',
+    class extends HTMLElement {
+      constructor() {
+        super();
+        this.querySelector('button')!.addEventListener('click', () => {
+          this.remove();
+        });
+      }
+    },
+    { extends: 'section' }
+  );
+</script>

@@ -2,37 +2,65 @@
 import Markdown from "@/components/ui/markdown.astro";
 ---
 
-<section
+<aside
   data-js-nb1d8
   class='cookie-consent'
   role='dialog'
   aria-live='polite'
 >
-  <header>
-    <p>
-      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Facilis nesciunt facere voluptate aut. Provident
-      voluptate corporis, eveniet illo atque odio voluptas nostrum sint quibusdam eligendi velit aspernatur id in
-      accusantium est, at non eum optio rerum ad, nihil saepe ullam cum obcaecati! Commodi nulla quod, esse facere,
-      autem in ut quisquam excepturi tenetur veritatis eum iste placeat magni consectetur beatae dolores praesentium
-      eveniet quis possimus sunt odio debitis corporis? Velit dolore laudantium harum quae ipsum, quam itaque veritatis,
-      doloribus minus suscipit quis ullam porro illum nihil. Iusto, sequi. Minus praesentium dolorem optio assumenda
-      placeat, modi fuga mollitia aut iste aperiam.
-    </p>
-    <h2>Korzystając ze strony zgadzasz się na użycie ciasteczek</h2>
-    <Markdown>
-      Korzystamy z cookie i podobnych technologii, by analizować ruch na stronie, dopasować ją do Ciebie i wyświetlać
-      trafniejsze reklamy. [Dowiedz się więcej](/polityka-prywatnosci)
-    </Markdown>
-  </header>
-</section>
+  <div>
+    <header>
+      <h2>Korzystając ze strony zgadzasz się na użycie ciasteczek</h2>
+      <Markdown>
+        Korzystamy z cookie i podobnych technologii, by analizować ruch na stronie, dopasować ją do Ciebie i wyświetlać
+        trafniejsze reklamy. [Dowiedz się więcej](/polityka-prywatnosci)
+      </Markdown>
+    </header>
+    <button class='agree'>Zgoda na wszystkie</button>
+    <button class='preferences'>Ustaw preferencje</button>
+    <button class='deny'>Odmowa</button>
+  </div>
+</aside>
 
-<style>
+<style lang='scss'>
   .cookie-consent {
-    color: #f90;
+    &[aria-hidden="true"] {
+      display: none;
+    }
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(28, 182, 170, 0.2);
+    backdrop-filter: blur(3px);
+    display: grid;
+    place-items: center;
+    > div {
+      padding: clamp(16px, calc(32vw / 7.68), 32px);
+      border-radius: 8px;
+      border: 1px solid var(--primary-500, #1cb6aa);
+      background: var(--background-50, #fff);
+      max-width: 794px;
+    }
   }
 </style>
 
 <script>
-  const parent = document.querySelector(".cookie-consent[data-js-nb1d8]");
-  console.log(parent);
+  const $this = document.querySelector(".cookie-consent[data-js-nb1d8]")!;
+  const $agree = $this.querySelector(".agree")!;
+  const $deny = $this.querySelector(".deny")!;
+  $agree.addEventListener("click", () => {
+    $this.setAttribute("aria-hidden", "true");
+  });
+
+  $deny.addEventListener("click", () => {
+    $this.setAttribute("aria-hidden", "true");
+    gtag("consent", "default", {
+      ad_storage: "denied",
+      ad_user_data: "denied",
+      ad_personalization: "denied",
+      analytics_storage: "denied",
+    });
+  });
 </script>

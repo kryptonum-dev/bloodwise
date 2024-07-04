@@ -10,5 +10,6 @@
       "@/assets/*": ["./src/assets/*"],
       "@/public/*": ["./public/*"]
     }
-  }
+  },
+  "types": ["@types/gtag.js"]
 }

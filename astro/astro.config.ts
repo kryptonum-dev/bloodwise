@@ -5,7 +5,6 @@ import sitemap from "@astrojs/sitemap";
 import { DOMAIN } from "./src/global/constants";
 import { isPreviewDeployment } from "./src/utils/is-preview-deployment";
 
-// https://astro.build/config
 export default defineConfig({
   site: DOMAIN,
   integrations: [sitemap(), react()],

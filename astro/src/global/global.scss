@@ -1,3 +1,14 @@
+@font-face {
+  font-family: "Satoshi";
+  src:
+    url("/fonts/Satoshi-Regular.woff2") format("woff2"),
+    url("/fonts/Satoshi-Regular.woff") format("woff"),
+    url("/fonts/Satoshi-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-display: swap;
+  font-style: normal;
+}
+
 *,
 *::before,
 *::after {
@@ -124,7 +135,7 @@ body {
   -webkit-tap-highlight-color: transparent;
   background: var(--primary-200, #fffdfd);
   color: var(--secondary-500, #726378);
-  font-family: "Poppins", sans-serif;
+  font-family: "Satoshi", sans-serif;
   font-size: clamp(1rem, calc(18vw / 7.68), calc(18rem / 16));
   line-height: 175%;
 }
@@ -157,7 +168,6 @@ h6,
   overflow-wrap: anywhere;
   font-weight: 400;
   line-height: 142%;
-  font-family: var(--font-libre-baskerville);
   color: var(--secondary-500, #726378);
   strong {
     font-weight: 700;

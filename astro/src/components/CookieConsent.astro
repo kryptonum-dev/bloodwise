@@ -1,24 +1,38 @@
+---
+import Markdown from "@/components/ui/markdown.astro";
+---
+
 <section
-  class="cookie-consent"
-  role="dialog"
-  aria-live="polite"
-  is="cookie-consent"
+  data-js-nb1d8
+  class='cookie-consent'
+  role='dialog'
+  aria-live='polite'
 >
-  <h2>We're using cookies</h2>
-  <button type="button" aria-label="Accept Cookies">Accept</button>
+  <header>
+    <p>
+      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Facilis nesciunt facere voluptate aut. Provident
+      voluptate corporis, eveniet illo atque odio voluptas nostrum sint quibusdam eligendi velit aspernatur id in
+      accusantium est, at non eum optio rerum ad, nihil saepe ullam cum obcaecati! Commodi nulla quod, esse facere,
+      autem in ut quisquam excepturi tenetur veritatis eum iste placeat magni consectetur beatae dolores praesentium
+      eveniet quis possimus sunt odio debitis corporis? Velit dolore laudantium harum quae ipsum, quam itaque veritatis,
+      doloribus minus suscipit quis ullam porro illum nihil. Iusto, sequi. Minus praesentium dolorem optio assumenda
+      placeat, modi fuga mollitia aut iste aperiam.
+    </p>
+    <h2>Korzystając ze strony zgadzasz się na użycie ciasteczek</h2>
+    <Markdown>
+      Korzystamy z cookie i podobnych technologii, by analizować ruch na stronie, dopasować ją do Ciebie i wyświetlać
+      trafniejsze reklamy. [Dowiedz się więcej](/polityka-prywatnosci)
+    </Markdown>
+  </header>
 </section>
 
+<style>
+  .cookie-consent {
+    color: #f90;
+  }
+</style>
+
 <script>
-  customElements.define(
-    'cookie-consent',
-    class extends HTMLElement {
-      constructor() {
-        super();
-        this.querySelector('button')!.addEventListener('click', () => {
-          this.remove();
-        });
-      }
-    },
-    { extends: 'section' }
-  );
+  const parent = document.querySelector(".cookie-consent[data-js-nb1d8]");
+  console.log(parent);
 </script>

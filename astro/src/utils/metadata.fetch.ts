@@ -1,4 +1,4 @@
-import sanityFetch from '@/utils/sanity.fetch';
+import sanityFetch from "@/utils/sanity.fetch";
 
 type QueryProps = {
   title: string;
@@ -27,4 +27,4 @@ export default async function metadataFetch(type: string, slug?: string): Promis
   });
 
   return seo;
-};
+}

@@ -1,6 +1,6 @@
 ---
-import type { ComponentProps } from 'astro/types';
-import { Picture } from 'astro:assets';
+import type { ComponentProps } from "astro/types";
+import { Picture } from "astro:assets";
 
 export type ImageDataTypes = {
   asset: {
@@ -42,11 +42,11 @@ const { data, ...props } = Astro.props;
     <Picture
       {...props}
       src={data.asset.url}
-      alt={data.asset.altText || ''}
+      alt={data.asset.altText || ""}
       width={data.asset.metadata.dimensions.width}
       height={data.asset.metadata.dimensions.height}
-      formats={['avif', 'webp']}
-      fallbackFormat="png"
+      formats={["avif", "webp"]}
+      fallbackFormat='png'
       style={{
         background: `url(${data.asset.metadata.lqip}) center / cover no-repeat`,
       }}

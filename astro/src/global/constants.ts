@@ -2,37 +2,37 @@
  * Global declaration of themeColor in HEX format.
  * @constant
  */
-export const THEME_COLOR: string = '#F3FEFD';
+export const THEME_COLOR: string = "#F3FEFD";
 
 /**
  * Global declaration of backgroundColor in HEX format.
  * @constant
  */
-export const BACKGROUND_COLOR: string = '#FFFCF9';
+export const BACKGROUND_COLOR: string = "#FFFCF9";
 
 /**
  * Global declaration of page language.
  * @constant
  */
-export const LOCALE: string = 'pl';
+export const LOCALE: string = "pl";
 
 /**
  * Global declaration of domain name of the website. Be aware of the protocol and www or non-www prefix.
  * @constant
  */
-export const DOMAIN: string = 'https://bloodwise.com.pl';
+export const DOMAIN: string = "https://bloodwise.com.pl";
 
 /**
  * Global default title.
  * @constant
  */
-export const DEFAULT_TITLE: string = 'Bloodwise';
+export const DEFAULT_TITLE: string = "Bloodwise";
 
 /**
  * Global description.
  * @constant
  */
-export const DEFAULT_DESCRIPTION: string = 'Spersonalizowane rekomendacje dla Twojego zdrowia';
+export const DEFAULT_DESCRIPTION: string = "Spersonalizowane rekomendacje dla Twojego zdrowia";
 
 /**
  * Global declaration of regex.

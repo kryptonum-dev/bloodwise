@@ -28,6 +28,7 @@
     "typescript": "^5.5.3"
   },
   "devDependencies": {
+    "prettier": "^3.3.2",
     "sass": "^1.77.6"
   }
 }

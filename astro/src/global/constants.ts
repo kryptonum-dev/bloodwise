@@ -2,13 +2,13 @@
  * Global declaration of themeColor in HEX format.
  * @constant
  */
-export const THEME_COLOR: string = '#010104';
+export const THEME_COLOR: string = '#F3FEFD';
 
 /**
  * Global declaration of backgroundColor in HEX format.
  * @constant
  */
-export const BACKGROUND_COLOR: string = '#010104';
+export const BACKGROUND_COLOR: string = '#FFFCF9';
 
 /**
  * Global declaration of page language.
@@ -20,19 +20,19 @@ export const LOCALE: string = 'pl';
  * Global declaration of domain name of the website. Be aware of the protocol and www or non-www prefix.
  * @constant
  */
-export const DOMAIN: string = 'https://kryptonum.eu';
+export const DOMAIN: string = 'https://bloodwise.com.pl';
 
 /**
  * Global default title.
  * @constant
  */
-export const DEFAULT_TITLE: string = 'Kryptonum';
+export const DEFAULT_TITLE: string = 'Bloodwise';
 
 /**
  * Global description.
  * @constant
  */
-export const DEFAULT_DESCRIPTION: string = 'Software house z pasji do biznesu';
+export const DEFAULT_DESCRIPTION: string = 'Spersonalizowane rekomendacje dla Twojego zdrowia';
 
 /**
  * Global declaration of regex.

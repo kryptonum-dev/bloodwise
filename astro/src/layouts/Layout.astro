@@ -2,8 +2,7 @@
 import '@/global/global.scss';
 import '@fontsource/poppins';
 import { LOCALE } from '../global/constants';
-import Head from './Head.astro';
-import type { HeadProps } from './Head.astro';
+import Head, { type HeadProps } from './Head.astro';
 import CookieConsent from '@/components/CookieConsent.astro';
 
 const props = Astro.props as HeadProps;

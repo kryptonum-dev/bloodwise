@@ -9,7 +9,7 @@ type QueryProps = {
   };
 };
 
-export default async function metadataFetch(type: string, slug?: string) {
+export default async function metadataFetch(type: string, slug?: string): Promise<QueryProps> {
   const filter = slug ? `*[_type == '${type}' && slug.current == $slug][0]` : `*[_type == "${type}"][0]`;
 
   const seo = await sanityFetch<QueryProps>({

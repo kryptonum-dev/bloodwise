@@ -1,16 +1,28 @@
 ---
 import Markdown from "@/components/ui/markdown.astro";
+import Switch from "./ui/Switch.astro";
 ---
+
+<noscript>
+  <iframe
+    src='https://www.googletagmanager.com/ns.html?id=GTM-MHJNBK6'
+    height='0'
+    width='0'
+    style='display:none;visibility:hidden'
+  >
+  </iframe>
+</noscript>
 
 <aside
   data-js-nb1d8
   class='cookie-consent'
   role='dialog'
   aria-live='polite'
+  aria-hidden='true'
 >
   <div>
     <header>
-      <h2>Korzystając ze strony zgadzasz się na użycie ciasteczek</h2>
+      <h2 class='h3'>Korzystając ze strony zgadzasz się na użycie ciasteczek</h2>
       <Markdown>
         Korzystamy z cookie i podobnych technologii, by analizować ruch na stronie, dopasować ją do Ciebie i wyświetlać
         trafniejsze reklamy. [Dowiedz się więcej](/polityka-prywatnosci)
@@ -19,11 +31,13 @@ import Markdown from "@/components/ui/markdown.astro";
     <button class='agree'>Zgoda na wszystkie</button>
     <button class='preferences'>Ustaw preferencje</button>
     <button class='deny'>Odmowa</button>
+    <Switch />
   </div>
 </aside>
 
 <style lang='scss'>
   .cookie-consent {
+    padding: var(--pageMargin);
     &[aria-hidden="true"] {
       display: none;
     }
@@ -34,6 +48,7 @@ import Markdown from "@/components/ui/markdown.astro";
     bottom: 0;
     background: rgba(28, 182, 170, 0.2);
     backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
     display: grid;
     place-items: center;
     > div {
@@ -45,22 +60,73 @@ import Markdown from "@/components/ui/markdown.astro";
     }
   }
 </style>
-
+<script is:inline>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    window.dataLayer.push(arguments);
+  }
+</script>
 <script>
-  const $this = document.querySelector(".cookie-consent[data-js-nb1d8]")!;
-  const $agree = $this.querySelector(".agree")!;
-  const $deny = $this.querySelector(".deny")!;
-  $agree.addEventListener("click", () => {
-    $this.setAttribute("aria-hidden", "true");
-  });
-
-  $deny.addEventListener("click", () => {
-    $this.setAttribute("aria-hidden", "true");
+  import { getCookie } from "@/utils/get-cookie";
+  if (getCookie("cookie-consent") === null) {
     gtag("consent", "default", {
+      functionality_storage: "denied",
+      security_storage: "denied",
       ad_storage: "denied",
       ad_user_data: "denied",
       ad_personalization: "denied",
       analytics_storage: "denied",
+      personalization_storage: "denied",
+    });
+    document.querySelector(".cookie-consent[data-js-nb1d8]")!.setAttribute("aria-hidden", "false");
+  } else {
+    gtag("consent", "default", JSON.parse(getCookie("cookie-consent")!));
+  }
+</script>
+<script is:inline>
+  // prettier-ignore
+  (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({"gtm.start":new Date().getTime(),event:"gtm.js"});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!="dataLayer"?"&l="+l:"";j.async=true;j.src="https://www.googletagmanager.com/gtm.js?id="+i+dl;f.parentNode.insertBefore(j,f);})(window,document,"script","dataLayer","GTM-K6FMQBQD");
+</script>
+<script>
+  import { setCookie } from "@/utils/set-cookie";
+  type Consent = {
+    necessary: boolean;
+    marketing: boolean;
+    analytics: boolean;
+    preferences: boolean;
+  };
+  function setConsent(consent: Consent) {
+    const consentMode = {
+      functionality_storage: consent.necessary ? "granted" : "denied",
+      security_storage: consent.necessary ? "granted" : "denied",
+      ad_storage: consent.marketing ? "granted" : "denied",
+      ad_user_data: consent.marketing ? "granted" : "denied",
+      ad_personalization: consent.marketing ? "granted" : "denied",
+      analytics_storage: consent.analytics ? "granted" : "denied",
+      personalization_storage: consent.preferences ? "granted" : "denied",
+    } as const;
+    gtag("consent", "update", consentMode);
+    setCookie("cookie-consent", JSON.stringify(consentMode), 365);
+  }
+  const $this = document.querySelector(".cookie-consent[data-js-nb1d8]")!;
+  const $agree = $this.querySelector(".agree")!;
+  const $deny = $this.querySelector(".deny")!;
+  $agree.addEventListener("click", () => {
+    setConsent({
+      necessary: true,
+      analytics: true,
+      preferences: true,
+      marketing: true,
+    });
+    $this.setAttribute("aria-hidden", "true");
+  });
+  $deny.addEventListener("click", () => {
+    $this.setAttribute("aria-hidden", "true");
+    setConsent({
+      necessary: false,
+      analytics: false,
+      preferences: false,
+      marketing: false,
     });
   });
 </script>

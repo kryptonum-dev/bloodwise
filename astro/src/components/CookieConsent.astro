@@ -60,6 +60,9 @@ const groups = [
         groups.map(({ id, name, description }) => (
           <label for={id} data-group={id} style={{ ...(id === "necessary" && { cursor: "not-allowed" }) }}>
             <Switch
+              {...(id === "necessary" && {
+                style: { cursor: "not-allowed" },
+              })}
               inputProps={{
                 id,
                 ...(id === "necessary" && {
@@ -67,16 +70,9 @@ const groups = [
                   checked: true,
                 }),
               }}
-              labelProps={{
-                ...(id === "necessary" && {
-                  style: { cursor: "not-allowed" },
-                }),
-              }}
             />
-            <div>
-              <p>{name}</p>
-              <p>{description}</p>
-            </div>
+            <p>{name}</p>
+            <p>{description}</p>
           </label>
         ))
       }
@@ -125,11 +121,11 @@ const groups = [
         label {
           display: grid;
           grid-template-columns: auto 1fr;
-          column-gap: clamp(16px, calc(24vw / 7.68), 24px);
-          p {
-            &:first-child {
-              margin-bottom: 4px;
-            }
+          gap: 4px clamp(16px, calc(24vw / 7.68), 24px);
+          > div {
+            position: sticky;
+            top: 0;
+            grid-row: 1 / span 2;
           }
         }
       }

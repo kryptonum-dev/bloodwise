@@ -16,7 +16,7 @@ export type ImageDataTypes = {
   };
 };
 
-export const ImgDataQuery = `
+export const ImageDataQuery = `
   asset -> {
     url,
     altText,
@@ -40,13 +40,12 @@ const { data, ...props } = Astro.props;
 {
   data?.asset && (
     <Picture
-      {...props}
-      src={data.asset.url}
       alt={data.asset.altText || ""}
       width={data.asset.metadata.dimensions.width}
       height={data.asset.metadata.dimensions.height}
       formats={["avif", "webp"]}
-      fallbackFormat='png'
+      {...props}
+      src={data.asset.url}
       style={{
         background: `url(${data.asset.metadata.lqip}) center / cover no-repeat`,
       }}

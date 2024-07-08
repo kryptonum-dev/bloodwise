@@ -4,7 +4,7 @@ import type { HTMLAttributes } from "astro/types";
 
 type Props = {
   href?: string;
-  text?: string | React.ReactNode;
+  text?: string | HTMLElement;
   theme?: "primary" | "secondary";
 } & (HTMLAttributes<"a"> & HTMLAttributes<"button">);
 
@@ -31,12 +31,7 @@ const children = Astro.slots.has("default") ? Astro.slots.render("default") : te
   {
     theme === "primary" && (
       <div class='arrow'>
-        <svg
-          xmlns='http://www.w3.org/2000/svg'
-          width='12'
-          height='8'
-          fill='none'
-        >
+        <svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'>
           <path
             stroke='#0F9288'
             stroke-linecap='round'

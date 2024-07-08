@@ -1,0 +1,125 @@
+---
+import sanityFetch from "@/utils/sanity.fetch";
+import Icons from "./icons.astro";
+import { ImageDataQuery, type ImageDataTypes } from "@/components/ui/image.astro";
+import Image from "@/components/ui/image.astro";
+import Markdown from "@/components/ui/markdown.astro";
+
+const { socials, footer } = await sanityFetch<{
+  socials: { facebook: string; instagram: string; linkedin: string };
+  footer: {
+    logo: ImageDataTypes[];
+    annotation: string;
+  };
+}>({
+  query: `
+    *[_id == 'global'][0] {
+      socials {
+        facebook,
+        instagram,
+        linkedin,
+      },
+      footer {
+        logo[] {
+          ${ImageDataQuery}
+        },
+        annotation,
+      },
+    }
+  `,
+});
+---
+
+<footer-scope>
+  <footer dark-background>
+    <div class='max-width'>
+      <a href='/' aria-label='Strona główna' class='logo'>
+        <Icons icon='BloodwiseLogo' />
+      </a>
+      <ul class='socials'>
+        {
+          Object.entries(socials).map(
+            ([platform, url]) =>
+              url && (
+                <li>
+                  <a href={url} target='_blank' rel='noreferrer'>
+                    {platform === "facebook" && <Icons icon='Facebook' />}
+                    {platform === "instagram" && <Icons icon='Instagram' />}
+                    {platform === "linkedin" && <Icons icon='Linkedin' />}
+                  </a>
+                </li>
+              )
+          )
+        }
+      </ul>
+      <a href='/polityka-prywatnosci' class='link'>Polityka prywatności</a>
+      <button class='link reset-cookies'>Ustawienia plików cookies</button>
+      <p class='copyright'>
+        <span>© 2024</span>
+        <a href='https://kryptonum.eu/pl' aria-label='Kryptonum'>
+          <Icons icon='KryptonumLogo' />
+        </a>
+      </p>
+      {footer.logo.map(img => <Image data={img} formats={["svg"]} />)}
+      <Markdown>{footer.annotation}</Markdown>
+    </div>
+  </footer>
+</footer-scope>
+
+<style lang='scss'>
+  footer {
+    .logo {
+      display: inline-block;
+    }
+    padding: clamp(20px, calc(42vw / 7.68), 42px) 0 clamp(36px, calc(80vw / 7.68), 80px);
+    border-radius: 8px 8px 0 0;
+    background: linear-gradient(230deg, #006860, #01403b 62%);
+    color: var(--background-100, #fffcf9);
+    .copyright {
+      svg {
+        display: inline-block;
+        vertical-align: middle;
+      }
+    }
+  }
+  .socials {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    a {
+      display: block;
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      transition: opacity 0.5s var(--easing);
+      &:hover {
+        opacity: 0.62;
+      }
+    }
+  }
+</style>
+
+<script>
+  import { setCookie } from "@/utils/set-cookie";
+
+  customElements.define(
+    "footer-scope",
+    class extends HTMLElement {
+      constructor() {
+        super();
+
+        console.log(this);
+        this.querySelector(".reset-cookies")!.addEventListener("click", () => {
+          document.cookie.split(";").forEach(cookie => {
+            const eqPos = cookie.indexOf("=");
+            const name = eqPos > -1 ? cookie.substring(0, eqPos) : cookie;
+            setCookie(name, "", -1);
+          });
+          window.location.reload();
+        });
+      }
+    }
+  );
+</script>

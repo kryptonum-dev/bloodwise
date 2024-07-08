@@ -124,7 +124,9 @@ video {
   max-width: 100%;
   height: auto;
 }
+picture,
 img {
+  display: inline-block;
   max-width: 100%;
   height: auto;
   vertical-align: bottom;
@@ -137,6 +139,9 @@ img {
 :focus-visible {
   outline: 2px solid var(--primary-800, #01403b);
   outline-offset: 3px;
+}
+[dark-background] :focus-visible {
+  outline-color: #e5f9f8;
 }
 
 html,
@@ -222,6 +227,11 @@ h3,
       vertical-align: middle;
       transition: transform 0.3s var(--easing);
     }
+  }
+}
+[dark-background] .link {
+  &:hover {
+    color: var(--primary-200);
   }
 }
 

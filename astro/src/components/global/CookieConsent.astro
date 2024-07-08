@@ -1,0 +1,246 @@
+---
+import Markdown from "@/components/ui/markdown.astro";
+import Switch from "@/components/ui/Switch.astro";
+import Button from "@/components/ui/Button.astro";
+
+const groups = [
+  {
+    id: "necessary",
+    name: "Niezbędne",
+    description:
+      "Niezbędne pliki cookie pomagają uczynić naszą stronę użyteczną, umożliwiając działanie podstawowych funkcji, takich jak nawigacja po stronie internetowej czy dostęp do bezpiecznych obszarów strony. Bez tych plików cookie niektóre podstawowe funkcje strony nie będą działać prawidłowo.",
+  },
+  {
+    id: "marketing",
+    name: "Marketingowe",
+    description:
+      "Pliki cookie marketingowe są używane do śledzenia odwiedzających na stronach internetowych. Ich celem jest wyświetlanie reklam, które są istotne i interesujące dla indywidualnych użytkowników, a tym samym bardziej wartościowe dla wydawców i zewnętrznych reklamodawców.",
+  },
+  {
+    id: "analytics",
+    name: "Analityczne",
+    description:
+      "Pliki cookie analityczne pomagają nam zrozumieć, w jaki sposób użytkownicy wchodzą w interakcje z naszą stroną internetową, zbierając i raportując informacje anonimowo. Te dane są wykorzystywane do doskonalenia struktury i treści strony.",
+  },
+  {
+    id: "preferences",
+    name: "Preferencyjne",
+    description:
+      "Pliki cookie preferencyjne pozwalają stronie internetowej zapamiętywać informacje, które zmieniają sposób, w jaki strona się zachowuje lub wygląda, takie jak preferowany język lub region, w którym się znajdujesz.",
+  },
+];
+---
+
+<noscript>
+  <iframe
+    src='https://www.googletagmanager.com/ns.html?id=GTM-MHJNBK6'
+    height='0'
+    width='0'
+    style='display:none;visibility:hidden'
+  >
+  </iframe>
+</noscript>
+<aside data-js-nb1d8 class='cookie-consent' aria-hidden='true'>
+  <section>
+    <header class='header'>
+      <div data-header='first'>
+        <h2 class='h3'>Korzystając ze strony zgadzasz się na użycie ciasteczek</h2>
+        <Markdown class='test'>
+          Korzystamy z cookie i podobnych technologii, by analizować ruch na stronie, dopasować ją do Ciebie
+          i wyświetlać trafniejsze reklamy. [Dowiedz się więcej](/polityka-prywatnosci)
+        </Markdown>
+      </div>
+      <div data-header='second' style='display: none'>
+        <h3>Ustawienia cookies</h3>
+        <Markdown tag='p'>
+          Korzystając ze strony zgadzasz się na użycie tych ciasteczek. [Dowiedz się więcej](/polityka-prywatnosci)
+        </Markdown>
+      </div>
+    </header>
+    <div class='settings' style='display: none'>
+      {
+        groups.map(({ id, name, description }) => (
+          <label for={id} data-group={id} style={{ ...(id === "necessary" && { cursor: "not-allowed" }) }}>
+            <Switch
+              {...(id === "necessary" && {
+                style: { cursor: "not-allowed" },
+              })}
+              inputProps={{
+                id,
+                ...(id === "necessary" && {
+                  disabled: true,
+                  checked: true,
+                }),
+              }}
+            />
+            <p>{name}</p>
+            <p>{description}</p>
+          </label>
+        ))
+      }
+    </div>
+    <div class='buttons'>
+      <Button class='agree'>Zgoda na wszystkie</Button>
+      <Button class='setPreferences' theme='secondary'>Ustaw preferencje</Button>
+      <Button class='deny' theme='secondary'>Odmowa</Button>
+    </div>
+  </section>
+</aside>
+
+<style lang='scss'>
+  .cookie-consent {
+    padding: 16px var(--pageMargin);
+    &[aria-hidden="true"] {
+      display: none;
+    }
+    z-index: 10;
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(28, 182, 170, 0.2);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+    display: grid;
+    place-items: center;
+    > section {
+      max-height: calc(100vh - 32px);
+      max-height: calc(100dvh - 32px);
+      padding: clamp(16px, calc(32vw / 7.68), 32px);
+      border-radius: 8px;
+      border: 1px solid var(--primary-500, #1cb6aa);
+      background: var(--background-50, #fff);
+      max-width: 794px;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+      .settings {
+        display: flex;
+        flex-direction: column;
+        gap: clamp(12px, calc(20vw / 7.68), 20px);
+        overflow: auto;
+        label {
+          display: grid;
+          grid-template-columns: auto 1fr;
+          gap: 4px clamp(16px, calc(24vw / 7.68), 24px);
+          > div {
+            position: sticky;
+            top: 0;
+            grid-row: 1 / span 2;
+          }
+          p:last-of-type {
+            font-size: 0.875em;
+          }
+        }
+      }
+    }
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+      @media (max-width: 709px) {
+        button {
+          width: 100%;
+          &:nth-child(2) {
+            margin-top: 12px;
+          }
+        }
+      }
+      button {
+        &:nth-child(2) {
+          margin-left: auto;
+        }
+      }
+    }
+  }
+</style>
+<script is:inline>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    window.dataLayer.push(arguments);
+  }
+</script>
+<script>
+  import { getCookie } from "@/utils/get-cookie";
+  if (getCookie("cookie-consent") === null) {
+    gtag("consent", "default", {
+      functionality_storage: "denied",
+      security_storage: "denied",
+      ad_storage: "denied",
+      ad_user_data: "denied",
+      ad_personalization: "denied",
+      analytics_storage: "denied",
+      personalization_storage: "denied",
+    });
+    document.querySelector(".cookie-consent[data-js-nb1d8]")!.setAttribute("aria-hidden", "false");
+  } else {
+    gtag("consent", "default", JSON.parse(getCookie("cookie-consent")!));
+  }
+</script>
+<script is:inline>
+  // prettier-ignore
+  (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({"gtm.start":new Date().getTime(),event:"gtm.js"});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!="dataLayer"?"&l="+l:"";j.async=true;j.src="https://www.googletagmanager.com/gtm.js?id="+i+dl;f.parentNode.insertBefore(j,f);})(window,document,"script","dataLayer","GTM-K6FMQBQD");
+</script>
+<script>
+  import { setCookie } from "@/utils/set-cookie";
+  type Consent = {
+    necessary: boolean;
+    marketing: boolean;
+    analytics: boolean;
+    preferences: boolean;
+  };
+  function setConsent(consent: Consent) {
+    const consentMode = {
+      functionality_storage: consent.necessary ? "granted" : "denied",
+      security_storage: consent.necessary ? "granted" : "denied",
+      ad_storage: consent.marketing ? "granted" : "denied",
+      ad_user_data: consent.marketing ? "granted" : "denied",
+      ad_personalization: consent.marketing ? "granted" : "denied",
+      analytics_storage: consent.analytics ? "granted" : "denied",
+      personalization_storage: consent.preferences ? "granted" : "denied",
+    } as const;
+    gtag("consent", "update", consentMode);
+    setCookie("cookie-consent", JSON.stringify(consentMode), 365);
+  }
+  const $this = document.querySelector(".cookie-consent[data-js-nb1d8]")!;
+  const $agree = $this.querySelector(".agree")!;
+  const $setPreferences = $this.querySelector(".setPreferences")!;
+  const $deny = $this.querySelector(".deny")!;
+  $agree.addEventListener("click", () => {
+    setConsent({
+      necessary: true,
+      marketing: true,
+      analytics: true,
+      preferences: true,
+    });
+    $this.setAttribute("aria-hidden", "true");
+  });
+  let setsPreferences = false;
+  $setPreferences.addEventListener("click", () => {
+    if (!setsPreferences) {
+      $this.querySelector<HTMLDivElement>(".header [data-header='first']")!.style.display = "none";
+      $this.querySelector<HTMLDivElement>(".header [data-header='second']")!.style.removeProperty("display");
+      $this.querySelector<HTMLDivElement>(".settings")!.style.removeProperty("display");
+      setsPreferences = true;
+    } else {
+      $this.setAttribute("aria-hidden", "true");
+      setConsent({
+        necessary: $this.querySelector<HTMLInputElement>('input[id="necessary"]')!.checked,
+        marketing: $this.querySelector<HTMLInputElement>('input[id="marketing"]')!.checked,
+        analytics: $this.querySelector<HTMLInputElement>('input[id="analytics"]')!.checked,
+        preferences: $this.querySelector<HTMLInputElement>('input[id="preferences"]')!.checked,
+      });
+    }
+  });
+  $deny.addEventListener("click", () => {
+    $this.setAttribute("aria-hidden", "true");
+    setConsent({
+      necessary: false,
+      marketing: false,
+      analytics: false,
+      preferences: false,
+    });
+  });
+</script>

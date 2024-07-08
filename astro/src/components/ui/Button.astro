@@ -1,0 +1,123 @@
+---
+import { isExternalLink } from "@/utils/is-external-link";
+import type { HTMLAttributes } from "astro/types";
+
+type Props = {
+  href?: string;
+  text?: string | React.ReactNode;
+  theme?: "primary" | "secondary";
+} & (HTMLAttributes<"a"> & HTMLAttributes<"button">);
+
+export const ButtonDataQuery = `
+  href,
+  text,
+`;
+const { href, text, theme = "primary", ...props } = Astro.props;
+const Element = href ? "a" : "button";
+const children = Astro.slots.has("default") ? Astro.slots.render("default") : text;
+---
+
+<Element
+  {...href && {
+    href: href,
+    ...(isExternalLink(href) && { target: "_blank", rel: "noopener" }),
+  }}
+  data-theme={theme}
+  {...props}
+>
+  <span>
+    {children}
+  </span>
+  {
+    theme === "primary" && (
+      <div class='arrow'>
+        <svg
+          xmlns='http://www.w3.org/2000/svg'
+          width='12'
+          height='8'
+          fill='none'
+        >
+          <path
+            stroke='#0F9288'
+            stroke-linecap='round'
+            stroke-linejoin='round'
+            d='M.727 4h10.546m0 0L8.109.836M11.273 4 8.109 7.164'
+          />
+        </svg>
+      </div>
+    )
+  }
+</Element>
+
+<style lang='scss'>
+  button,
+  a {
+    border-radius: 4px;
+    width: fit-content;
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    @media (max-width: 499px) {
+      width: 100%;
+    }
+    &[data-theme="primary"] {
+      background: linear-gradient(135deg, #c4fbf6, #89e6df);
+      background-size: 200%;
+      background-position: left center;
+      padding: 6px 6px 6px 16px;
+      .arrow {
+        width: 32px;
+        height: 32px;
+        border-radius: 2px;
+        background-color: var(--primary-400, #6bd6cd);
+        display: grid;
+        place-items: center;
+        overflow: hidden;
+        svg {
+          @keyframes arrow {
+            0%,
+            100% {
+              transform: translateX(0);
+            }
+            49.9% {
+              transform: translateX(22px);
+            }
+            50% {
+              transform: translateX(-22px);
+            }
+          }
+        }
+      }
+      transition:
+        background-position 0.5s var(--easing),
+        transform 0.5s var(--easing);
+      &:hover {
+        background-position: right center;
+        .arrow {
+          svg {
+            animation: arrow 0.8s both var(--easing);
+          }
+        }
+      }
+    }
+    &[data-theme="secondary"] {
+      justify-content: center;
+      text-align: center;
+      border: 1px solid var(--primary-600, #0f9288);
+      padding: 8`px 16px;
+      transition:
+        border-color 0.5s var(--easing),
+        background-color 0.5s var(--easing),
+        transform 0.5s var(--easing);
+      &:hover {
+        border-color: var(--primary-700, #066a62);
+        background-color: var(--primary-100, #e5f9f8);
+      }
+    }
+    &:active {
+      transform: scale(0.98);
+      transition: none;
+    }
+  }
+</style>

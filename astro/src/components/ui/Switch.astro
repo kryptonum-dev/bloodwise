@@ -2,23 +2,17 @@
 import type { HTMLAttributes } from "astro/types";
 
 type Props = {
-  labelProps?: HTMLAttributes<"label">;
-  inputProps?: HTMLAttributes<"input">;
   asLabel?: boolean;
-};
-const { labelProps, inputProps, asLabel } = Astro.props;
+  inputProps?: HTMLAttributes<"input">;
+} & HTMLAttributes<"label">;
+
+const { inputProps, asLabel, ...props } = Astro.props;
 
 const Element = asLabel ? "label" : "div";
 ---
 
-<Element
-  class='switch'
-  {...labelProps}
->
-  <input
-    type='checkbox'
-    {...inputProps}
-  />
+<Element class='switch' {...props}>
+  <input type='checkbox' {...inputProps} />
   <div class='dot'>
     <svg
       xmlns='http://www.w3.org/2000/svg'

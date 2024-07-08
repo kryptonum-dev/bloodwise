@@ -1,36 +1,50 @@
 ---
-const { inputProps } = Astro.props;
+import type { HTMLAttributes } from "astro/types";
+
+type Props = {
+  labelProps?: HTMLAttributes<"label">;
+  inputProps?: HTMLAttributes<"input">;
+  asLabel?: boolean;
+};
+const { labelProps, inputProps, asLabel } = Astro.props;
+
+const Element = asLabel ? "label" : "div";
 ---
 
-<label>
+<Element
+  class='switch'
+  {...labelProps}
+>
   <input
     type='checkbox'
     {...inputProps}
   />
-  <div class='switch'>
+  <div class='dot'>
     <svg
       xmlns='http://www.w3.org/2000/svg'
-      width={16}
-      height={16}
-      viewBox='0 0 16 16'
+      width='20'
+      height='20'
       fill='none'
+      stroke='#fff'
+      stroke-linecap='round'
+      stroke-linejoin='round'
+      stroke-width='1.5'
     >
       <path
-        d='M13.333 4 6 11.333 2.667 8'
-        stroke='#F489A9'
-        stroke-width={1.5}
-        stroke-linecap='round'
-        stroke-linejoin='round'
+        d='m5 11.355 1.338 1.435c.739.791 1.108 1.187 1.521 1.312.364.11.75.08 1.096-.084.394-.186.71-.634 1.343-1.53L15 5.833'
       ></path>
     </svg>
   </div>
-</label>
+</Element>
 
 <style lang='scss'>
-  label {
+  .switch {
     input {
       position: absolute;
       opacity: 0;
+    }
+    &:has(input:disabled) {
+      opacity: 0.62;
     }
     cursor: pointer;
     width: 56px;
@@ -52,7 +66,7 @@ const { inputProps } = Astro.props;
     &:has(input:checked) {
       border-color: var(--secondary-800, #6f128f);
       background-color: var(--secondary-800, #6f128f);
-      .switch {
+      .dot {
         transform: translateX(24px);
         background-color: rgba(255, 255, 255, 0.5);
         svg {
@@ -60,7 +74,7 @@ const { inputProps } = Astro.props;
         }
       }
     }
-    .switch {
+    .dot {
       margin: 4px;
       width: 22px;
       height: 22px;

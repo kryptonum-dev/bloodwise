@@ -1,6 +1,33 @@
 ---
 import Markdown from "@/components/ui/markdown.astro";
 import Switch from "./ui/Switch.astro";
+
+const groups = [
+  {
+    id: "necessary",
+    name: "Niezbędne",
+    description:
+      "Niezbędne pliki cookie pomagają uczynić naszą stronę użyteczną, umożliwiając działanie podstawowych funkcji, takich jak nawigacja po stronie internetowej czy dostęp do bezpiecznych obszarów strony. Bez tych plików cookie niektóre podstawowe funkcje strony nie będą działać prawidłowo.",
+  },
+  {
+    id: "marketing",
+    name: "Marketingowe",
+    description:
+      "Pliki cookie marketingowe są używane do śledzenia odwiedzających na stronach internetowych. Ich celem jest wyświetlanie reklam, które są istotne i interesujące dla indywidualnych użytkowników, a tym samym bardziej wartościowe dla wydawców i zewnętrznych reklamodawców.",
+  },
+  {
+    id: "analytics",
+    name: "Analityczne",
+    description:
+      "Pliki cookie analityczne pomagają nam zrozumieć, w jaki sposób użytkownicy wchodzą w interakcje z naszą stroną internetową, zbierając i raportując informacje anonimowo. Te dane są wykorzystywane do doskonalenia struktury i treści strony.",
+  },
+  {
+    id: "preferences",
+    name: "Preferencyjne",
+    description:
+      "Pliki cookie preferencyjne pozwalają stronie internetowej zapamiętywać informacje, które zmieniają sposób, w jaki strona się zachowuje lub wygląda, takie jak preferowany język lub region, w którym się znajdujesz.",
+  },
+];
 ---
 
 <noscript>
@@ -20,19 +47,64 @@ import Switch from "./ui/Switch.astro";
   aria-live='polite'
   aria-hidden='true'
 >
-  <div>
-    <header>
-      <h2 class='h3'>Korzystając ze strony zgadzasz się na użycie ciasteczek</h2>
-      <Markdown>
-        Korzystamy z cookie i podobnych technologii, by analizować ruch na stronie, dopasować ją do Ciebie i wyświetlać
-        trafniejsze reklamy. [Dowiedz się więcej](/polityka-prywatnosci)
-      </Markdown>
+  <section>
+    <header class='header'>
+      <div data-header='first'>
+        <h2 class='h3'>Korzystając ze strony zgadzasz się na użycie ciasteczek</h2>
+        <Markdown class='test'>
+          Korzystamy z cookie i podobnych technologii, by analizować ruch na stronie, dopasować ją do Ciebie
+          i wyświetlać trafniejsze reklamy. [Dowiedz się więcej](/polityka-prywatnosci)
+        </Markdown>
+      </div>
+      <div
+        data-header='second'
+        style='display: none'
+      >
+        <h3>Ustawienia cookies</h3>
+        <Markdown tag='p'>
+          Korzystając ze strony zgadzasz się na użycie tych ciasteczek. [Dowiedz się więcej](/polityka-prywatnosci)
+        </Markdown>
+      </div>
     </header>
-    <button class='agree'>Zgoda na wszystkie</button>
-    <button class='preferences'>Ustaw preferencje</button>
-    <button class='deny'>Odmowa</button>
-    <Switch />
-  </div>
+    <div
+      class='settings'
+      style='display: none'
+    >
+      {
+        groups.map(({ id, name, description }) => (
+          <label
+            for={id}
+            data-group={id}
+            style={{ ...(id === "necessary" && { cursor: "not-allowed" }) }}
+          >
+            <Switch
+              inputProps={{
+                id,
+                ...(id === "necessary" && {
+                  disabled: true,
+                  checked: true,
+                }),
+              }}
+              labelProps={{
+                ...(id === "necessary" && {
+                  style: { cursor: "not-allowed" },
+                }),
+              }}
+            />
+            <div>
+              <p>{name}</p>
+              <p>{description}</p>
+            </div>
+          </label>
+        ))
+      }
+    </div>
+    <div class='buttons'>
+      <button class='agree'>Zgoda na wszystkie</button>
+      <button class='setPreferences'>Ustaw preferencje</button>
+      <button class='deny'>Odmowa</button>
+    </div>
+  </section>
 </aside>
 
 <style lang='scss'>
@@ -51,12 +123,33 @@ import Switch from "./ui/Switch.astro";
     -webkit-backdrop-filter: blur(3px);
     display: grid;
     place-items: center;
-    > div {
+    > section {
+      max-height: calc(100vh - var(--pageMargin) * 2);
+      max-height: calc(100dvh - var(--pageMargin) * 2);
       padding: clamp(16px, calc(32vw / 7.68), 32px);
       border-radius: 8px;
       border: 1px solid var(--primary-500, #1cb6aa);
       background: var(--background-50, #fff);
       max-width: 794px;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+      .settings {
+        display: flex;
+        flex-direction: column;
+        gap: clamp(12px, calc(20vw / 7.68), 20px);
+        overflow: auto;
+        label {
+          display: grid;
+          grid-template-columns: auto 1fr;
+          column-gap: clamp(16px, calc(24vw / 7.68), 24px);
+          p {
+            &:first-child {
+              margin-bottom: 4px;
+            }
+          }
+        }
+      }
     }
   }
 </style>
@@ -110,23 +203,41 @@ import Switch from "./ui/Switch.astro";
   }
   const $this = document.querySelector(".cookie-consent[data-js-nb1d8]")!;
   const $agree = $this.querySelector(".agree")!;
+  const $setPreferences = $this.querySelector(".setPreferences")!;
   const $deny = $this.querySelector(".deny")!;
   $agree.addEventListener("click", () => {
     setConsent({
       necessary: true,
+      marketing: true,
       analytics: true,
       preferences: true,
-      marketing: true,
     });
     $this.setAttribute("aria-hidden", "true");
+  });
+  let setsPreferences = false;
+  $setPreferences.addEventListener("click", () => {
+    if (!setsPreferences) {
+      $this.querySelector<HTMLDivElement>(".header [data-header='first']")!.style.display = "none";
+      $this.querySelector<HTMLDivElement>(".header [data-header='second']")!.style.removeProperty("display");
+      $this.querySelector<HTMLDivElement>(".settings")!.style.removeProperty("display");
+      setsPreferences = true;
+    } else {
+      $this.setAttribute("aria-hidden", "true");
+      setConsent({
+        necessary: $this.querySelector<HTMLInputElement>('input[id="necessary"]')!.checked,
+        marketing: $this.querySelector<HTMLInputElement>('input[id="marketing"]')!.checked,
+        analytics: $this.querySelector<HTMLInputElement>('input[id="analytics"]')!.checked,
+        preferences: $this.querySelector<HTMLInputElement>('input[id="preferences"]')!.checked,
+      });
+    }
   });
   $deny.addEventListener("click", () => {
     $this.setAttribute("aria-hidden", "true");
     setConsent({
       necessary: false,
+      marketing: false,
       analytics: false,
       preferences: false,
-      marketing: false,
     });
   });
 </script>

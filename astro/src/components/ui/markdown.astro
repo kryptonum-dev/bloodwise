@@ -8,8 +8,8 @@ type Props = {
 } & HTMLAttributes<"div">;
 
 const { tag, ...props } = Astro.props;
-
-const Tag = tag || (Object.keys(props).length > 0 ? "div" : Fragment);
+const filteredPropsLength = Object.keys(props).filter(key => !key.startsWith("data-astro-cid-")).length;
+const Tag = tag || (filteredPropsLength > 0 ? "div" : Fragment);
 
 class CustomRenderer extends marked.Renderer {
   link({ href, text }: Tokens.Link) {

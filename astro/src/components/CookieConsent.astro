@@ -36,18 +36,9 @@ const groups = [
     src='https://www.googletagmanager.com/ns.html?id=GTM-MHJNBK6'
     height='0'
     width='0'
-    style='display:none;visibility:hidden'
-  >
-  </iframe>
+    style='display:none;visibility:hidden'></iframe>
 </noscript>
-
-<aside
-  data-js-nb1d8
-  class='cookie-consent'
-  role='dialog'
-  aria-live='polite'
-  aria-hidden='true'
->
+<aside data-js-nb1d8 class='cookie-consent' aria-hidden='true'>
   <section>
     <header class='header'>
       <div data-header='first'>
@@ -57,27 +48,17 @@ const groups = [
           i wyświetlać trafniejsze reklamy. [Dowiedz się więcej](/polityka-prywatnosci)
         </Markdown>
       </div>
-      <div
-        data-header='second'
-        style='display: none'
-      >
+      <div data-header='second' style='display: none'>
         <h3>Ustawienia cookies</h3>
         <Markdown tag='p'>
           Korzystając ze strony zgadzasz się na użycie tych ciasteczek. [Dowiedz się więcej](/polityka-prywatnosci)
         </Markdown>
       </div>
     </header>
-    <div
-      class='settings'
-      style='display: none'
-    >
+    <div class='settings' style='display: none'>
       {
         groups.map(({ id, name, description }) => (
-          <label
-            for={id}
-            data-group={id}
-            style={{ ...(id === "necessary" && { cursor: "not-allowed" }) }}
-          >
+          <label for={id} data-group={id} style={{ ...(id === "necessary" && { cursor: "not-allowed" }) }}>
             <Switch
               inputProps={{
                 id,
@@ -102,16 +83,8 @@ const groups = [
     </div>
     <div class='buttons'>
       <Button class='agree'>Zgoda na wszystkie</Button>
-      <Button
-        class='setPreferences'
-        theme='secondary'
-        >Ustaw preferencje</Button
-      >
-      <Button
-        class='deny'
-        theme='secondary'
-        >Odmowa</Button
-      >
+      <Button class='setPreferences' theme='secondary'>Ustaw preferencje</Button>
+      <Button class='deny' theme='secondary'>Odmowa</Button>
     </div>
   </section>
 </aside>

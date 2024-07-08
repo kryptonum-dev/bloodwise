@@ -3,11 +3,11 @@
   "printWidth": 120,
   "proseWrap": "preserve",
   "singleQuote": false,
-  "singleAttributePerLine": true,
+  "singleAttributePerLine": false,
   "semi": true,
   "tabWidth": 2,
   "jsxSingleQuote": true,
   "arrowParens": "avoid",
-  "jsxBracketSameLine": false,
-  "bracketSameLine": false
+  "bracketSameLine": false,
+  "braceStyle": "stroustrup"
 }

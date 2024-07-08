@@ -1,5 +1,4 @@
 import { defineConfig } from "astro/config";
-import react from "@astrojs/react";
 import vercel from "@astrojs/vercel/serverless";
 import sitemap from "@astrojs/sitemap";
 import { DOMAIN } from "./src/global/constants";
@@ -7,7 +6,7 @@ import { isPreviewDeployment } from "./src/utils/is-preview-deployment";
 
 export default defineConfig({
   site: DOMAIN,
-  integrations: [sitemap(), react()],
+  integrations: [sitemap()],
   image: {
     remotePatterns: [
       {

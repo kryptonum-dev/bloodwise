@@ -2,13 +2,23 @@
 import Layout from "../layouts/Layout.astro";
 import metadataFetch from "@/utils/metadata.fetch";
 import Test from "@/components/Test.tsx";
+import Button from "@/components/ui/Button.astro";
 
 const metadata = await metadataFetch("Index_Page");
+
+const cta = {
+  href: "/",
+  text: "Zobacz więcej",
+  theme: "primary" as const,
+};
 ---
 
 <Layout
   {...metadata}
-  path='/'>
+  path='/'
+>
+  <Button {...cta} />
+
   <h1>Heading 1</h1>
   <p>
     Lorem, ipsum dolor sit amet consectetur adipisicing elit. Minus ex iure odio rerum nihil. Soluta in porro doloribus

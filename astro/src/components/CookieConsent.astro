@@ -1,6 +1,7 @@
 ---
 import Markdown from "@/components/ui/markdown.astro";
-import Switch from "./ui/Switch.astro";
+import Switch from "@/components/ui/Switch.astro";
+import Button from "@/components/ui/Button.astro";
 
 const groups = [
   {
@@ -100,16 +101,24 @@ const groups = [
       }
     </div>
     <div class='buttons'>
-      <button class='agree'>Zgoda na wszystkie</button>
-      <button class='setPreferences'>Ustaw preferencje</button>
-      <button class='deny'>Odmowa</button>
+      <Button class='agree'>Zgoda na wszystkie</Button>
+      <Button
+        class='setPreferences'
+        theme='secondary'
+        >Ustaw preferencje</Button
+      >
+      <Button
+        class='deny'
+        theme='secondary'
+        >Odmowa</Button
+      >
     </div>
   </section>
 </aside>
 
 <style lang='scss'>
   .cookie-consent {
-    padding: var(--pageMargin);
+    padding: 16px var(--pageMargin);
     &[aria-hidden="true"] {
       display: none;
     }
@@ -124,8 +133,8 @@ const groups = [
     display: grid;
     place-items: center;
     > section {
-      max-height: calc(100vh - var(--pageMargin) * 2);
-      max-height: calc(100dvh - var(--pageMargin) * 2);
+      max-height: calc(100vh - 32px);
+      max-height: calc(100dvh - 32px);
       padding: clamp(16px, calc(32vw / 7.68), 32px);
       border-radius: 8px;
       border: 1px solid var(--primary-500, #1cb6aa);
@@ -148,6 +157,25 @@ const groups = [
               margin-bottom: 4px;
             }
           }
+        }
+      }
+    }
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+      @media (max-width: 709px) {
+        button {
+          width: 100%;
+          &:nth-child(2) {
+            margin-top: 12px;
+          }
+        }
+      }
+      button {
+        &:nth-child(2) {
+          margin-left: auto;
         }
       }
     }

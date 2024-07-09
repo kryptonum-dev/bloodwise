@@ -49,6 +49,7 @@ const { data, ...props } = Astro.props;
       style={{
         background: `url(${data.asset.metadata.lqip}) center / cover no-repeat`,
       }}
+      onload='this.style.removeProperty("background")'
     />
   )
 }

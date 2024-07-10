@@ -33,52 +33,79 @@ const { socials, footer } = await sanityFetch<{
 <footer-scope>
   <footer dark-background>
     <div class='max-width'>
-      <a href='/' aria-label='Strona główna' class='logo'>
-        <Icons icon='BloodwiseLogo' />
-      </a>
-      <ul class='socials'>
-        {
-          Object.entries(socials).map(
-            ([platform, url]) =>
-              url && (
-                <li>
-                  <a href={url} target='_blank' rel='noreferrer'>
-                    {platform === "facebook" && <Icons icon='Facebook' />}
-                    {platform === "instagram" && <Icons icon='Instagram' />}
-                    {platform === "linkedin" && <Icons icon='Linkedin' />}
-                  </a>
-                </li>
-              )
-          )
-        }
-      </ul>
-      <a href='/polityka-prywatnosci' class='link'>Polityka prywatności</a>
-      <button class='link reset-cookies'>Ustawienia plików cookies</button>
-      <p class='copyright'>
-        <span>© 2024</span>
-        <a href='https://kryptonum.eu/pl' aria-label='Kryptonum'>
-          <Icons icon='KryptonumLogo' />
+      <div class='content'>
+        <a href='/' aria-label='Strona główna' class='logo'>
+          <Icons icon='BloodwiseLogo' />
         </a>
-      </p>
-      {footer.logo.map(img => <Image data={img} formats={["svg"]} />)}
-      <Markdown>{footer.annotation}</Markdown>
+        <ul class='socials'>
+          {
+            Object.entries(socials).map(
+              ([platform, url]) =>
+                url && (
+                  <li>
+                    <a href={url} target='_blank' rel='noreferrer'>
+                      {platform === "facebook" && <Icons icon='Facebook' />}
+                      {platform === "instagram" && <Icons icon='Instagram' />}
+                      {platform === "linkedin" && <Icons icon='Linkedin' />}
+                    </a>
+                  </li>
+                )
+            )
+          }
+        </ul>
+        <div class='links'>
+          <a href='/polityka-prywatnosci' class='link'>Polityka prywatności</a>
+          <button class='link reset-cookies'>Ustawienia plików cookies</button>
+          <p class='copyright'>
+            <span>© 2024</span>
+            <a href='https://kryptonum.eu/pl' aria-label='Kryptonum'>
+              <Icons icon='KryptonumLogo' />
+            </a>
+          </p>
+        </div>
+      </div>
+      <div class='funding'>
+        <div class='logos'>
+          {footer.logo.map(img => <Image data={img} formats={["svg"]} />)}
+        </div>
+        <Markdown>{footer.annotation}</Markdown>
+      </div>
     </div>
   </footer>
 </footer-scope>
 
 <style lang='scss'>
   footer {
-    .logo {
-      display: inline-block;
-    }
     padding: clamp(20px, calc(42vw / 7.68), 42px) 0 clamp(36px, calc(80vw / 7.68), 80px);
     border-radius: 8px 8px 0 0;
     background: linear-gradient(230deg, #006860, #01403b 62%);
     color: var(--background-100, #fffcf9);
-    .copyright {
-      svg {
-        display: inline-block;
-        vertical-align: middle;
+  }
+  .logo {
+    display: inline-block;
+    svg {
+      width: clamp(143px, calc(183vw / 7.68), 183px);
+      height: auto;
+    }
+  }
+  .content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: clamp(24px, calc(32vw / 7.68), 32px);
+    justify-content: space-between;
+    align-items: center;
+    .socials {
+      margin-right: auto;
+    }
+    .links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      .copyright {
+        svg {
+          display: inline-block;
+          vertical-align: middle;
+        }
       }
     }
   }
@@ -96,6 +123,30 @@ const { socials, footer } = await sanityFetch<{
       transition: opacity 0.5s var(--easing);
       &:hover {
         opacity: 0.62;
+      }
+    }
+  }
+  .funding {
+    margin-top: clamp(20px, calc(28vw / 7.68), 28px);
+    padding-top: clamp(32px, calc(42vw / 7.68), 42px);
+    border-top: 1px solid var(--primary-600, #0f9288);
+    display: grid;
+    align-items: flex-start;
+    gap: clamp(16px, calc(16vw / 7.68), 24px);
+    @media (min-width: 1000px) {
+      grid-template-columns: 1fr 1.2fr;
+    }
+    font-size: calc(12rem / 16);
+    line-height: 150%;
+    .logos {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: clamp(12px, calc(24vw / 7.68), 24px);
+      img {
+        max-height: clamp(32px, calc(50vw / 7.68), 50px);
+        width: auto;
+        object-fit: contain;
       }
     }
   }

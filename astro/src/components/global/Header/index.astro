@@ -31,7 +31,7 @@ const { links } = await sanityFetch<QueryProps>({
       <a href='.' aria-label='Strona główna' class='logo'>
         <Icons icon='BloodwiseLogo' />
       </a>
-      <button class='nav-toggle' type='button'>
+      <button class='nav-toggle' type='button' aria-label='Otwórz nawigację'>
         <span></span>
         <span></span>
         <span></span>
@@ -189,22 +189,24 @@ const { links } = await sanityFetch<QueryProps>({
         super();
 
         const header = this.querySelector("header")!;
-        this.querySelector(".overlay")!.addEventListener("click", () => {
+        const navToggle = this.querySelector(".nav-toggle")!;
+
+        function closeNav() {
           header.setAttribute("aria-expanded", "false");
-        });
-        this.querySelector(".nav-toggle")!.addEventListener("click", () => {
+          navToggle.setAttribute("aria-expanded", "Otwórz nawigację");
+        }
+        this.querySelector(".overlay")!.addEventListener("click", () => closeNav());
+        navToggle.addEventListener("click", () => {
           const isExpanded = header.getAttribute("aria-expanded") === "true";
           header.setAttribute("aria-expanded", isExpanded ? "false" : "true");
+          navToggle.setAttribute("aria-expanded", isExpanded ? "Zamknij nawigację" : "Otwórz nawigację");
         });
         this.querySelectorAll("a").forEach(link => {
-          link.addEventListener("click", () => {
-            header.setAttribute("aria-expanded", "false");
-          });
+          link.addEventListener("click", () => closeNav());
         });
-
         document.addEventListener("keydown", event => {
           if (event.key === "Escape") {
-            header.removeAttribute("aria-expanded");
+            closeNav();
           }
         });
       }

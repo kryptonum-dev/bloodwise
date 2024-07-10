@@ -44,12 +44,12 @@ const { data, ...props } = Astro.props;
       width={data.asset.metadata.dimensions.width}
       height={data.asset.metadata.dimensions.height}
       formats={["avif", "webp"]}
-      {...props}
-      src={data.asset.url}
       style={{
         background: `url(${data.asset.metadata.lqip}) center / cover no-repeat`,
       }}
       onload='this.style.removeProperty("background")'
+      {...props}
+      src={data.asset.url}
     />
   )
 }

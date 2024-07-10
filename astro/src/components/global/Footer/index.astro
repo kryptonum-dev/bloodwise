@@ -66,7 +66,18 @@ const { socials, footer } = await sanityFetch<{
       </div>
       <div class='funding'>
         <div class='logos'>
-          {footer.logo.map(img => <Image data={img} formats={["svg"]} />)}
+          {
+            footer.logo.map(img => (
+              <Image
+                data={img}
+                formats={["svg"]}
+                style={`
+                  background: url(${img.asset.metadata.lqip}) center / cover no-repeat;
+                  height: ${img.asset.metadata.dimensions.height}px;
+                `}
+              />
+            ))
+          }
         </div>
         <Markdown>{footer.annotation}</Markdown>
       </div>
@@ -144,8 +155,8 @@ const { socials, footer } = await sanityFetch<{
       align-items: center;
       gap: clamp(12px, calc(24vw / 7.68), 24px);
       img {
-        max-height: clamp(32px, calc(50vw / 7.68), 50px);
         width: auto;
+        max-height: clamp(32px, calc(50vw / 7.68), 50px);
         object-fit: contain;
       }
     }
@@ -161,7 +172,6 @@ const { socials, footer } = await sanityFetch<{
       constructor() {
         super();
 
-        console.log(this);
         this.querySelector(".reset-cookies")!.addEventListener("click", () => {
           document.cookie.split(";").forEach(cookie => {
             const eqPos = cookie.indexOf("=");

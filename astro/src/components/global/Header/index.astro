@@ -1,0 +1,213 @@
+---
+import sanityFetch from "@/utils/sanity.fetch";
+import Icons from "./icons.astro";
+import Button from "@/components/ui/Button.astro";
+
+type QueryProps = {
+  links: {
+    name: string;
+    href: string;
+    isHighlighted: boolean;
+  }[];
+};
+
+const { links } = await sanityFetch<QueryProps>({
+  query: `
+    *[_type == "global"][0].nav {
+      links[] {
+        name,
+        href,
+        isHighlighted
+      },
+    }
+  `,
+});
+---
+
+<header-scope>
+  <header>
+    <a href='#main' class='skipToMainContent'>Przejdź do treści głównej</a>
+    <div class='max-width'>
+      <a href='.' aria-label='Strona główna' class='logo'>
+        <Icons icon='BloodwiseLogo' />
+      </a>
+      <button class='nav-toggle' type='button'>
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <nav>
+        <ul>
+          {
+            links.map(({ name, href, isHighlighted }) => (
+              <li>
+                {isHighlighted ? (
+                  <Button href={href}>{name}</Button>
+                ) : (
+                  <a href={href} class='nav-link'>
+                    {name}
+                  </a>
+                )}
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <div class='overlay'></div>
+</header-scope>
+
+<style lang='scss'>
+  .skipToMainContent {
+    z-index: 10;
+    opacity: 0;
+    pointer-events: none;
+    position: fixed;
+    left: 21px;
+    top: 21px;
+    overflow: hidden;
+    padding: 13px 21px;
+    border-radius: 4px;
+    background-color: var(--primary-300);
+    border: 1px solid var(--primary-400);
+    &:focus-visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 9;
+    height: clamp(58px, calc(92vw / 7.68), 92px);
+    border-bottom: 1px solid var(--primary-400, #6bd6cd);
+    background: var(--background-100, #fffcf9);
+    > div {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+  .logo {
+    svg {
+      width: clamp(142px, calc(182vw / 7.68), 182px);
+    }
+  }
+  nav {
+    ul {
+      display: flex;
+      gap: clamp(8px, calc(8vw / 7.68), 32px);
+      align-items: center;
+      .nav-link {
+        display: block;
+        padding: 12px 8px;
+      }
+    }
+  }
+  .nav-toggle {
+    display: grid;
+    display: none;
+    gap: 4px;
+    padding: 17px 12px;
+    margin: 0 -12px;
+    span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      border-radius: 2px;
+      background-color: var(--primary-800, #01403b);
+      transition: transform 0.5s var(--easing);
+    }
+  }
+  .overlay {
+    z-index: 8;
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(28, 182, 170, 0.2);
+    backdrop-filter: blur(3px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s var(--easing);
+  }
+  @media (max-width: 899px) {
+    nav {
+      position: absolute;
+      right: 0;
+      top: 100%;
+      border-radius: 0 0 8px 8px;
+      border: 1px solid var(--primary-400, #6bd6cd);
+      background: var(--background-100, #fffcf9);
+      padding: 16px 16px 20px 16px;
+      ul {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      opacity: 0;
+      visibility: hidden;
+      transition:
+        opacity 0.5s var(--easing),
+        visibility 0.5s;
+    }
+    header[aria-expanded="true"] {
+      nav {
+        opacity: 1;
+        visibility: visible;
+      }
+      + .overlay {
+        opacity: 1;
+        pointer-events: auto;
+      }
+      .nav-toggle {
+        span {
+          &:nth-child(1) {
+            transform: translateY(6px) rotate(135deg);
+          }
+          &:nth-child(2) {
+            transform: scaleX(0);
+          }
+          &:nth-child(3) {
+            transform: translateY(-6px) rotate(-135deg);
+          }
+        }
+      }
+    }
+    .nav-toggle {
+      display: grid;
+    }
+  }
+</style>
+
+<script>
+  customElements.define(
+    "header-scope",
+    class extends HTMLElement {
+      constructor() {
+        super();
+
+        const header = this.querySelector("header")!;
+        this.querySelector(".overlay")!.addEventListener("click", () => {
+          header.setAttribute("aria-expanded", "false");
+        });
+        this.querySelector(".nav-toggle")!.addEventListener("click", () => {
+          const isExpanded = header.getAttribute("aria-expanded") === "true";
+          header.setAttribute("aria-expanded", isExpanded ? "false" : "true");
+        });
+        this.querySelectorAll("a").forEach(link => {
+          link.addEventListener("click", () => {
+            header.setAttribute("aria-expanded", "false");
+          });
+        });
+
+        document.addEventListener("keydown", event => {
+          if (event.key === "Escape") {
+            header.removeAttribute("aria-expanded");
+          }
+        });
+      }
+    }
+  );
+</script>

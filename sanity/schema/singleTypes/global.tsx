@@ -1,6 +1,7 @@
 import { defineField, defineType } from 'sanity';
 
-const NavLinks = {
+const NavLinks = defineField({
+  name: 'links',
   type: 'object',
   title: 'Linki nawigacyjne',
   fields: [
@@ -23,56 +24,25 @@ const NavLinks = {
         }).required(),
     }),
     defineField({
-      name: 'links',
-      type: 'array',
-      title: 'Podlinki (opcjonalne)',
-      of: [
-        {
-          type: 'object',
-          fields: [
-            defineField({
-              name: 'name',
-              type: 'string',
-              title: 'Nazwa',
-              validation: Rule => Rule.required(),
-            }),
-            defineField({
-              name: 'href',
-              type: 'string',
-              title: 'Link',
-              validation: Rule =>
-                Rule.custom(value => {
-                  if (value && (!value.startsWith('/') || value.startsWith('//'))) {
-                    return 'Link musi byc relatywny';
-                  }
-                  return true;
-                }).required(),
-            }),
-            defineField({
-              name: 'img',
-              type: 'image',
-              title: 'Zdjęcie',
-              validation: Rule => Rule.required(),
-            }),
-          ],
-          preview: {
-            select: {
-              title: 'name',
-              subtitle: 'href',
-              media: 'img',
-            }
-          }
-        }
-      ]
+      name: 'isHighlighted',
+      type: 'boolean',
+      title: 'Czy ma wyświetlić się jako przycisk?',
+      initialValue: false,
     }),
   ],
   preview: {
     select: {
       title: 'name',
       subtitle: 'href',
-    }
+      isHighlighted: 'isHighlighted',
+    },
+    prepare: ({ title, subtitle, isHighlighted }) => ({
+      title,
+      subtitle,
+      icon: () => isHighlighted ? '🔵' : undefined,
+    }),
   }
-};
+});
 
 export default defineType({
   name: 'global',
@@ -86,11 +56,6 @@ export default defineType({
       title: 'Nawigacja',
       options: { collapsible: true, collapsed: true },
       fields: [
-        defineField({
-          name: 'annotation',
-          type: 'markdown',
-          title: 'Adnotacja',
-        }),
         defineField({
           name: 'links',
           type: 'array',
@@ -108,30 +73,21 @@ export default defineType({
       validation: Rule => Rule.required(),
       fields: [
         defineField({
-          name: 'heading',
-          type: 'markdown',
-          title: 'Nagłówek',
+          name: 'logo',
+          type: 'array',
+          of: [
+            { type: 'image' }
+          ],
+          title: 'Logo',
           validation: Rule => Rule.required(),
         }),
         defineField({
-          name: 'paragraph',
+          name: 'annotation',
           type: 'markdown',
-          title: 'Paragraf',
+          title: 'Adnotacja',
           validation: Rule => Rule.required(),
         }),
       ],
-    }),
-    defineField({
-      name: 'privacyPolicy',
-      type: 'url',
-      title: 'Polityka Prywatności',
-      validation: Rule => Rule.required(),
-    }),
-    defineField({
-      name: 'termsAndConditions',
-      type: 'url',
-      title: 'Regulamin',
-      validation: Rule => Rule.required(),
     }),
     defineField({
       name: 'email',
@@ -163,39 +119,10 @@ export default defineType({
           validation: (Rule) => Rule.uri({ scheme: ['https'] }).error('Podaj prawidłowy adres URL (rozpoczynający się od https://)'),
         }),
         defineField({
-          name: 'youtube',
+          name: 'linkedin',
           type: 'url',
-          title: 'YouTube',
+          title: 'LinkedIn',
           validation: (Rule) => Rule.uri({ scheme: ['https'] }).error('Podaj prawidłowy adres URL (rozpoczynający się od https://)'),
-        }),
-        defineField({
-          name: 'tiktok',
-          type: 'url',
-          title: 'TikTok',
-          validation: (Rule) => Rule.uri({ scheme: ['https'] }).error('Podaj prawidłowy adres URL (rozpoczynający się od https://)'),
-        }),
-      ],
-    }),
-    defineField({
-      name: 'RecentPurchases',
-      type: 'object',
-      title: 'Ostatnie zamówienia',
-      description: 'Pokazuje element „X osób kupiło ten produkt w ciągu 24 godzin”. Liczba dla każdego produktu jest generowana losowo z zakresu min-max.',
-      options: {
-        columns: 2,
-      },
-      fields: [
-        defineField({
-          name: 'min',
-          type: 'number',
-          title: 'Minimalna liczba zakupów',
-          validation: Rule => Rule.required(),
-        }),
-        defineField({
-          name: 'max',
-          type: 'number',
-          title: 'Maksymalna liczba zakupów',
-          validation: Rule => Rule.required(),
         }),
       ],
     }),

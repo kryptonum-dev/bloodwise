@@ -16,11 +16,7 @@ export default defineConfig({
     ],
   },
   output: isPreviewDeployment ? "server" : 'static',
-  ...(!isPreviewDeployment && {
-    adapter: vercel({
-      isr: {
-        bypassToken: import.meta.env.ISR_BYPASS_TOKEN,
-      },
-    }),
-  }),
+  ...isPreviewDeployment && {
+    adapter: vercel(),
+  },
 });

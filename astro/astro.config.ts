@@ -19,9 +19,7 @@ export default defineConfig({
   },
   prefetch: true,
   output: isPreviewDeployment ? "server" : 'hybrid',
-  ...(isPreviewDeployment && {
-    adapter: vercel({
-      edgeMiddleware: false
-    })
+  adapter: vercel({
+    edgeMiddleware: false
   })
 });

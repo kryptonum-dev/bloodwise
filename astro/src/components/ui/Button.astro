@@ -3,14 +3,15 @@ import { isExternalLink } from "@/utils/is-external-link";
 import type { HTMLAttributes } from "astro/types";
 
 type Props = {
+  theme?: "primary" | "secondary";
   href?: string;
   text?: string | HTMLElement;
-  theme?: "primary" | "secondary";
 } & (HTMLAttributes<"a"> & HTMLAttributes<"button">);
 
 export type ButtonDataTypes = Props;
 
 export const ButtonDataQuery = `
+  theme,
   href,
   text,
 `;

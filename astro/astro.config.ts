@@ -1,22 +1,27 @@
 import { defineConfig } from "astro/config";
 import vercel from "@astrojs/vercel/serverless";
 import sitemap from "@astrojs/sitemap";
+import icon from "astro-icon";
 import { DOMAIN } from "./src/global/constants";
 import { isPreviewDeployment } from "./src/utils/is-preview-deployment";
 
 export default defineConfig({
   site: DOMAIN,
-  integrations: [sitemap()],
+  integrations: [
+    sitemap(),
+    icon()
+  ],
   image: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "cdn.sanity.io",
-      },
-    ],
+    remotePatterns: [{
+      protocol: "https",
+      hostname: "cdn.sanity.io"
+    }]
   },
-  output: isPreviewDeployment ? "server" : 'static',
-  ...isPreviewDeployment && {
-    adapter: vercel(),
-  },
+  prefetch: true,
+  output: isPreviewDeployment ? "server" : 'hybrid',
+  ...(isPreviewDeployment && {
+    adapter: vercel({
+      edgeMiddleware: false
+    })
+  })
 });

@@ -1,6 +1,6 @@
 ---
 import sanityFetch from "@/utils/sanity.fetch";
-import Icons from "./icons.astro";
+import { Icon } from "astro-icon/components";
 import { ImageDataQuery, type ImageDataTypes } from "@/components/ui/image.astro";
 import Image from "@/components/ui/image.astro";
 import Markdown from "@/components/ui/markdown.astro";
@@ -35,7 +35,7 @@ const { socials, footer } = await sanityFetch<{
     <div class='max-width'>
       <div class='content'>
         <a href='/' aria-label='Strona główna' class='logo'>
-          <Icons icon='BloodwiseLogo' />
+          <Icon name='bloodwise-logo_dark' />
         </a>
         <ul class='socials'>
           {
@@ -44,9 +44,9 @@ const { socials, footer } = await sanityFetch<{
                 url && (
                   <li>
                     <a href={url} target='_blank' rel='noreferrer'>
-                      {platform === "facebook" && <Icons icon='Facebook' />}
-                      {platform === "instagram" && <Icons icon='Instagram' />}
-                      {platform === "linkedin" && <Icons icon='Linkedin' />}
+                      {platform === "facebook" && <Icon name='facebook' size={21} title='Facebook' />}
+                      {platform === "instagram" && <Icon name='instagram' size={21} title='Instagram' />}
+                      {platform === "linkedin" && <Icon name='linkedin' size={21} title='LinkedIn' />}
                     </a>
                   </li>
                 )
@@ -59,7 +59,7 @@ const { socials, footer } = await sanityFetch<{
           <p class='copyright'>
             <span>© 2024</span>
             <a href='https://kryptonum.eu/pl' aria-label='Kryptonum'>
-              <Icons icon='KryptonumLogo' />
+              <Icon name='kryptonum-logo' />
             </a>
           </p>
         </div>

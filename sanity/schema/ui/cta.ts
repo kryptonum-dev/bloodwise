@@ -7,10 +7,31 @@ export default defineType({
   icon: () => '🗣️',
   fields: [
     defineField({
+      name: 'theme',
+      type: 'string',
+      title: 'Motyw',
+      options: {
+        list: [
+          {
+            title: 'Główne',
+            value: 'primary',
+          },
+          {
+            title: 'Dodatkowe',
+            value: 'secondary',
+          }
+        ],
+      },
+      initialValue: 'primary',
+      validation: Rule => Rule.required(),
+      fieldset: 'column',
+    }),
+    defineField({
       name: 'text',
       type: 'string',
       title: 'Tekst',
       validation: Rule => Rule.required(),
+      fieldset: 'column',
     }),
     defineField({
       name: 'href',
@@ -26,10 +47,18 @@ export default defineType({
         }).required(),
     }),
   ],
+  fieldsets: [
+    { name: 'column', options: { columns: 2 }, title: 'Wygląd' },
+  ],
   preview: {
     select: {
-      title: 'text',
-      subtitle: 'href',
+      theme: 'theme',
+      text: 'text',
+      href: 'href',
     },
+    prepare: ({ theme, text, href }) => ({
+      title: `(${theme === 'primary' ? 'Główne' : 'Dodatkowe'}) ${text}`,
+      subtitle: href,
+    })
   },
 });

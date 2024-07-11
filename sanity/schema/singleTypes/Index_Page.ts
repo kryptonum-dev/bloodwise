@@ -7,6 +7,13 @@ export default defineType({
   icon: () => '🏠',
   fields: [
     defineField({
+      name: 'content',
+      type: 'content',
+      title: 'Komponenty podstrony',
+      description: 'Komponenty podstrony to sekcje strony internetowej, które można dodawać, usuwać i zmieniać ich kolejność. Umożliwiają elastyczne zarządzanie treścią i układem strony.',
+      options: { collapsible: true },
+    }),
+    defineField({
       name: 'seo',
       type: 'seo',
       title: 'SEO',

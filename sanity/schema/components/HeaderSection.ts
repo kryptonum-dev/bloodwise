@@ -29,7 +29,7 @@ export default defineField({
         { type: 'cta' }
       ],
       title: 'Wezwanie do działania',
-      validation: Rule => Rule.required(),
+      validation: Rule => Rule.required().max(2),
     }),
     defineField({
       name: 'img',

@@ -76,7 +76,10 @@ export default defineType({
           name: 'logo',
           type: 'array',
           of: [
-            { type: 'image' }
+            {
+              type: 'image',
+              options: { accept: 'image/svg+xml' },
+            }
           ],
           title: 'Logo',
           validation: Rule => Rule.required(),

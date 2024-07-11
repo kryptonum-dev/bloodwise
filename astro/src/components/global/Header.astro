@@ -1,7 +1,7 @@
 ---
 import sanityFetch from "@/utils/sanity.fetch";
-import Icons from "./icons.astro";
 import Button from "@/components/ui/Button.astro";
+import { Icon } from "astro-icon/components";
 
 type QueryProps = {
   links: {
@@ -29,7 +29,7 @@ const { links } = await sanityFetch<QueryProps>({
     <a href='#main' class='skipToMainContent'>Przejdź do treści głównej</a>
     <div class='max-width'>
       <a href='.' aria-label='Strona główna' class='logo'>
-        <Icons icon='BloodwiseLogo' />
+        <Icon name='bloodwise-logo' />
       </a>
       <button class='nav-toggle' type='button' aria-label='Otwórz nawigację'>
         <span></span>

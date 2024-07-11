@@ -1,0 +1,34 @@
+---
+import Image, { ImageDataQuery, type ImageDataTypes } from "@/components/ui/image.astro";
+import Button, { ButtonDataQuery, type ButtonDataTypes } from "@/components/ui/Button.astro";
+import Markdown from "../ui/markdown.astro";
+
+export const HeaderSection_Query = `
+  heading,
+  paragraph,
+  cta {
+    ${ButtonDataQuery}
+  }[],
+  img {
+    ${ImageDataQuery}
+  }
+`;
+
+export type Props = {
+  heading: string;
+  paragraph: string;
+  cta: ButtonDataTypes[];
+  img: ImageDataTypes;
+};
+
+const { heading, paragraph, cta, img } = Astro.props;
+---
+
+<section class='HeaderSection'>
+  <header>
+    <Markdown>{heading}</Markdown>
+    <Markdown>{paragraph}</Markdown>
+    {cta.map(cta => <Button {...cta} />)}
+  </header>
+  <Image data={img} />
+</section>

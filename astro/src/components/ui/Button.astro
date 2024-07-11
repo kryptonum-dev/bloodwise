@@ -8,6 +8,8 @@ type Props = {
   theme?: "primary" | "secondary";
 } & (HTMLAttributes<"a"> & HTMLAttributes<"button">);
 
+export type ButtonDataTypes = Props;
+
 export const ButtonDataQuery = `
   href,
   text,

@@ -1,0 +1,33 @@
+---
+import type { ComponentProps } from "astro/types";
+import HeaderSection, { HeaderSection_Query } from "@/components/global/HeaderSection.astro";
+
+export type ComponentsProps = ComponentProps<typeof HeaderSection> & { _type: string }[];
+
+type Props = {
+  data: ComponentsProps;
+};
+
+const { data } = Astro.props;
+
+const components = {
+  HeaderSection,
+};
+
+console.log(data);
+
+export const Components_Query = /* groq */ `
+  components[] {
+    _type,
+    ${HeaderSection_Query}
+  },
+`;
+---
+
+{
+  data.map(item => {
+    const DynamicComponent = components[item._type];
+    if (!DynamicComponent) return null;
+    return <DynamicComponent {...item} />;
+  })
+}

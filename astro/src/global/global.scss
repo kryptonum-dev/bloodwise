@@ -265,3 +265,10 @@ h3,
     }
   }
 }
+
+.cta-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: clamp(12px, calc(16vw / 7.68), 16px);
+}

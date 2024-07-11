@@ -26,9 +26,28 @@ const { heading, paragraph, cta, img } = Astro.props;
 
 <section class='HeaderSection'>
   <header>
-    <Markdown>{heading}</Markdown>
-    <Markdown>{paragraph}</Markdown>
-    {cta.map(cta => <Button {...cta} />)}
+    <Markdown tag='h2'>{heading}</Markdown>
+    <Markdown class='paragraph'>{paragraph}</Markdown>
+    <div class='cta-wrapper'>
+      {cta.map(cta => <Button {...cta} />)}
+    </div>
   </header>
   <Image data={img} />
 </section>
+
+<style lang='scss'>
+  .HeaderSection {
+    display: grid;
+    align-items: center;
+    gap: 36px clamp(36px, calc(62vw / 7.68), 62px);
+    @media (min-width: 900px) {
+      grid-template-columns: 1.2fr 1fr;
+    }
+  }
+  header {
+    max-width: calc(595rem / 16);
+  }
+  .paragraph {
+    margin: clamp(12px, calc(20vw / 7.68), 20px) 0 clamp(24px, calc(36vw / 7.68), 36px);
+  }
+</style>

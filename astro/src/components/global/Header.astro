@@ -24,39 +24,37 @@ const { links } = await sanityFetch<QueryProps>({
 });
 ---
 
-<header-scope>
-  <header>
-    <a href='#main' class='skipToMainContent'>Przejdź do treści głównej</a>
-    <div class='max-width'>
-      <a href='.' aria-label='Strona główna' class='logo'>
-        <Icon name='bloodwise-logo' />
-      </a>
-      <button class='nav-toggle' type='button' aria-label='Otwórz nawigację'>
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-      <nav>
-        <ul>
-          {
-            links.map(({ name, href, isHighlighted }) => (
-              <li>
-                {isHighlighted ? (
-                  <Button href={href}>{name}</Button>
-                ) : (
-                  <a href={href} class='nav-link'>
-                    {name}
-                  </a>
-                )}
-              </li>
-            ))
-          }
-        </ul>
-      </nav>
-    </div>
-  </header>
-  <div class='overlay'></div>
-</header-scope>
+<header id='header'>
+  <a href='#main' class='skipToMainContent'>Przejdź do treści głównej</a>
+  <div class='max-width'>
+    <a href='.' aria-label='Strona główna' class='logo'>
+      <Icon name='bloodwise-logo' />
+    </a>
+    <button class='nav-toggle' type='button' aria-label='Otwórz nawigację'>
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <nav>
+      <ul>
+        {
+          links.map(({ name, href, isHighlighted }) => (
+            <li>
+              {isHighlighted ? (
+                <Button href={href}>{name}</Button>
+              ) : (
+                <a href={href} class='nav-link'>
+                  {name}
+                </a>
+              )}
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+</header>
+<div class='overlay'></div>
 
 <style lang='scss'>
   .skipToMainContent {
@@ -182,34 +180,25 @@ const { links } = await sanityFetch<QueryProps>({
 </style>
 
 <script>
-  customElements.define(
-    "header-scope",
-    class extends HTMLElement {
-      constructor() {
-        super();
+  const header = document.querySelector("#header");
+  const navToggle = header.querySelector(".nav-toggle");
 
-        const header = this.querySelector("header")!;
-        const navToggle = this.querySelector(".nav-toggle")!;
-
-        function closeNav() {
-          header.setAttribute("aria-expanded", "false");
-          navToggle.setAttribute("aria-expanded", "Otwórz nawigację");
-        }
-        this.querySelector(".overlay")!.addEventListener("click", () => closeNav());
-        navToggle.addEventListener("click", () => {
-          const isExpanded = header.getAttribute("aria-expanded") === "true";
-          header.setAttribute("aria-expanded", isExpanded ? "false" : "true");
-          navToggle.setAttribute("aria-expanded", isExpanded ? "Zamknij nawigację" : "Otwórz nawigację");
-        });
-        this.querySelectorAll("a").forEach(link => {
-          link.addEventListener("click", () => closeNav());
-        });
-        document.addEventListener("keydown", event => {
-          if (event.key === "Escape") {
-            closeNav();
-          }
-        });
-      }
+  function closeNav() {
+    header.setAttribute("aria-expanded", "false");
+    navToggle.setAttribute("aria-label", "Otwórz nawigację");
+  }
+  header.nextElementSibling.addEventListener("click", () => closeNav());
+  navToggle.addEventListener("click", () => {
+    const isExpanded = header.getAttribute("aria-expanded") === "true";
+    header.setAttribute("aria-expanded", isExpanded ? "false" : "true");
+    navToggle.setAttribute("aria-label", isExpanded ? "Otwórz nawigację" : "Zamknij nawigację");
+  });
+  header.querySelectorAll("a").forEach(link => {
+    link.addEventListener("click", () => closeNav());
+  });
+  document.addEventListener("keydown", event => {
+    if (event.key === "Escape") {
+      closeNav();
     }
-  );
+  });
 </script>

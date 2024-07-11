@@ -2,7 +2,7 @@ import { defineType } from "sanity";
 import HeaderSection from "../schema/components/HeaderSection";
 
 export default defineType({
-  name: 'content',
+  name: 'components',
   type: 'array',
   title: 'Komponenty',
   of: [

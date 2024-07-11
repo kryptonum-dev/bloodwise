@@ -15,13 +15,14 @@ export const HeaderSection_Query = `
 `;
 
 export type Props = {
+  index: number;
   heading: string;
   paragraph: string;
   cta: ButtonDataTypes[];
   img: ImageDataTypes;
 };
 
-const { heading, paragraph, cta, img } = Astro.props;
+const { index, heading, paragraph, cta, img } = Astro.props;
 ---
 
 <section class='HeaderSection'>
@@ -32,7 +33,7 @@ const { heading, paragraph, cta, img } = Astro.props;
       {cta.map(cta => <Button {...cta} />)}
     </div>
   </header>
-  <Image data={img} />
+  <Image data={img} loading={index === 0 ? "eager" : "lazy"} />
 </section>
 
 <style lang='scss'>

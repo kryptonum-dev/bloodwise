@@ -1,5 +1,5 @@
 ---
-import Image, { ImageDataQuery, type ImageDataTypes } from "@/components/ui/image.astro";
+import Image, { ImageDataQuery, type ImageDataTypes } from "@/components/ui/picture.astro";
 import Button, { ButtonDataQuery, type ButtonDataTypes } from "@/components/ui/Button.astro";
 import Markdown from "../ui/markdown.astro";
 
@@ -33,7 +33,7 @@ const { index, heading, paragraph, cta, img } = Astro.props;
       {cta.map(cta => <Button {...cta} />)}
     </div>
   </header>
-  <Image data={img} loading={index === 0 ? "eager" : "lazy"} />
+  <Image data={img} loading={index === 0 ? "eager" : "lazy"} widths={[100]} sizes='sd' />
 </section>
 
 <style lang='scss'>

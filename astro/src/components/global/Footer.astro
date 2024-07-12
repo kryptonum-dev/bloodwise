@@ -1,8 +1,8 @@
 ---
 import sanityFetch from "@/utils/sanity.fetch";
 import { Icon } from "astro-icon/components";
-import { ImageDataQuery, type ImageDataTypes } from "@/components/ui/image.astro";
-import Image from "@/components/ui/image.astro";
+import { ImageDataQuery, type ImageDataTypes } from "@/components/ui/picture.astro";
+import Image from "@/components/ui/picture.astro";
 import Markdown from "@/components/ui/markdown.astro";
 
 const { socials, footer } = await sanityFetch<{
@@ -68,14 +68,9 @@ const { socials, footer } = await sanityFetch<{
         <div class='logos'>
           {
             footer.logo.map(img => (
-              <Image
-                data={img}
-                formats={["svg"]}
-                style={`
-                  background: url(${img.asset.metadata.lqip}) center / cover no-repeat;
-                  height: ${img.asset.metadata.dimensions.height}px;
-                `}
-              />
+              <>
+                <Image data={img} Tag='Image' sizes='sdf' widths={[34]} />
+              </>
             ))
           }
         </div>

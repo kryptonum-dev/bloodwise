@@ -1,0 +1,61 @@
+---
+import type { ComponentProps } from "astro/types";
+import { Picture as AstroPicture } from "astro:assets";
+
+export type ImageDataTypes = {
+  asset: {
+    url: string;
+    altText: string;
+    metadata: {
+      dimensions: {
+        width: number;
+        height: number;
+      };
+      lqip: string;
+    };
+  };
+};
+
+export const ImageDataQuery = `
+  asset -> {
+    url,
+    altText,
+    metadata {
+      dimensions {
+        width,
+        height,
+      },
+      lqip,
+    },
+  },
+`;
+
+type Props = {
+  data: ImageDataTypes;
+  widths: ComponentProps<typeof AstroPicture>["widths"];
+  sizes: ComponentProps<typeof AstroPicture>["sizes"];
+} & Partial<ComponentProps<typeof AstroPicture>>;
+
+const { data, widths, sizes, ...props } = Astro.props;
+---
+
+{
+  data?.asset && (
+    <AstroPicture
+      {...({
+        src: data.asset.url,
+        alt: data.asset.altText || "",
+        width: data.asset.metadata.dimensions.width,
+        height: data.asset.metadata.dimensions.height,
+        formats: ["avif", "webp"],
+        style: {
+          background: `url(${data.asset.metadata.lqip}) center / cover no-repeat`,
+        },
+        onload: 'this.style.removeProperty("background")',
+        widths,
+        sizes,
+        ...props,
+      } as ComponentProps<typeof AstroPicture>)}
+    />
+  )
+}

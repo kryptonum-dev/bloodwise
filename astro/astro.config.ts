@@ -17,7 +17,9 @@ export default defineConfig({
       hostname: "cdn.sanity.io"
     }],
   },
-  prefetch: true,
+  prefetch: {
+    prefetchAll: true
+  },
   output: isPreviewDeployment ? "server" : 'hybrid',
   adapter: vercel({
     edgeMiddleware: false

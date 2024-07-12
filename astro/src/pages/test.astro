@@ -1,0 +1,30 @@
+---
+import sanityFetch from "@/utils/sanity.fetch";
+import metadataFetch from "@/utils/metadata.fetch";
+import Layout from "../layouts/Layout.astro";
+import Button from "@/components/ui/Button.astro";
+import { Components_Query, type ComponentsProps } from "@/components/Components.astro";
+import Components from "@/components/Components.astro";
+
+const metadata = await metadataFetch("Index_Page");
+
+const { components } = await sanityFetch<{ components: ComponentsProps }>({
+  query: `
+    *[_type == "Index_Page"][0] {
+      ${Components_Query}
+    }
+  `,
+});
+
+const cta = {
+  href: "/test",
+  text: "Zobacz więcej",
+  theme: "primary" as const,
+};
+---
+
+<Layout {...metadata} path='/'>
+  <Button {...cta} />
+  <Components data={components} />
+  <h1>Heading 1</h1>
+</Layout>

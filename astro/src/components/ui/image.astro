@@ -56,13 +56,13 @@ const Tag = asPicture ? AstroPicture : AstroImage;
           background: `url(${data.asset.metadata.lqip}) center / cover no-repeat`,
         },
         onload: 'this.style.removeProperty("background")',
-        widths: [16, 32, 48, 64, 96, 128, 256, 384, 640, 750, 828, 1080, 1200, 1920, 2048, 3840],
-        ...(asPicture && {
-          formats: ["avif", "webp"],
-        }),
+        widths: [48, 64, 96, 128, 256, 384, 640, 750, 828, 1080, 1200, 1920, 2048, 3840],
         ...(priority && {
           loading: "eager",
           fetchpriority: "high",
+        }),
+        ...(asPicture && {
+          formats: ["avif", "webp"],
         }),
         ...props,
       } as ComponentProps<typeof AstroImage | typeof AstroPicture>)}

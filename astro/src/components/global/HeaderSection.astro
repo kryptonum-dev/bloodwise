@@ -1,5 +1,5 @@
 ---
-import Image, { ImageDataQuery, type ImageDataTypes } from "@/components/ui/picture.astro";
+import Image, { ImageDataQuery, type ImageDataTypes } from "@/components/ui/image.astro";
 import Button, { ButtonDataQuery, type ButtonDataTypes } from "@/components/ui/Button.astro";
 import Markdown from "../ui/markdown.astro";
 
@@ -33,7 +33,15 @@ const { index, heading, paragraph, cta, img } = Astro.props;
       {cta.map(cta => <Button {...cta} />)}
     </div>
   </header>
-  <Image data={img} loading={index === 0 ? "eager" : "lazy"} widths={[100]} sizes='sd' />
+  <Image
+    data={img}
+    loading={index === 0 ? "eager" : "lazy"}
+    widths={[450, 595, 520]}
+    sizes='(max-width: 499px) 450px, (max-width: 899px) 595px, 520px'
+    pictureAttributes={{
+      class: "img",
+    }}
+  />
 </section>
 
 <style lang='scss'>
@@ -46,6 +54,9 @@ const { index, heading, paragraph, cta, img } = Astro.props;
     }
   }
   header {
+    max-width: calc(595rem / 16);
+  }
+  .img {
     max-width: calc(595rem / 16);
   }
   .paragraph {

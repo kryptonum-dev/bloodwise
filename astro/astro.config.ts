@@ -15,7 +15,7 @@ export default defineConfig({
     remotePatterns: [{
       protocol: "https",
       hostname: "cdn.sanity.io"
-    }]
+    }],
   },
   prefetch: true,
   output: isPreviewDeployment ? "server" : 'hybrid',

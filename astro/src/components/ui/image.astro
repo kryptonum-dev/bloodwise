@@ -33,12 +33,13 @@ export const ImageDataQuery = `
 type Props = {
   data: ImageDataTypes;
   sizes: string;
+  priority?: boolean;
 } & (
   | ({ asPicture?: true } & Partial<ComponentProps<typeof AstroPicture>>)
   | ({ asPicture: false } & Partial<ComponentProps<typeof AstroImage>>)
 );
 
-const { data, asPicture = true, ...props } = Astro.props;
+const { data, asPicture = true, priority, ...props } = Astro.props;
 
 const Tag = asPicture ? AstroPicture : AstroImage;
 ---
@@ -58,6 +59,10 @@ const Tag = asPicture ? AstroPicture : AstroImage;
         widths: [16, 32, 48, 64, 96, 128, 256, 384, 640, 750, 828, 1080, 1200, 1920, 2048, 3840],
         ...(asPicture && {
           formats: ["avif", "webp"],
+        }),
+        ...(priority && {
+          loading: "eager",
+          fetchpriority: "high",
         }),
         ...props,
       } as ComponentProps<typeof AstroImage | typeof AstroPicture>)}

@@ -35,7 +35,7 @@ const { index, heading, paragraph, cta, img } = Astro.props;
   </header>
   <Image
     data={img}
-    loading={index === 0 ? "eager" : "lazy"}
+    priority={index === 0}
     sizes='(max-width: 499px) 450px, (max-width: 899px) 595px, 520px'
     pictureAttributes={{
       class: "img",

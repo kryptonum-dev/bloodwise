@@ -183,19 +183,50 @@ const { links } = await sanityFetch<QueryProps>({
   const header = document.querySelector("#header");
   const navToggle = header.querySelector(".nav-toggle");
 
+  let scrollHandler = null;
+
+  function addScrollListener() {
+    if (scrollHandler) return;
+    const initialScroll = window.scrollY;
+    const scrollThreshold = 89;
+    scrollHandler = function () {
+      console.log("scrolling");
+      const scrollDifference = Math.abs(window.scrollY - initialScroll);
+      if (scrollDifference >= scrollThreshold) closeNav();
+    };
+    window.addEventListener("scroll", scrollHandler);
+  }
+  function removeScrollListener() {
+    if (scrollHandler) {
+      window.removeEventListener("scroll", scrollHandler);
+      scrollHandler = null;
+    }
+  }
+
   function closeNav() {
     header.setAttribute("aria-expanded", "false");
     navToggle.setAttribute("aria-label", "Otwórz nawigację");
+    removeScrollListener();
   }
+
   header.nextElementSibling.addEventListener("click", () => closeNav());
+
   navToggle.addEventListener("click", () => {
     const isExpanded = header.getAttribute("aria-expanded") === "true";
     header.setAttribute("aria-expanded", isExpanded ? "false" : "true");
     navToggle.setAttribute("aria-label", isExpanded ? "Otwórz nawigację" : "Zamknij nawigację");
+
+    if (!isExpanded) {
+      addScrollListener();
+    } else {
+      removeScrollListener();
+    }
   });
+
   header.querySelectorAll("a").forEach(link => {
     link.addEventListener("click", () => closeNav());
   });
+
   document.addEventListener("keydown", event => {
     if (event.key === "Escape") {
       closeNav();

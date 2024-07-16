@@ -25,7 +25,7 @@ export type Props = {
 const { index, heading, paragraph, cta, img } = Astro.props;
 ---
 
-<section class='HeaderSection'>
+<section class='HeaderSection sec-wo-margin'>
   <header>
     <Markdown tag='h2'>{heading}</Markdown>
     <Markdown class='paragraph'>{paragraph}</Markdown>
@@ -45,6 +45,10 @@ const { index, heading, paragraph, cta, img } = Astro.props;
 
 <style lang='scss'>
   .HeaderSection {
+    padding: clamp(32px, calc(42vw / 7.68), 42px) 0;
+    &::before {
+      background: var(--gradient-100, linear-gradient(88deg, #f3fefd 1.46%, #feffff 100%));
+    }
     display: grid;
     align-items: center;
     gap: 36px clamp(36px, calc(62vw / 7.68), 62px);

@@ -113,12 +113,10 @@ const { index, heading, paragraph, emailSection } = Astro.props;
       loader.hidden = false;
       const formData = new FormData(element);
       const { data, error } = await actions.contact.safe(formData);
-      if (data) {
-        if (data.success) {
-          successState.hidden = false;
-        } else {
-          errorState.hidden = false;
-        }
+      if (data?.success) {
+        successState.hidden = false;
+      } else {
+        errorState.hidden = false;
       }
       loader.hidden = true;
       element.querySelectorAll(`[data-error-name]`).forEach(error => (error.textContent = ""));

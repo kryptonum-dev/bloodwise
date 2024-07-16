@@ -1,0 +1,43 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { Icon } from "astro-icon/components";
+
+type Props = {
+  name: string;
+} & HTMLAttributes<"span">;
+
+const { name, ...props } = Astro.props;
+---
+
+<span class='error' role='alert' {...props}>
+  <Icon name='error' size={16} />
+  <span data-error-name={name}></span>
+</span>
+
+<style lang='scss'>
+  .error {
+    font-size: calc(14rem / 16);
+    color: var(--notification-red-500, #bb0c0c);
+    width: fit-content;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    &:has(span:empty) {
+      display: none;
+    }
+    &:not(span:empty) {
+      animation: reveal 0.5s both;
+    }
+    svg {
+      flex-shrink: 0;
+    }
+    @keyframes reveal {
+      0% {
+        opacity: 0;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
+  }
+</style>

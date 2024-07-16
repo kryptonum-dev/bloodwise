@@ -1,0 +1,95 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import Error from "@/components/ui/Error.astro";
+
+type Props = {
+  name: string;
+  label: string;
+  inputProps?: HTMLAttributes<"input">;
+} & HTMLAttributes<"label">;
+
+const { name, label, inputProps, ...props } = Astro.props;
+---
+
+<label {...props}>
+  <div class='tick'>
+    <input name={name} type='checkbox' {...inputProps} />
+    <svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' fill='none'>
+      <path
+        stroke='#A844CB'
+        stroke-linecap='round'
+        stroke-linejoin='round'
+        stroke-width='1.049'
+        d='M.556 5.944 2.563 8.24a1.333 1.333 0 0 0 2.085-.097L9.445 1.5'
+      >
+      </path>
+    </svg>
+  </div>
+  <p>
+    <span set:html={label} />
+    <Error name={name} />
+  </p>
+</label>
+
+<style lang='scss'>
+  label {
+    cursor: pointer;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    width: fit-content;
+    .tick {
+      margin: 8px;
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--background-400);
+      transition:
+        border-color 0.5s,
+        background-color 0.5s;
+      position: relative;
+      input {
+        position: absolute;
+        opacity: 0;
+        appearance: auto;
+      }
+      svg {
+        stroke-dasharray: 14;
+        stroke-dashoffset: 14;
+        transition: stroke-dashoffset 0.5s var(--easing);
+      }
+    }
+    p {
+      margin-top: 8px;
+      > span[role="alert"] {
+        margin-left: auto;
+        margin-top: 2px;
+      }
+    }
+    &:hover {
+      .tick {
+        background-color: var(--background-200, #fef6ed);
+      }
+    }
+    &:has(input:checked) {
+      .tick {
+        svg {
+          stroke-dashoffset: 0;
+        }
+      }
+    }
+    &:has(input:focus-visible) {
+      .tick {
+        outline: 2px solid var(--primary-800, #01403b);
+        outline-offset: 3px;
+      }
+    }
+    &[aria-invalid="true"] {
+      .tick {
+        border-color: var(--notification-red-500, #bb0c0c);
+        background-color: var(--notification-red-100, #fff4f4);
+      }
+    }
+  }
+</style>

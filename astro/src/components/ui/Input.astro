@@ -1,0 +1,81 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import Error from "@/components/ui/Error.astro";
+
+type Props = {
+  name: string;
+  label: string;
+  inputProps?: HTMLAttributes<"input">;
+  isTextarea?: boolean;
+} & HTMLAttributes<"label">;
+
+const { name, label, inputProps, isTextarea = false, ...props } = Astro.props;
+
+const Element = isTextarea ? "textarea" : "input";
+---
+
+<label {...props}>
+  <p class='label'>
+    <span>{label}</span>
+    <Error name={name} />
+  </p>
+  <Element name={name} {...inputProps} placeholder='' />
+</label>
+
+<style lang='scss'>
+  label {
+    .label {
+      font-size: calc(12rem / 16);
+      margin-bottom: 4px;
+      padding: 0 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+    input {
+      height: 37px;
+    }
+    textarea {
+      min-height: 96px;
+      max-height: 377px;
+      resize: none;
+    }
+    input,
+    textarea {
+      width: 100%;
+      padding: 6px 24px;
+      border-radius: 2px;
+      border-bottom: 1px solid var(--primary-600, #0f9288);
+      background-color: var(--background-200, #fef6ed);
+      transition:
+        background-color 0.5s var(--easing),
+        border-color 0.5s var(--easing);
+      &:not(:placeholder-shown) {
+        background: var(--primary-50, #f3fefd);
+      }
+      &:hover,
+      &:focus-visible {
+        outline: none;
+        border-color: var(--primary-700, #066a62);
+        background-color: var(--primary-100, #e5f9f8);
+      }
+    }
+    &[aria-invalid="true"] {
+      input,
+      textarea {
+        border-color: var(--notification-red-500, #bb0c0c);
+        background-color: var(--notification-red-100, #fff4f4);
+      }
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLTextAreaElement>("label textarea").forEach(textarea => {
+    textarea.addEventListener("input", () => {
+      textarea.style.height = "auto";
+      textarea.style.height = `${textarea.scrollHeight + 1}px`;
+    });
+  });
+</script>

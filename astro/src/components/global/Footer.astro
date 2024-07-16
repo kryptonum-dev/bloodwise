@@ -69,9 +69,7 @@ const { socials, footer } = await sanityFetch<{
             footer.logo.map(img => (
               <Image
                 data={img}
-                asPicture={false}
                 sizes='160px'
-                format='svg'
                 style={`
                   background: url(${img.asset.metadata.lqip}) center / cover no-repeat;
                   height: ${img.asset.metadata.dimensions.height}px;

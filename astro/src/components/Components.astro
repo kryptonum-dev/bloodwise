@@ -19,7 +19,7 @@ const components = {
 export const Components_Query = /* groq */ `
   components[] {
     _type,
-    _type == "HeaderSection" => {
+    _type == "HeaderSection" => { 
       ${HeaderSection_Query}
     },
     _type == "ContactForm" => {

@@ -272,3 +272,9 @@ h3,
   align-items: center;
   gap: clamp(12px, calc(16vw / 7.68), 16px);
 }
+
+div.paragraph {
+  & > *:not(:last-child) {
+    margin-bottom: 8px;
+  }
+}

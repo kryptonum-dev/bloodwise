@@ -1,0 +1,101 @@
+---
+import Image, { ImageDataQuery, type ImageDataTypes } from "@/components/ui/image.astro";
+import Button from "@/components/ui/Button.astro";
+import Markdown from "@/components/ui/markdown.astro";
+
+export const QuoteCards_Query = `
+  heading,
+  paragraph,
+  list[] {
+    logo {
+      ${ImageDataQuery}
+    },
+    paragraph,
+    link,
+  },
+`;
+
+export type Props = {
+  index: number;
+  heading: string;
+  paragraph: string;
+  list: {
+    logo: ImageDataTypes;
+    paragraph: string;
+    link?: string;
+  }[];
+};
+
+const { index, heading, paragraph, list } = Astro.props;
+---
+
+<section class='QuoteCards'>
+  <header>
+    <Markdown tag={index === 0 ? "h1" : "h2"}>{heading}</Markdown>
+    <Markdown class='paragraph'>{paragraph}</Markdown>
+  </header>
+  <ul>
+    {
+      list.map(({ logo, paragraph, link }) => (
+        <li>
+          <Image data={logo} sizes='173px' pictureAttributes={{ class: "img" }} />
+          <svg xmlns='http://www.w3.org/2000/svg' width='17' height='13' fill='none'>
+            <path
+              fill='#1CB6AA'
+              d='M7.27 5.458a7.451 7.451 0 0 1-6.383 7.39V10.66c2.069-.413 3.606-1.891 3.606-3.546-.355.236-.887.354-1.596.354C1.36 7.468 0 6.345 0 4.335S1.419.848 3.488.848c2.01 0 3.783 1.714 3.783 4.61Zm9.577 0c0 3.725-2.778 6.858-6.384 7.39V10.66c2.069-.413 3.606-1.891 3.606-3.605-.355.236-.828.413-1.596.413-1.537 0-2.956-1.123-2.956-3.133S10.936.848 13.005.848s3.842 1.714 3.842 4.61Z'
+            />
+          </svg>
+          <Markdown class='paragraph'>{paragraph}</Markdown>
+          {link && (
+            <Button href={link} theme='secondary' class='cta'>
+              Czytaj więcej
+            </Button>
+          )}
+        </li>
+      ))
+    }
+  </ul>
+</section>
+
+<style lang='scss'>
+  header {
+    max-width: calc(610rem / 16);
+    text-align: center;
+    margin: 0 auto clamp(36px, calc(42vw / 7.68), 42px);
+    .paragraph {
+      margin-top: clamp(12px, calc(16vw / 7.68), 16px);
+    }
+  }
+  ul {
+    display: grid;
+    @media (min-width: 700px) {
+      grid-template-columns: 1fr 1fr;
+    }
+    @media (min-width: 1200px) {
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+    gap: 16px;
+    li {
+      display: flex;
+      flex-direction: column;
+      border-radius: 8px;
+      border: 1px solid var(--primary-200, #c4f9f5);
+      background: var(--background-50, #fff);
+      padding: clamp(16px, calc(28vw / 7.68), 28px);
+      .img {
+        max-width: 75%;
+        max-height: 48px;
+        margin-bottom: clamp(16px, calc(24vw / 7.68), 24px);
+      }
+      .paragraph {
+        margin-top: clamp(8px, calc(12vw / 7.68), 12px);
+        &:has(+ .cta) {
+          margin-bottom: clamp(16px, calc(24vw / 7.68), 24px);
+        }
+      }
+      .cta {
+        margin-top: auto;
+      }
+    }
+  }
+</style>

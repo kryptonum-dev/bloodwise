@@ -25,11 +25,6 @@ class CustomRenderer extends marked.Renderer {
   listitem({ text }: { text: string }) {
     return `<li><span>${marked.parseInline(text)}</span></li>`;
   }
-  private inlineProps(props: Record<string, string>): string {
-    return Object.keys(props)
-      .map(key => `${key}="${props[key]}"`)
-      .join(" ");
-  }
 }
 
 const content = marked.parse(await Astro.slots.render("default"), {

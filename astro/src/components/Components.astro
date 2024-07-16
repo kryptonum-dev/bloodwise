@@ -1,7 +1,8 @@
 ---
 import type { ComponentProps } from "astro/types";
 import HeaderSection, { HeaderSection_Query } from "@/components/global/HeaderSection.astro";
-import ContactForm, { ContactForm_Query } from "./global/ContactForm.astro";
+import ContactForm, { ContactForm_Query } from "@/components/global/ContactForm.astro";
+import QuoteCards, { QuoteCards_Query } from "@/components/global/QuoteCards.astro";
 
 export type ComponentsProps = ComponentProps<typeof HeaderSection> & { _type: string; index: number }[];
 
@@ -14,16 +15,20 @@ const { data } = Astro.props;
 const components = {
   HeaderSection,
   ContactForm,
+  QuoteCards,
 };
 
 export const Components_Query = /* groq */ `
   components[] {
     _type,
-    _type == "HeaderSection" => { 
+    _type == "HeaderSection" => {
       ${HeaderSection_Query}
     },
     _type == "ContactForm" => {
       ${ContactForm_Query}
+    },
+    _type == "QuoteCards" => {
+      ${QuoteCards_Query}
     },
   },
 `;

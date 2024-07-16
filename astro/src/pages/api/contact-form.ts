@@ -39,7 +39,7 @@ export const POST: APIRoute = async ({ request }) => {
       'Authorization': `Bearer ${import.meta.env.RESEND_API_KEY}`,
     },
     body: JSON.stringify({
-      from: `${name} ze strony Bloodwise <onboarding@resend.dev>`,
+      from: `${name} ze strony Bloodwise <formularz@bloodwise.com.pl>`,
       to: 'contact@bloodwise.com.pl',
       reply_to: `${name} <${email}>`,
       subject: `${name} przesyła wiadomość przez formularz kontaktowy`,

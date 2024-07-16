@@ -5,15 +5,15 @@ import Error from "@/components/ui/Error.astro";
 type Props = {
   name: string;
   label: string;
-  error?: string;
-} & HTMLAttributes<"input">;
+  inputProps?: HTMLAttributes<"input">;
+} & HTMLAttributes<"label">;
 
-const { name, label, error, ...props } = Astro.props;
+const { name, label, inputProps, ...props } = Astro.props;
 ---
 
-<label aria-invalid={!!error}>
+<label {...props}>
   <div class='tick'>
-    <input name={name} type='checkbox' {...props} />
+    <input name={name} type='checkbox' {...inputProps} />
     <svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' fill='none'>
       <path
         stroke='#A844CB'
@@ -27,7 +27,7 @@ const { name, label, error, ...props } = Astro.props;
   </div>
   <p>
     <span set:html={label} />
-    <Error error={error} />
+    <Error name={name} />
   </p>
 </label>
 
@@ -52,6 +52,7 @@ const { name, label, error, ...props } = Astro.props;
       input {
         position: absolute;
         opacity: 0;
+        appearance: auto;
       }
       svg {
         stroke-dasharray: 14;

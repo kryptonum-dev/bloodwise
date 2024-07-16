@@ -5,21 +5,21 @@ import Error from "@/components/ui/Error.astro";
 type Props = {
   name: string;
   label: string;
-  error?: string;
+  inputProps?: HTMLAttributes<"input">;
   isTextarea?: boolean;
-} & HTMLAttributes<"input">;
+} & HTMLAttributes<"label">;
 
-const { name, label, error, isTextarea = false, ...props } = Astro.props;
+const { name, label, inputProps, isTextarea = false, ...props } = Astro.props;
 
 const Element = isTextarea ? "textarea" : "input";
 ---
 
-<label aria-invalid={!!error}>
+<label {...props}>
   <p class='label'>
     <span>{label}</span>
-    {error && <Error error={error} />}
+    <Error name={name} />
   </p>
-  <Element name={name} {...props} placeholder='' />
+  <Element name={name} {...inputProps} placeholder='' />
 </label>
 
 <style lang='scss'>

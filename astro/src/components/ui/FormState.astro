@@ -1,0 +1,81 @@
+---
+import Button from "@/components/ui/Button.astro";
+
+// export const handleFormState = (form: HTMLFormElement) => {
+//   const formState = form.querySelector("[data-form-state]");
+//   formState.style.display = "grid";
+//   form.style.display = "none";
+// };
+
+const { ...props } = Astro.props;
+---
+
+<div {...props} data-form-state aria-hidden='true'>
+  <div data-form-state-success aria-live='polite' hidden>
+    <svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' fill='none'>
+      <path
+        stroke='#00923E'
+        stroke-linecap='round'
+        stroke-linejoin='round'
+        stroke-width='1.5'
+        d='m11.556 16.844 2.007 2.295a1.333 1.333 0 0 0 2.085-.097l4.797-6.642'
+      >
+      </path>
+      <path
+        stroke='#00923E'
+        stroke-linecap='round'
+        stroke-linejoin='round'
+        stroke-width='1.5'
+        d='M27.333 21.068V10.932c0-.444-.117-.88-.338-1.265a2.526 2.526 0 0 0-.921-.926l-8.815-5.068a2.507 2.507 0 0 0-2.518 0L5.926 8.741c-.383.222-.7.541-.921.926a2.546 2.546 0 0 0-.338 1.265v10.136a2.546 2.546 0 0 0 1.259 2.192l8.815 5.067a2.506 2.506 0 0 0 2.518 0l8.815-5.067a2.546 2.546 0 0 0 1.26-2.192Z'
+      >
+      </path>
+    </svg>
+    <h3>Dziękujemy za wysłanie wiadomości!</h3>
+    <p>Odpowiemy możliwie jak najszybciej.</p>
+  </div>
+  <div data-form-state-error aria-live='assertive' hidden>
+    <svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' fill='none'>
+      <path
+        stroke='#BB0C0C'
+        stroke-linecap='round'
+        stroke-linejoin='round'
+        stroke-width='1.5'
+        d='m12 10.666 8 10.667m-8 0 8-10.666M27.333 21.068V10.932c0-.444-.117-.88-.338-1.265a2.526 2.526 0 0 0-.921-.926l-8.815-5.068a2.507 2.507 0 0 0-2.518 0L5.926 8.741c-.383.222-.7.541-.921.926a2.546 2.546 0 0 0-.338 1.265v10.136a2.546 2.546 0 0 0 1.259 2.192l8.815 5.067a2.506 2.506 0 0 0 2.518 0l8.815-5.067a2.546 2.546 0 0 0 1.26-2.192Z'
+      >
+      </path>
+    </svg>
+    <h3>Nie udało się wysłać wiadomości</h3>
+    <p>
+      Coś poszło nie tak. Spróbuj ponownie. Jeśli problem się powtórzy, skontaktuj się z nami przez adres:
+      <a href='mailto:contact@bloodwise.com.pl' class='link'>contact@bloodwise.com.pl</a>
+    </p>
+    <Button type='button'>Spróbuj ponownie</Button>
+  </div>
+</div>
+
+<style lang='scss'>
+  svg {
+    margin-bottom: 8px;
+  }
+  p {
+    margin: 16px 0 28px;
+  }
+  [data-form-state-success] {
+    h3 {
+      color: var(--notification-green-500, #00923e);
+    }
+  }
+  [data-form-state-error] {
+    h3 {
+      color: var(--notification-red-500, #bb0c0c);
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>("[data-form-state-error]").forEach(errorState => {
+    errorState.querySelector<HTMLButtonElement>("button").addEventListener("click", function () {
+      errorState.hidden = true;
+    });
+  });
+</script>

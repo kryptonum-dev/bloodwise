@@ -1,21 +1,18 @@
 ---
+import type { HTMLAttributes } from "astro/types";
 import { Icon } from "astro-icon/components";
 
 type Props = {
-  error?: string;
-};
+  name: string;
+} & HTMLAttributes<"span">;
 
-const { error } = Astro.props;
+const { name, ...props } = Astro.props;
 ---
 
-{
-  error && (
-    <span class='error' role='alert'>
-      <Icon name='error' size={16} />
-      <span>{error}</span>
-    </span>
-  )
-}
+<span class='error' role='alert' {...props}>
+  <Icon name='error' size={16} />
+  <span data-error-name={name}></span>
+</span>
 
 <style lang='scss'>
   .error {
@@ -25,7 +22,12 @@ const { error } = Astro.props;
     display: flex;
     align-items: center;
     gap: 4px;
-    animation: reveal 0.5s both;
+    &:has(span:empty) {
+      display: none;
+    }
+    &:not(span:empty) {
+      animation: reveal 0.5s both;
+    }
     svg {
       flex-shrink: 0;
     }

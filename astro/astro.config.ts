@@ -17,6 +17,9 @@ export default defineConfig({
       hostname: "cdn.sanity.io"
     }],
   },
+  experimental: {
+    actions: true,
+  },
   prefetch: {
     prefetchAll: true
   },

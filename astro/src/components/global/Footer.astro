@@ -29,60 +29,58 @@ const { socials, footer } = await sanityFetch<{
 });
 ---
 
-<footer-scope>
-  <footer dark-background>
-    <div class='max-width'>
-      <div class='content'>
-        <a href='/' aria-label='Strona główna' class='logo'>
-          <Icon name='bloodwise-logo_dark' />
-        </a>
-        <ul class='socials'>
-          {
-            Object.entries(socials).map(
-              ([platform, url]) =>
-                url && (
-                  <li>
-                    <a href={url} target='_blank' rel='noreferrer'>
-                      {platform === "facebook" && <Icon name='facebook' size={21} title='Facebook' />}
-                      {platform === "instagram" && <Icon name='instagram' size={21} title='Instagram' />}
-                      {platform === "linkedin" && <Icon name='linkedin' size={21} title='LinkedIn' />}
-                    </a>
-                  </li>
-                )
-            )
-          }
-        </ul>
-        <div class='links'>
-          <a href='/polityka-prywatnosci' class='link'>Polityka prywatności</a>
-          <button class='link reset-cookies'>Ustawienia plików cookies</button>
-          <p class='copyright'>
-            <span>© 2024</span>
-            <a href='https://kryptonum.eu/pl' aria-label='Kryptonum'>
-              <Icon name='kryptonum-logo' />
-            </a>
-          </p>
-        </div>
+<footer id='footer' dark-background>
+  <div class='max-width'>
+    <div class='content'>
+      <a href='/' aria-label='Strona główna' class='logo'>
+        <Icon name='bloodwise-logo_dark' />
+      </a>
+      <ul class='socials'>
+        {
+          Object.entries(socials).map(
+            ([platform, url]) =>
+              url && (
+                <li>
+                  <a href={url} target='_blank' rel='noreferrer'>
+                    {platform === "facebook" && <Icon name='facebook' size={21} title='Facebook' />}
+                    {platform === "instagram" && <Icon name='instagram' size={21} title='Instagram' />}
+                    {platform === "linkedin" && <Icon name='linkedin' size={21} title='LinkedIn' />}
+                  </a>
+                </li>
+              )
+          )
+        }
+      </ul>
+      <div class='links'>
+        <a href='/polityka-prywatnosci' class='link'>Polityka prywatności</a>
+        <button class='link reset-cookies'>Ustawienia plików cookies</button>
+        <p class='copyright'>
+          <span>© 2024</span>
+          <a href='https://kryptonum.eu/pl' aria-label='Kryptonum'>
+            <Icon name='kryptonum-logo' />
+          </a>
+        </p>
       </div>
-      <div class='funding'>
-        <div class='logos'>
-          {
-            footer.logo.map(img => (
-              <Image
-                data={img}
-                sizes='160px'
-                style={`
+    </div>
+    <div class='funding'>
+      <div class='logos'>
+        {
+          footer.logo.map(img => (
+            <Image
+              data={img}
+              sizes='160px'
+              style={`
                   background: url(${img.asset.metadata.lqip}) center / cover no-repeat;
                   height: ${img.asset.metadata.dimensions.height}px;
                 `}
-              />
-            ))
-          }
-        </div>
-        <Markdown>{footer.annotation}</Markdown>
+            />
+          ))
+        }
       </div>
+      <Markdown>{footer.annotation}</Markdown>
     </div>
-  </footer>
-</footer-scope>
+  </div>
+</footer>
 
 <style lang='scss'>
   footer {
@@ -165,21 +163,13 @@ const { socials, footer } = await sanityFetch<{
 <script>
   import { setCookie } from "@/utils/set-cookie";
 
-  customElements.define(
-    "footer-scope",
-    class extends HTMLElement {
-      constructor() {
-        super();
-
-        this.querySelector(".reset-cookies")!.addEventListener("click", () => {
-          document.cookie.split(";").forEach(cookie => {
-            const eqPos = cookie.indexOf("=");
-            const name = eqPos > -1 ? cookie.substring(0, eqPos) : cookie;
-            setCookie(name, "", -1);
-          });
-          window.location.reload();
-        });
-      }
-    }
-  );
+  const footer = document.querySelector("#footer");
+  footer.querySelector(".reset-cookies").addEventListener("click", () => {
+    document.cookie.split(";").forEach(cookie => {
+      const eqPos = cookie.indexOf("=");
+      const name = eqPos > -1 ? cookie.substring(0, eqPos) : cookie;
+      setCookie(name, "", -1);
+    });
+    window.location.reload();
+  });
 </script>

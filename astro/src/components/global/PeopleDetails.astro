@@ -27,7 +27,7 @@ export type Props = {
 
 const { index, heading, paragraph, list } = Astro.props;
 
-const NameTag = index === 0 ? "h2" : "h3";
+const Subheading = index === 0 ? "h2" : "h3";
 ---
 
 <section class='PeopleDetails sec-wo-margin' dark-background>
@@ -42,7 +42,7 @@ const NameTag = index === 0 ? "h2" : "h3";
           <li>
             <Image data={img} priority={index === 0} sizes='180px' pictureAttributes={{ class: "img" }} />
             <div>
-              <NameTag class='h3 heading'>{name}</NameTag>
+              <Subheading class='h3 heading'>{name}</Subheading>
               <Markdown class='description'>{description}</Markdown>
             </div>
           </li>

@@ -2,9 +2,10 @@
 import type { ComponentProps } from "astro/types";
 import HeroFloatingImages, { HeroFloatingImages_Query } from "@/components/global/HeroFloatingImages.astro";
 import HeaderSection, { HeaderSection_Query } from "@/components/global/HeaderSection.astro";
-import ContactForm, { ContactForm_Query } from "@/components/global/ContactForm.astro";
+import Process, { Process_Query } from "@/components/global/Process.astro";
 import QuoteCards, { QuoteCards_Query } from "@/components/global/QuoteCards.astro";
 import PeopleDetails, { PeopleDetails_Query } from "@/components/global/PeopleDetails.astro";
+import ContactForm, { ContactForm_Query } from "@/components/global/ContactForm.astro";
 
 export type ComponentsProps = ComponentProps<typeof HeaderSection> & { _type: string; index: number }[];
 
@@ -17,9 +18,10 @@ const { data } = Astro.props;
 const components = {
   HeroFloatingImages,
   HeaderSection,
-  ContactForm,
+  Process,
   QuoteCards,
   PeopleDetails,
+  ContactForm,
 };
 
 export const Components_Query = /* groq */ `
@@ -31,14 +33,17 @@ export const Components_Query = /* groq */ `
     _type == "HeaderSection" => {
       ${HeaderSection_Query}
     },
-    _type == "ContactForm" => {
-      ${ContactForm_Query}
+    _type == "Process" => {
+      ${Process_Query}
     },
     _type == "QuoteCards" => {
       ${QuoteCards_Query}
     },
     _type == "PeopleDetails" => {
       ${PeopleDetails_Query}
+    },
+    _type == "ContactForm" => {
+      ${ContactForm_Query}
     },
   },
 `;

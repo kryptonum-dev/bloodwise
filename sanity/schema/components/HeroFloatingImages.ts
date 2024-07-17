@@ -55,7 +55,7 @@ export default defineField({
           of: [
             { type: 'image' }
           ],
-          validation: Rule => Rule.required(),
+          validation: Rule => Rule.max(5),
         }),
       ]
     }),

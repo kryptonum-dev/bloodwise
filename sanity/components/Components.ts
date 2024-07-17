@@ -3,6 +3,7 @@ import HeaderSection from "../schema/components/HeaderSection";
 import ContactForm from "../schema/components/ContactForm";
 import QuoteCards from "../schema/components/QuoteCards";
 import HeroFloatingImages from "../schema/components/HeroFloatingImages";
+import PeopleDetails from "../schema/components/PeopleDetails";
 
 export default defineType({
   name: 'components',
@@ -13,5 +14,6 @@ export default defineType({
     HeaderSection,
     ContactForm,
     QuoteCards,
+    PeopleDetails,
   ],
 });

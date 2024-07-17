@@ -25,10 +25,10 @@ export default defineField({
     defineField({
       name: 'cta',
       type: 'array',
+      title: 'Wezwanie do działania',
       of: [
         { type: 'cta' }
       ],
-      title: 'Wezwanie do działania',
       validation: Rule => Rule.required().max(2),
     }),
     defineField({

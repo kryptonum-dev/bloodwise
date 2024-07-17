@@ -1,11 +1,11 @@
 import { defineField } from 'sanity';
 import { removeMarkdown } from '../../utils/remove-markdown';
 
-const title = '[08] Sekcja z zespołem';
-const icon = () => '👥';
+const title = '[06] Sekcja procesu';
+const icon = () => '📰';
 
 export default defineField({
-  name: 'PeopleDetails',
+  name: 'Process',
   type: 'object',
   title,
   icon,
@@ -17,52 +17,46 @@ export default defineField({
       validation: Rule => Rule.required(),
     }),
     defineField({
-      name: 'paragraph',
-      type: 'markdown',
-      title: 'Paragraf',
-      validation: Rule => Rule.required(),
-    }),
-    defineField({
       name: 'list',
       type: 'array',
-      title: 'Lista',
+      title: 'Lista kroków',
       of: [
         defineField({
           type: 'object',
-          name: 'person',
-          title: 'Osoba',
+          name: 'step',
+          title: 'Krok',
           fields: [
             defineField({
-              name: 'img',
+              name: 'icon',
               type: 'image',
-              title: 'Zdjęcie',
+              title: 'Ikona',
               validation: Rule => Rule.required(),
             }),
             defineField({
-              name: 'name',
-              type: 'string',
-              title: 'Imię i nazwisko',
-              validation: Rule => Rule.required(),
-            }),
-            defineField({
-              name: 'description',
+              name: 'heading',
               type: 'markdown',
-              title: 'Opis',
+              title: 'Nagłówek',
+              validation: Rule => Rule.required(),
+            }),
+            defineField({
+              name: 'paragraph',
+              type: 'markdown',
+              title: 'Paragraf',
               validation: Rule => Rule.required(),
             }),
           ],
           preview: {
             select: {
-              name: 'name',
-              description: 'description',
-              media: 'img',
+              heading: 'heading',
+              paragraph: 'paragraph',
+              media: 'icon',
             },
-            prepare: ({ name, description, media }) => ({
-              title: name,
-              subtitle: removeMarkdown(description),
+            prepare: ({ heading, paragraph, media }) => ({
+              title: removeMarkdown(heading),
+              subtitle: removeMarkdown(paragraph),
               media,
             }),
-          }
+          },
         })
       ],
       validation: Rule => Rule.required(),

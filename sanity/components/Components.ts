@@ -1,8 +1,9 @@
 import { defineType } from "sanity";
+import HeroFloatingImages from "../schema/components/HeroFloatingImages";
 import HeaderSection from "../schema/components/HeaderSection";
 import ContactForm from "../schema/components/ContactForm";
+import Process from "../schema/components/Process";
 import QuoteCards from "../schema/components/QuoteCards";
-import HeroFloatingImages from "../schema/components/HeroFloatingImages";
 import PeopleDetails from "../schema/components/PeopleDetails";
 
 export default defineType({
@@ -12,8 +13,9 @@ export default defineType({
   of: [
     HeroFloatingImages,
     HeaderSection,
-    ContactForm,
+    Process,
     QuoteCards,
     PeopleDetails,
+    ContactForm,
   ],
 });

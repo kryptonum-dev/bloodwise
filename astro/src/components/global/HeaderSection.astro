@@ -27,7 +27,7 @@ const { index, heading, paragraph, cta, img } = Astro.props;
 
 <section class='HeaderSection sec-wo-margin'>
   <header>
-    <Markdown tag='h2'>{heading}</Markdown>
+    <Markdown tag={index === 0 ? "h1" : "h2"}>{heading}</Markdown>
     <Markdown class='paragraph'>{paragraph}</Markdown>
     <div class='cta-wrapper'>
       {cta.map(cta => <Button {...cta} />)}

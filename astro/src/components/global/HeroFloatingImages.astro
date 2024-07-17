@@ -1,0 +1,234 @@
+---
+import Image, { ImageDataQuery, type ImageDataTypes } from "@/components/ui/image.astro";
+import Button, { ButtonDataQuery, type ButtonDataTypes } from "@/components/ui/Button.astro";
+import Markdown from "@/components/ui/markdown.astro";
+
+export const HeroFloatingImages_Query = `
+  heading,
+  paragraph,
+  cta {
+    ${ButtonDataQuery}
+  }[],
+  images {
+    background {
+      ${ImageDataQuery}
+    },
+    foreground {
+      ${ImageDataQuery}
+    },
+    charts {
+      ${ImageDataQuery}
+    }[],
+  },
+`;
+
+export type Props = {
+  index: number;
+  heading: string;
+  paragraph: string;
+  cta: ButtonDataTypes[];
+  images: {
+    background: ImageDataTypes;
+    foreground: ImageDataTypes;
+    charts: ImageDataTypes[];
+  };
+};
+
+const { index, heading, paragraph, cta, images } = Astro.props;
+---
+
+<section class='HeroFloatingImages'>
+  <div class='max-width'>
+    <header>
+      <Markdown tag={index === 0 ? "h1" : "h2"} class='heading'>{heading}</Markdown>
+      <Markdown class='paragraph'>{paragraph}</Markdown>
+      <div class='cta-wrapper'>
+        {cta.map(cta => <Button {...cta} />)}
+      </div>
+    </header>
+  </div>
+  <div class='img'>
+    <Image
+      data={images.background}
+      priority={index === 0}
+      sizes='(max-width: 1089px) 150vw, 882px'
+      class='background'
+    />
+    <Image
+      data={images.foreground}
+      priority={index === 0}
+      sizes='(max-width: 1089px) 150vw, 882px'
+      class='foreground'
+    />
+    {
+      images?.charts.map((img, i) => (
+        <Image data={img} priority={index === 0} sizes='203px' class={`chart chart${i}`} />
+      ))
+    }
+  </div>
+</section>
+
+<style lang='scss'>
+  .HeroFloatingImages {
+    margin: 0 calc(var(--pageMargin) * -1);
+    @media (min-width: 1280px) {
+      margin: 0 calc((100vw - 1200px) / -2);
+    }
+    > div {
+      height: auto;
+    }
+    &:first-child {
+      margin-top: calc(clamp(32px, calc(42vw / 7.68), 42px) * -1);
+    }
+    min-height: 566px;
+    position: relative;
+    &::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(270deg, rgba(1, 104, 96, 0) 23%, #015650 54%, #014540);
+      z-index: 0;
+    }
+    header {
+      color: var(--background-100, #fffcf9);
+      .heading {
+        color: var(--background-100, #fffcf9);
+      }
+      z-index: 3;
+      position: relative;
+      margin: clamp(32px, calc(80vw / 7.68), 128px) 0 clamp(32px, calc(80vw / 7.68), 80px);
+      max-width: calc(595rem / 16);
+      .paragraph {
+        max-width: calc(493rem / 16);
+        margin: clamp(12px, calc(16vw / 7.68), 16px) 0 clamp(24px, calc(32vw / 7.68), 32px);
+      }
+    }
+    .img {
+      .background,
+      .foreground {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        object-fit: cover;
+        width: 75%;
+        width: auto;
+        height: 100%;
+      }
+      .background {
+        z-index: -1;
+      }
+      .foreground {
+        z-index: 1;
+      }
+      .chart {
+        position: absolute;
+        right: 0;
+        top: 0;
+        z-index: 2;
+        animation: chart 1s var(--easing) both paused;
+        &:not([style]) {
+          animation-play-state: running;
+        }
+        @keyframes chart {
+          0% {
+            transform: translateY(21px);
+            opacity: 0;
+          }
+          100% {
+            transform: translateY(0);
+            opacity: 1;
+          }
+        }
+        &.chart0 {
+          width: clamp(150px, calc(193vw / 7.68), 193px);
+          right: 43%;
+          top: 65%;
+          animation-delay: 0.8s;
+        }
+        &.chart1 {
+          width: clamp(136px, calc(175vw / 7.68), 175px);
+          right: 4%;
+          top: 60%;
+          animation-delay: 0.9s;
+        }
+        &.chart2 {
+          width: clamp(150px, calc(193vw / 7.68), 193px);
+          z-index: 0;
+          filter: blur(0.5px);
+          right: 33%;
+          top: 40%;
+          animation-delay: 1s;
+        }
+        &.chart3 {
+          width: clamp(150px, calc(193vw / 7.68), 193px);
+          z-index: 0;
+          filter: blur(0.5px);
+          right: 5%;
+          top: 30%;
+          animation-delay: 1.1s;
+        }
+        &.chart4 {
+          width: clamp(158px, calc(203vw / 7.68), 203px);
+          right: 19%;
+          top: 5%;
+          animation-delay: 1.2s;
+        }
+      }
+    }
+
+    @media (max-width: 1089px) {
+      &::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(0deg, rgba(1, 104, 96, 0) 23%, #015650 48%, #014540);
+        z-index: 0;
+      }
+      .img {
+        position: relative;
+        margin-top: -10%;
+        height: clamp(478px, calc(513vw / 7.68), 513px);
+        .background,
+        .foreground {
+          width: 100%;
+          height: 100%;
+          object-position: top;
+        }
+        .chart {
+          &.chart0 {
+            left: 4%;
+            bottom: 3%;
+            right: unset;
+            top: unset;
+          }
+          &.chart1 {
+            right: 2%;
+            bottom: 19%;
+            top: unset;
+          }
+          &.chart2 {
+            left: 7%;
+            right: unset;
+            top: 38%;
+          }
+          &.chart3 {
+            right: 5%;
+            top: 9%;
+          }
+          &.chart4 {
+            left: 13%;
+            right: unset;
+            top: 5%;
+          }
+        }
+      }
+    }
+  }
+</style>

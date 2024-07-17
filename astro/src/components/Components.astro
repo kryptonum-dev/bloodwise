@@ -1,5 +1,6 @@
 ---
 import type { ComponentProps } from "astro/types";
+import HeroFloatingImages, { HeroFloatingImages_Query } from "@/components/global/HeroFloatingImages.astro";
 import HeaderSection, { HeaderSection_Query } from "@/components/global/HeaderSection.astro";
 import ContactForm, { ContactForm_Query } from "@/components/global/ContactForm.astro";
 import QuoteCards, { QuoteCards_Query } from "@/components/global/QuoteCards.astro";
@@ -13,6 +14,7 @@ type Props = {
 const { data } = Astro.props;
 
 const components = {
+  HeroFloatingImages,
   HeaderSection,
   ContactForm,
   QuoteCards,
@@ -21,6 +23,9 @@ const components = {
 export const Components_Query = /* groq */ `
   components[] {
     _type,
+     _type == "HeroFloatingImages" => {
+      ${HeroFloatingImages_Query}
+    },
     _type == "HeaderSection" => {
       ${HeaderSection_Query}
     },

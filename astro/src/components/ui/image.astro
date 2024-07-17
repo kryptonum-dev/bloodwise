@@ -50,7 +50,7 @@ const { data, priority, ...props } = Astro.props;
     style: {
       background: `url(${data.asset.metadata.lqip}) center / cover no-repeat`,
     },
-    onload: 'this.style.removeProperty("background")',
+    onload: 'this.removeAttribute("style")',
     ...(priority && {
       loading: "eager",
       fetchpriority: "high",

@@ -125,15 +125,17 @@ const { index, heading, paragraph, cta, images } = Astro.props;
       .foreground {
         z-index: 2;
       }
+      &:not(:has(img[style])) {
+        .chart {
+          animation-play-state: running;
+        }
+      }
       .chart {
         position: absolute;
         right: 0;
         top: 0;
         z-index: 3;
         animation: chart 1s var(--easing) both paused;
-        &:not([style]) {
-          animation-play-state: running;
-        }
         @keyframes chart {
           0% {
             transform: translateY(21px);

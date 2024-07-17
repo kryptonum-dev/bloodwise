@@ -1,0 +1,109 @@
+---
+import Image, { ImageDataQuery, type ImageDataTypes } from "@/components/ui/image.astro";
+import Markdown from "@/components/ui/markdown.astro";
+
+export const PeopleDetails_Query = `
+  heading,
+  paragraph,
+  list {
+    img {
+      ${ImageDataQuery}
+    },
+    name,
+    description,
+  }[],
+`;
+
+export type Props = {
+  index: number;
+  heading: string;
+  paragraph: string;
+  list: {
+    img: ImageDataTypes;
+    name: string;
+    description: string;
+  }[];
+};
+
+const { index, heading, paragraph, list } = Astro.props;
+
+const NameTag = index === 0 ? "h2" : "h3";
+---
+
+<section class='PeopleDetails sec-wo-margin' dark-background>
+  <div class='max-width'>
+    <header>
+      <Markdown tag={index === 0 ? "h1" : "h2"} class='heading'>{heading}</Markdown>
+      <Markdown class='paragraph'>{paragraph}</Markdown>
+    </header>
+    <ul>
+      {
+        list?.map(({ img, name, description }) => (
+          <li>
+            <Image data={img} priority={index === 0} sizes='180px' pictureAttributes={{ class: "img" }} />
+            <div>
+              <NameTag class='h3 heading'>{name}</NameTag>
+              <Markdown class='description'>{description}</Markdown>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style lang='scss'>
+  .PeopleDetails {
+    padding: clamp(32px, calc(42vw / 7.68), 42px) 0 clamp(60px, calc(72vw / 7.68), 72px);
+    background: var(--gradient-800, linear-gradient(230deg, #006860, #01403b 62%));
+  }
+  header {
+    max-width: calc(610rem / 16);
+    text-align: center;
+    margin: 0 auto clamp(36px, calc(42vw / 7.68), 42px);
+    .heading {
+      margin-bottom: clamp(12px, calc(16vw / 7.68), 16px);
+    }
+  }
+  ul {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: clamp(36px, calc(44vw / 7.68), 56px);
+  }
+  li {
+    @media (min-width: 800px) {
+      text-align: center;
+    }
+    @media (max-width: 799px) and (min-width: 600px) {
+      text-align: left;
+      display: grid;
+      gap: 28px;
+      align-items: center;
+      grid-template-columns: auto 1fr;
+      .heading {
+        margin: 0 0 16px;
+      }
+    }
+    @media (min-width: 800px) {
+      width: calc(50% - clamp(36px, calc(44vw / 7.68), 56px) * 1 / 2);
+    }
+    @media (min-width: 1050px) {
+      width: calc((100% / 3) - clamp(36px, calc(44vw / 7.68), 56px) * 2 / 3);
+    }
+  }
+  .img {
+    border-radius: 50%;
+    img {
+      border-radius: inherit;
+    }
+    box-sizing: content-box;
+    padding: clamp(4px, calc(8vw / 7.68), 8px);
+    width: clamp(88px, calc(180vw / 7.68), 180px);
+    height: clamp(88px, calc(180vw / 7.68), 180px);
+    border: 1px solid var(--primary-400, #6bd6cd);
+  }
+  .heading {
+    margin: clamp(12px, calc(20vw / 7.68), 20px) 0 clamp(8px, calc(16vw / 7.68), 16px);
+  }
+</style>

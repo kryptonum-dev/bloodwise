@@ -162,6 +162,9 @@ body {
   font-size: 1rem;
   line-height: 158%;
 }
+[dark-background] {
+  color: var(--background-100, #fffcf9);
+}
 
 main,
 .max-width {
@@ -207,6 +210,25 @@ h3,
 .h3 {
   font-size: clamp(calc(18rem / 16), calc(24vw / 7.68), calc(24rem / 16));
 }
+[dark-background] {
+  h1,
+  .h1,
+  h2,
+  .h2,
+  h3,
+  .h3,
+  h4,
+  .h4,
+  h5,
+  .h5,
+  h6,
+  .h6 {
+    color: var(--primary-50, #f3fefd);
+    strong {
+      color: #fff;
+    }
+  }
+}
 
 .link {
   line-height: normal;
@@ -236,17 +258,9 @@ h3,
 }
 
 .sec-wo-margin {
-  position: relative;
-  &::before {
-    content: "";
-    width: 100vw;
-    height: 100%;
-    background-color: inherit;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    top: 0;
-    z-index: -1;
+  margin: 0 calc(var(--pageMargin) * -1);
+  @media (min-width: 1280px) {
+    margin: 0 calc((100vw - 1200px) / -2);
   }
 }
 

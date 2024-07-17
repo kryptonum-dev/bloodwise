@@ -37,7 +37,7 @@ export type Props = {
 const { index, heading, paragraph, cta, images } = Astro.props;
 ---
 
-<section class='HeroFloatingImages'>
+<section class='HeroFloatingImages' dark-background>
   <div class='max-width'>
     <header>
       <Markdown tag={index === 0 ? "h1" : "h2"} class='heading'>{heading}</Markdown>
@@ -94,10 +94,6 @@ const { index, heading, paragraph, cta, images } = Astro.props;
       z-index: 1;
     }
     header {
-      color: var(--background-100, #fffcf9);
-      .heading {
-        color: var(--background-100, #fffcf9);
-      }
       z-index: 4;
       position: relative;
       margin: clamp(32px, calc(80vw / 7.68), 128px) 0 clamp(32px, calc(80vw / 7.68), 80px);

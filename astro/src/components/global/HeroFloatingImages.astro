@@ -70,6 +70,7 @@ const { index, heading, paragraph, cta, images } = Astro.props;
 
 <style lang='scss'>
   .HeroFloatingImages {
+    background-color: #014540;
     margin: 0 calc(var(--pageMargin) * -1);
     @media (min-width: 1280px) {
       margin: 0 calc((100vw - 1200px) / -2);
@@ -90,14 +91,14 @@ const { index, heading, paragraph, cta, images } = Astro.props;
       right: 0;
       bottom: 0;
       background: linear-gradient(270deg, rgba(1, 104, 96, 0) 23%, #015650 54%, #014540);
-      z-index: 0;
+      z-index: 1;
     }
     header {
       color: var(--background-100, #fffcf9);
       .heading {
         color: var(--background-100, #fffcf9);
       }
-      z-index: 3;
+      z-index: 4;
       position: relative;
       margin: clamp(32px, calc(80vw / 7.68), 128px) 0 clamp(32px, calc(80vw / 7.68), 80px);
       max-width: calc(595rem / 16);
@@ -119,16 +120,16 @@ const { index, heading, paragraph, cta, images } = Astro.props;
         height: 100%;
       }
       .background {
-        z-index: -1;
+        z-index: 0;
       }
       .foreground {
-        z-index: 1;
+        z-index: 2;
       }
       .chart {
         position: absolute;
         right: 0;
         top: 0;
-        z-index: 2;
+        z-index: 3;
         animation: chart 1s var(--easing) both paused;
         &:not([style]) {
           animation-play-state: running;
@@ -157,7 +158,7 @@ const { index, heading, paragraph, cta, images } = Astro.props;
         }
         &.chart2 {
           width: clamp(150px, calc(193vw / 7.68), 193px);
-          z-index: 0;
+          z-index: 1;
           filter: blur(0.5px);
           right: 33%;
           top: 40%;
@@ -165,7 +166,7 @@ const { index, heading, paragraph, cta, images } = Astro.props;
         }
         &.chart3 {
           width: clamp(150px, calc(193vw / 7.68), 193px);
-          z-index: 0;
+          z-index: 1;
           filter: blur(0.5px);
           right: 5%;
           top: 30%;
@@ -189,7 +190,7 @@ const { index, heading, paragraph, cta, images } = Astro.props;
         right: 0;
         bottom: 0;
         background: linear-gradient(0deg, rgba(1, 104, 96, 0) 23%, #015650 48%, #014540);
-        z-index: 0;
+        z-index: 1;
       }
       .img {
         position: relative;

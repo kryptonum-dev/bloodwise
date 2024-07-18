@@ -25,6 +25,6 @@ export default defineConfig({
   },
   output: isPreviewDeployment ? "server" : 'hybrid',
   adapter: vercel({
-    edgeMiddleware: false
+    imageService: true,
   })
 });

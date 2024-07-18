@@ -1,9 +1,11 @@
 import { defineField, defineType } from "sanity"
 
+const title = 'Strona główna';
+
 export default defineType({
   name: 'Index_Page',
   type: 'document',
-  title: 'Strona główna',
+  title: title,
   icon: () => '🏠',
   fields: [
     defineField({
@@ -28,7 +30,7 @@ export default defineType({
   ],
   preview: {
     prepare: () => ({
-      title: 'Strona główna',
+      title: title,
     }),
   }
 });

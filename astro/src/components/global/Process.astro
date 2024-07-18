@@ -36,10 +36,12 @@ const Subheading = index === 0 ? "h2" : "h3";
     {
       list?.map(({ icon, heading, paragraph }) => (
         <li class='item'>
-          <Image data={icon} priority={index === 0} sizes='180px' pictureAttributes={{ class: "icon" }} />
-          <div>
-            <Subheading class='h3 heading'>{heading}</Subheading>
-            <Markdown class='description'>{paragraph}</Markdown>
+          <div class='wrapper'>
+            <Image data={icon} priority={index === 0} sizes='180px' pictureAttributes={{ class: "icon" }} />
+            <div>
+              <Subheading class='h3 heading'>{heading}</Subheading>
+              <Markdown class='description'>{paragraph}</Markdown>
+            </div>
           </div>
         </li>
       ))
@@ -66,19 +68,24 @@ const Subheading = index === 0 ? "h2" : "h3";
   }
   .item {
     counter-increment: counter;
-    display: grid;
-    gap: clamp(16px, calc(28vw / 7.68), 28px);
-    @media (min-width: 600px) {
-      grid-template-columns: auto 1fr;
-    }
-    padding: clamp(12px, calc(20vw / 7.68), 20px);
-    border-radius: 8px;
-    background: linear-gradient(76deg, #d0f5f3, #feffff);
-    background-size: 500%;
-    background-position: right center;
-    transition: background-position 0.8s var(--easing);
-    div {
-      max-width: calc(603rem / 16);
+    .wrapper {
+      div {
+        max-width: calc(603rem / 16);
+      }
+      display: grid;
+      gap: clamp(16px, calc(28vw / 7.68), 28px);
+      @media (min-width: 600px) {
+        grid-template-columns: auto 1fr;
+      }
+      padding: clamp(12px, calc(20vw / 7.68), 20px);
+      border-radius: 8px;
+      background: linear-gradient(76deg, #d0f5f3, #feffff);
+      background-size: 500%;
+      background-position: right center;
+      transition:
+        background-position 0.8s 0s var(--easing),
+        transform 0.8s 0s var(--easing);
+      transform: translateX(-5%);
     }
     .icon {
       width: clamp(64px, calc(80vw / 7.68), 80px);
@@ -104,21 +111,28 @@ const Subheading = index === 0 ? "h2" : "h3";
       position: absolute;
       left: calc(clamp(68px, calc(108vw / 7.68), 204px) * -1);
       top: 50%;
-      transform: translateY(-50%);
       border-radius: 50%;
       background: var(--background-200, #fef6ed);
       width: clamp(42px, calc(60vw / 7.68), 60px);
       height: clamp(42px, calc(60vw / 7.68), 60px);
       font-size: clamp(18px, calc(24vw / 7.68), 24px);
       transition:
-        0.8s background-color var(--easing),
-        0.8s color var(--easing);
+        background-color 0.8s 0.1s var(--easing),
+        color 0.8s 0.1s var(--easing),
+        transform 0.8s 0.1s var(--easing);
+      transform: translate(-5%, -50%);
     }
     &[data-active="true"] {
-      background-position: left center;
       &::before {
+        transform: translate(0, -50%);
         background: var(--primary-700, #066a62);
         color: var(--background-100, #fffcf9);
+        transition-delay: 0s;
+      }
+      .wrapper {
+        transform: translateX(0);
+        background-position: left center;
+        transition-delay: 0.1s;
       }
     }
   }
@@ -127,7 +141,7 @@ const Subheading = index === 0 ? "h2" : "h3";
 <script>
   const options = {
     root: null,
-    rootMargin: `0px 0px -${window.innerHeight / 3}px 0px`,
+    rootMargin: `0px 0px -${window.innerHeight / 4}px 0px`,
     threshold: 0,
   };
   const observer = new IntersectionObserver(entries => {

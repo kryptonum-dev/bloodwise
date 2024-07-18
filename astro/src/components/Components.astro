@@ -55,7 +55,7 @@ export const Components_Query = /* groq */ `
 ---
 
 {
-  data.map((item, i) => {
+  data?.map((item, i) => {
     const DynamicComponent = components[item._type];
     if (!DynamicComponent) return null;
     return <DynamicComponent {...item} index={i} />;

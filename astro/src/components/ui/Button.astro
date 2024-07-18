@@ -120,3 +120,15 @@ const children = Astro.slots.has("default") ? Astro.slots.render("default") : te
     }
   }
 </style>
+
+<style is:inline lang='scss'>
+  [dark-background] {
+    button[data-theme="secondary"],
+    a[data-theme="secondary"] {
+      color: var(--primary-100, #e5f9f8);
+      &:hover {
+        background: var(--primary-700, #066a62);
+      }
+    }
+  }
+</style>

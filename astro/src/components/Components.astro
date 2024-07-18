@@ -1,6 +1,7 @@
 ---
 import type { ComponentProps } from "astro/types";
 import HeroFloatingImages, { HeroFloatingImages_Query } from "@/components/global/HeroFloatingImages.astro";
+import EffectiveApproach, { EffectiveApproach_Query } from "@/components/global/EffectiveApproach.astro";
 import HeaderSection, { HeaderSection_Query } from "@/components/global/HeaderSection.astro";
 import Process, { Process_Query } from "@/components/global/Process.astro";
 import QuoteCards, { QuoteCards_Query } from "@/components/global/QuoteCards.astro";
@@ -17,6 +18,7 @@ const { data } = Astro.props;
 
 const components = {
   HeroFloatingImages,
+  EffectiveApproach,
   HeaderSection,
   Process,
   QuoteCards,
@@ -29,6 +31,9 @@ export const Components_Query = /* groq */ `
     _type,
      _type == "HeroFloatingImages" => {
       ${HeroFloatingImages_Query}
+    },
+    _type == "EffectiveApproach" => {
+      ${EffectiveApproach_Query}
     },
     _type == "HeaderSection" => {
       ${HeaderSection_Query}

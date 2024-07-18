@@ -31,7 +31,7 @@ const { index, heading, paragraph, cta, img } = Astro.props;
       <Markdown tag={index === 0 ? "h1" : "h2"}>{heading}</Markdown>
       <Markdown class='paragraph'>{paragraph}</Markdown>
       <div class='cta-wrapper'>
-        {cta.map(cta => <Button {...cta} />)}
+        {cta?.map(cta => <Button {...cta} />)}
       </div>
     </header>
     <Image

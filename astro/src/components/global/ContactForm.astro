@@ -35,16 +35,20 @@ const { index, heading, paragraph, emailSection } = Astro.props;
   <header>
     <Markdown tag={index === 0 ? "h1" : "h2"}>{heading}</Markdown>
     <Markdown class='paragraph'>{paragraph}</Markdown>
-    <div class='group'>
-      <Icon name='messages' size={28} />
-      <div>
-        <Markdown tag='h3'>{emailSection.heading}</Markdown>
-        <p>
-          <a href={`mailto:${emailSection.email}`}>{emailSection.email}</a>
-          <CopyToClipboard copyData={emailSection.email} />
-        </p>
-      </div>
-    </div>
+    {
+      emailSection && (
+        <div class='group'>
+          <Icon name='messages' size={28} />
+          <div>
+            <Markdown tag='h3'>{emailSection.heading}</Markdown>
+            <p>
+              <a href={`mailto:${emailSection.email}`}>{emailSection.email}</a>
+              <CopyToClipboard copyData={emailSection.email} />
+            </p>
+          </div>
+        </div>
+      )
+    }
   </header>
   <form action={Astro.url.pathname} method='post'>
     <input {...getActionProps(actions.contact)} />

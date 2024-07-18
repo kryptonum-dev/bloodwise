@@ -206,7 +206,7 @@ const { index, heading, paragraph, cta, items } = Astro.props;
         }
         border-radius: 4px;
         border: 1px solid var(--primary-400, #6bd6cd);
-        background: var(--primary-50, #f3fefd);
+        background: var(--background-100, #fffcf9);
         padding: clamp(6px, calc(9vw / 7.68), 9px) clamp(6px, calc(9vw / 7.68), 12px);
         position: absolute;
         &:nth-child(1) {
@@ -222,6 +222,7 @@ const { index, heading, paragraph, cta, items } = Astro.props;
           bottom: 11%;
           left: 0;
           font-size: 0.9em;
+          background: var(--primary-50, #f3fefd);
         }
         &:nth-child(4) {
           bottom: 0;
@@ -233,6 +234,7 @@ const { index, heading, paragraph, cta, items } = Astro.props;
           bottom: 9%;
           right: 6%;
           font-size: 0.8em;
+          background: var(--primary-50, #f3fefd);
         }
       }
     }

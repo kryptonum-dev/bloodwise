@@ -1,11 +1,11 @@
 import { defineField } from 'sanity';
 import { removeMarkdown } from '../../utils/remove-markdown';
 
-const title = '[05] Sekcja nagłówkowa';
-const icon = () => '📰';
+const title = '[01] Sekcja HERO z unoszącymi się zdjęciami';
+const icon = () => '☁️';
 
 export default defineField({
-  name: 'HeaderSection',
+  name: 'HeroFloatingImages',
   type: 'object',
   title,
   icon,
@@ -25,23 +25,45 @@ export default defineField({
     defineField({
       name: 'cta',
       type: 'array',
-      title: 'Wezwanie do działania',
       of: [
         { type: 'cta' }
       ],
+      title: 'Wezwanie do działania',
       validation: Rule => Rule.required().max(2),
     }),
     defineField({
-      name: 'img',
-      type: 'image',
-      title: 'Zdjęcie',
-      validation: Rule => Rule.required(),
+      name: 'images',
+      type: 'object',
+      title: 'Zdjęcia',
+      fields: [
+        defineField({
+          name: 'background',
+          type: 'image',
+          title: 'Zdjęcie tła',
+          validation: Rule => Rule.required(),
+        }),
+        defineField({
+          name: 'foreground',
+          type: 'image',
+          title: 'Zdjęcie z przodu',
+          validation: Rule => Rule.required(),
+        }),
+        defineField({
+          name: 'charts',
+          type: 'array',
+          title: 'Zdjęcia wykresów',
+          of: [
+            { type: 'image' }
+          ],
+          validation: Rule => Rule.max(5),
+        }),
+      ]
     }),
   ],
   preview: {
     select: {
       heading: 'heading',
-      media: 'img',
+      media: 'images.background',
     },
     prepare: ({ heading, media }) => ({
       title: title,

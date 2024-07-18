@@ -15,7 +15,7 @@ const icon = {
   }),
 };
 
-export type HeadProps = {
+type Props = {
   path: string;
   title: string;
   description: string;
@@ -31,7 +31,7 @@ const seo = await sanityFetch<{ OpenGraphImageUrl: string }>({
 
 const OpenGraphImageUrl = seo?.OpenGraphImageUrl || "";
 
-const { path, title, description } = Astro.props as HeadProps;
+const { path, title, description } = Astro.props;
 
 const url = `${DOMAIN}${path}`;
 ---

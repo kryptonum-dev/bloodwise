@@ -1,11 +1,12 @@
 ---
 import type { ComponentProps } from "astro/types";
-import { Image as AstroImage, Picture as AstroPicture } from "astro:assets";
+import { Picture } from "astro:assets";
 
 export type ImageDataTypes = {
   asset: {
     url: string;
     altText: string;
+    extension: string;
     metadata: {
       dimensions: {
         width: number;
@@ -20,6 +21,7 @@ export const ImageDataQuery = `
   asset -> {
     url,
     altText,
+    extension,
     metadata {
       dimensions {
         width,
@@ -34,38 +36,32 @@ type Props = {
   data: ImageDataTypes;
   sizes: string;
   priority?: boolean;
-} & (
-  | ({ asPicture?: true } & Partial<ComponentProps<typeof AstroPicture>>)
-  | ({ asPicture: false } & Partial<ComponentProps<typeof AstroImage>>)
-);
+} & Partial<ComponentProps<typeof Picture>>;
 
-const { data, asPicture = true, priority, ...props } = Astro.props;
-
-const Tag = asPicture ? AstroPicture : AstroImage;
+const { data, priority, ...props } = Astro.props;
 ---
 
-{
-  data?.asset && (
-    <Tag
-      {...({
-        src: data.asset.url,
-        alt: data.asset.altText || "",
-        width: data.asset.metadata.dimensions.width,
-        height: data.asset.metadata.dimensions.height,
-        style: {
-          background: `url(${data.asset.metadata.lqip}) center / cover no-repeat`,
-        },
-        onload: 'this.style.removeProperty("background")',
-        widths: [48, 64, 96, 128, 256, 384, 640, 750, 828, 1080, 1200, 1920, 2048, 3840],
-        ...(priority && {
-          loading: "eager",
-          fetchpriority: "high",
-        }),
-        ...(asPicture && {
-          formats: ["avif", "webp"],
-        }),
-        ...props,
-      } as ComponentProps<typeof AstroImage | typeof AstroPicture>)}
-    />
-  )
-}
+<Picture
+  {...{
+    src: data.asset.url,
+    alt: data.asset.altText || "",
+    width: data.asset.metadata.dimensions.width,
+    height: data.asset.metadata.dimensions.height,
+    style: {
+      background: `url(${data.asset.metadata.lqip}) center / cover no-repeat`,
+    },
+    onload: 'this.removeAttribute("style")',
+    ...(priority && {
+      loading: "eager",
+      fetchpriority: "high",
+    }),
+    widths: [48, 64, 96, 128, 256, 384, 640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    formats: ["avif", "webp"],
+    ...(data.asset.extension === "svg" && {
+      formats: ["svg"],
+      widths: undefined,
+      sizes: undefined,
+    }),
+    ...props,
+  } as ComponentProps<typeof Picture>}
+/>

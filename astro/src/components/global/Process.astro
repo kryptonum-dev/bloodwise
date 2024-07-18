@@ -1,0 +1,158 @@
+---
+import Image, { ImageDataQuery, type ImageDataTypes } from "@/components/ui/image.astro";
+import Markdown from "@/components/ui/markdown.astro";
+
+export const Process_Query = `
+  heading,
+  list {
+    icon {
+      ${ImageDataQuery}
+    },
+    heading,
+    paragraph,
+  }[],
+`;
+
+export type Props = {
+  index: number;
+  heading: string;
+  list: {
+    icon: ImageDataTypes;
+    heading: string;
+    paragraph: string;
+  }[];
+};
+
+const { index, heading, list } = Astro.props;
+
+const Subheading = index === 0 ? "h2" : "h3";
+---
+
+<section class='Process'>
+  <header>
+    <Markdown tag={index === 0 ? "h1" : "h2"} class='heading'>{heading}</Markdown>
+  </header>
+  <ul class='list'>
+    {
+      list?.map(({ icon, heading, paragraph }) => (
+        <li class='item'>
+          <div class='wrapper'>
+            <Image data={icon} priority={index === 0} sizes='180px' pictureAttributes={{ class: "icon" }} />
+            <div>
+              <Subheading class='h3 heading'>{heading}</Subheading>
+              <Markdown class='description'>{paragraph}</Markdown>
+            </div>
+          </div>
+        </li>
+      ))
+    }
+  </ul>
+</section>
+
+<style lang='scss'>
+  .Process {
+    width: 100%;
+    max-width: calc(1000rem / 16);
+    margin: 0 auto;
+  }
+  header {
+    text-align: center;
+    max-width: calc(610rem / 16);
+    margin: 0 auto clamp(36px, calc(42vw / 7.68), 42px);
+  }
+  .list {
+    display: grid;
+    gap: clamp(12px, calc(20vw / 7.68), 20px);
+    padding-left: clamp(68px, calc(108vw / 7.68), 204px);
+    counter-reset: counter;
+  }
+  .item {
+    counter-increment: counter;
+    .wrapper {
+      div {
+        max-width: calc(603rem / 16);
+      }
+      display: grid;
+      gap: clamp(16px, calc(28vw / 7.68), 28px);
+      @media (min-width: 600px) {
+        grid-template-columns: auto 1fr;
+      }
+      padding: clamp(12px, calc(20vw / 7.68), 20px);
+      border-radius: 8px;
+      background: linear-gradient(76deg, #d0f5f3, #feffff);
+      background-size: 500%;
+      background-position: right center;
+      transition:
+        background-position 0.8s 0s var(--easing),
+        transform 0.8s 0s var(--easing);
+      transform: translateX(-5%);
+    }
+    .icon {
+      width: clamp(64px, calc(80vw / 7.68), 80px);
+      height: clamp(64px, calc(80vw / 7.68), 80px);
+      border-radius: 50%;
+      background: var(--background-50, #fff);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      img {
+        width: 50%;
+        height: 50%;
+      }
+    }
+    .heading {
+      margin-bottom: clamp(8px, calc(12vw / 7.68), 12px);
+    }
+    position: relative;
+    &::before {
+      content: counter(counter);
+      display: grid;
+      place-items: center;
+      position: absolute;
+      left: calc(clamp(68px, calc(108vw / 7.68), 204px) * -1);
+      top: 50%;
+      border-radius: 50%;
+      background: var(--background-200, #fef6ed);
+      width: clamp(42px, calc(60vw / 7.68), 60px);
+      height: clamp(42px, calc(60vw / 7.68), 60px);
+      font-size: clamp(18px, calc(24vw / 7.68), 24px);
+      transition:
+        background-color 0.8s 0.1s var(--easing),
+        color 0.8s 0.1s var(--easing),
+        transform 0.8s 0.1s var(--easing);
+      transform: translate(-5%, -50%);
+    }
+    &[data-active="true"] {
+      &::before {
+        transform: translate(0, -50%);
+        background: var(--primary-700, #066a62);
+        color: var(--background-100, #fffcf9);
+        transition-delay: 0s;
+      }
+      .wrapper {
+        transform: translateX(0);
+        background-position: left center;
+        transition-delay: 0.1s;
+      }
+    }
+  }
+</style>
+
+<script>
+  const options = {
+    root: null,
+    rootMargin: `0px 0px -${window.innerHeight / 4}px 0px`,
+    threshold: 0,
+  };
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      entry.target.setAttribute("data-active", entry.isIntersecting.toString());
+    });
+  }, options);
+
+  document.querySelectorAll(".Process").forEach(element => {
+    element.querySelectorAll(".item").forEach(li => {
+      observer.observe(li);
+    });
+  });
+</script>

@@ -1,11 +1,11 @@
 import { defineField } from 'sanity';
 import { removeMarkdown } from '../../utils/remove-markdown';
 
-const title = '[05] Sekcja nagłówkowa';
+const title = '[03] Sekcja logiem i wyróżnikami';
 const icon = () => '📰';
 
 export default defineField({
-  name: 'HeaderSection',
+  name: 'EffectiveApproach',
   type: 'object',
   title,
   icon,
@@ -32,10 +32,13 @@ export default defineField({
       validation: Rule => Rule.required().max(2),
     }),
     defineField({
-      name: 'img',
-      type: 'image',
-      title: 'Zdjęcie',
-      validation: Rule => Rule.required(),
+      name: 'items',
+      type: 'array',
+      of: [
+        { type: 'string' }
+      ],
+      title: 'Elementy',
+      validation: Rule => Rule.required().max(5),
     }),
   ],
   preview: {

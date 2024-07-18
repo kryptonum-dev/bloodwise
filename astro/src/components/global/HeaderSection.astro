@@ -25,31 +25,37 @@ export type Props = {
 const { index, heading, paragraph, cta, img } = Astro.props;
 ---
 
-<section class='HeaderSection'>
-  <header>
-    <Markdown tag='h2'>{heading}</Markdown>
-    <Markdown class='paragraph'>{paragraph}</Markdown>
-    <div class='cta-wrapper'>
-      {cta.map(cta => <Button {...cta} />)}
-    </div>
-  </header>
-  <Image
-    data={img}
-    priority={index === 0}
-    sizes='(max-width: 499px) 450px, (max-width: 899px) 595px, 520px'
-    pictureAttributes={{
-      class: "img",
-    }}
-  />
+<section class='HeaderSection sec-wo-margin'>
+  <div class='max-width'>
+    <header>
+      <Markdown tag={index === 0 ? "h1" : "h2"}>{heading}</Markdown>
+      <Markdown class='paragraph'>{paragraph}</Markdown>
+      <div class='cta-wrapper'>
+        {cta?.map(cta => <Button {...cta} />)}
+      </div>
+    </header>
+    <Image
+      data={img}
+      priority={index === 0}
+      sizes='(max-width: 499px) 450px, (max-width: 899px) 595px, 520px'
+      pictureAttributes={{
+        class: "img",
+      }}
+    />
+  </div>
 </section>
 
 <style lang='scss'>
   .HeaderSection {
-    display: grid;
-    align-items: center;
-    gap: 36px clamp(36px, calc(62vw / 7.68), 62px);
-    @media (min-width: 900px) {
-      grid-template-columns: 1.2fr 1fr;
+    padding: clamp(32px, calc(42vw / 7.68), 42px) 0;
+    background: var(--gradient-100, linear-gradient(88deg, #f3fefd 1.46%, #feffff 100%));
+    .max-width {
+      display: grid;
+      align-items: center;
+      gap: 36px clamp(36px, calc(62vw / 7.68), 62px);
+      @media (min-width: 900px) {
+        grid-template-columns: 1.2fr 1fr;
+      }
     }
   }
   header {

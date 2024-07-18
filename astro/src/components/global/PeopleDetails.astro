@@ -1,0 +1,144 @@
+---
+import Image, { ImageDataQuery, type ImageDataTypes } from "@/components/ui/image.astro";
+import Markdown from "@/components/ui/markdown.astro";
+
+export const PeopleDetails_Query = `
+  heading,
+  paragraph,
+  list {
+    img {
+      ${ImageDataQuery}
+    },
+    name,
+    description,
+  }[],
+`;
+
+export type Props = {
+  index: number;
+  heading: string;
+  paragraph: string;
+  list: {
+    img: ImageDataTypes;
+    name: string;
+    description: string;
+  }[];
+};
+
+const { index, heading, paragraph, list } = Astro.props;
+
+const Subheading = index === 0 ? "h2" : "h3";
+---
+
+<section class='PeopleDetails sec-wo-margin' dark-background>
+  <div class='max-width'>
+    <header>
+      <Markdown tag={index === 0 ? "h1" : "h2"} class='heading'>{heading}</Markdown>
+      <Markdown class='paragraph'>{paragraph}</Markdown>
+    </header>
+    <ul>
+      {
+        list?.map(({ img, name, description }) => (
+          <li>
+            <Image data={img} priority={index === 0} sizes='180px' pictureAttributes={{ class: "img" }} />
+            <div>
+              <Subheading class='h3 heading'>{name}</Subheading>
+              <Markdown class='description'>{description}</Markdown>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+  <div class='smallDot'></div>
+  <div class='largeDot'></div>
+  <!-- prettier-ignore -->
+  <svg class="decoration" xmlns="http://www.w3.org/2000/svg" width="211" height="416" viewBox="0 0 211 416" fill="none"><g opacity=".6"><rect width="69.123" height="159.835" x="-.644" y=".644" stroke="#0F9288" stroke-width="1.289" rx="34.562" transform="matrix(-1 0 0 1 139.242 361.71)"/><rect width="69.123" height="306.485" x="-.644" y=".644" stroke="#0F9288" stroke-width="1.289" rx="34.562" transform="matrix(-1 0 0 1 209.655 .793)"/><rect width="69.123" height="265.986" x="-.644" y=".644" stroke="#066A62" stroke-width="1.289" rx="34.562" transform="matrix(-1 0 0 1 279.711 255.56)"/><rect width="69.123" height="298.846" x="-.644" y=".644" stroke="#0F9288" stroke-width="1.289" rx="34.562" transform="matrix(-1 0 0 1 68.83 235.036)"/><rect width="69.123" height="142.711" x="-.644" y=".644" stroke="#0F9288" stroke-width="1.289" rx="34.562" transform="matrix(-1 0 0 1 139.211 148.036)"/><rect width="70.412" height="196.134" fill="#066A62" rx="35.206" transform="matrix(-1 0 0 1 281 59.426)"/><rect width="70.412" height="88.61" fill="#0F9288" rx="35.206" transform="matrix(-1 0 0 1 281 59.426)"/><rect width="70.412" height="69.674" fill="#066A62" rx="34.837" transform="matrix(-1 0 0 1 140.531 292.036)"/><rect width="70.412" height="238.758" fill="#066A62" rx="35.206" transform="matrix(-1 0 0 1 210.944 308.567)"/></g></svg>
+</section>
+
+<style lang='scss'>
+  .PeopleDetails {
+    padding: clamp(32px, calc(42vw / 7.68), 42px) 0 clamp(60px, calc(72vw / 7.68), 72px);
+    background: var(--gradient-800, linear-gradient(230deg, #006860, #01403b 62%));
+    position: relative;
+    z-index: 1;
+  }
+  .smallDot,
+  .largeDot,
+  .decoration {
+    position: absolute;
+    z-index: -1;
+  }
+  .smallDot {
+    width: 31px;
+    height: 31px;
+    background: var(--primary-600, #0f9288);
+    opacity: 0.5;
+    border-radius: 50%;
+    left: clamp(-10%, calc(33vw / 7.68), 11%);
+    top: 59%;
+  }
+  .largeDot {
+    width: 142px;
+    height: 142px;
+    background: var(--primary-600, #0f9288);
+    opacity: 0.2;
+    border-radius: 50%;
+    left: 21%;
+    top: clamp(142px, calc(174vw / 7.68), 174px);
+  }
+  .decoration {
+    right: 0;
+    bottom: 0;
+    width: clamp(100px, calc(134vw / 7.68), 211px);
+  }
+  header {
+    max-width: calc(610rem / 16);
+    text-align: center;
+    margin: 0 auto clamp(36px, calc(42vw / 7.68), 42px);
+    .heading {
+      margin-bottom: clamp(12px, calc(16vw / 7.68), 16px);
+    }
+  }
+  ul {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: clamp(36px, calc(44vw / 7.68), 56px);
+  }
+  li {
+    @media (min-width: 800px) {
+      text-align: center;
+    }
+    @media (max-width: 799px) and (min-width: 600px) {
+      text-align: left;
+      display: grid;
+      gap: 28px;
+      align-items: center;
+      grid-template-columns: auto 1fr;
+      .heading {
+        margin: 0 0 16px;
+      }
+    }
+    @media (min-width: 800px) {
+      width: calc(50% - clamp(36px, calc(44vw / 7.68), 56px) * 1 / 2);
+    }
+    @media (min-width: 1050px) {
+      width: calc((100% / 3) - clamp(36px, calc(44vw / 7.68), 56px) * 2 / 3);
+    }
+  }
+  .img {
+    border-radius: 50%;
+    img {
+      border-radius: inherit;
+    }
+    box-sizing: content-box;
+    padding: clamp(4px, calc(8vw / 7.68), 8px);
+    width: clamp(88px, calc(180vw / 7.68), 180px);
+    height: clamp(88px, calc(180vw / 7.68), 180px);
+    border: 1px solid var(--primary-400, #6bd6cd);
+  }
+  .heading {
+    margin: clamp(12px, calc(20vw / 7.68), 20px) 0 clamp(8px, calc(16vw / 7.68), 16px);
+  }
+</style>

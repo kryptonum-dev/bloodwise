@@ -1,0 +1,261 @@
+---
+import Button, { ButtonDataQuery, type ButtonDataTypes } from "@/components/ui/Button.astro";
+import Markdown from "@/components/ui/markdown.astro";
+
+export const EffectiveApproach_Query = `
+  heading,
+  paragraph,
+  cta {
+    ${ButtonDataQuery}
+  }[],
+  items[],
+`;
+
+export type Props = {
+  index: number;
+  heading: string;
+  paragraph: string;
+  cta: ButtonDataTypes[];
+  items: string[];
+};
+
+const { index, heading, paragraph, cta, items } = Astro.props;
+---
+
+<section class='EffectiveApproach'>
+  <div class='wrapper'>
+    <svg xmlns='http://www.w3.org/2000/svg' width='393' height='267' fill='none' class='logo' viewBox='0 0 393 267'>
+      <g>
+        <path
+          fill='#109288'
+          d='M122.747 194.383c-2.182 0-4.364-.582-6.401-1.746L7.24 129.792c-6.11-3.492-8.292-11.493-4.655-17.603 3.491-6.11 11.492-8.292 17.602-4.655l108.961 62.845c6.11 3.492 8.292 11.493 4.655 17.603-2.327 4.073-6.692 6.401-11.201 6.401h.145Z'
+        >
+        </path>
+        <path
+          fill='#03413B'
+          d='M45.355 149.721c-2.182 0-4.365-.582-6.401-1.746L7.24 129.646c-6.11-3.492-8.292-11.493-4.655-17.603 3.491-6.11 11.492-8.292 17.602-4.655l31.714 18.33c6.11 3.491 8.292 11.492 4.655 17.602-2.328 4.074-6.692 6.401-11.201 6.401Z'
+        >
+        </path>
+      </g>
+      <g>
+        <path
+          fill='#109288'
+          d='M153.879 163.249c-4.51 0-8.729-2.327-11.202-6.401L79.832 47.742c-3.491-6.11-1.455-14.11 4.655-17.602 6.11-3.637 14.111-1.455 17.603 4.655l62.845 108.961c3.491 6.11 1.455 14.111-4.655 17.602-2.037 1.164-4.219 1.746-6.401 1.746v.145Z'
+        >
+        </path>
+        <path
+          fill='#03413B'
+          d='M120.274 104.915c-4.51 0-8.728-2.328-11.201-6.4l-29.24-50.626c-3.492-6.11-1.456-14.111 4.654-17.603 6.11-3.636 14.111-1.454 17.603 4.656l29.24 50.625c3.492 6.11 1.455 14.11-4.655 17.602-2.037 1.164-4.219 1.746-6.401 1.746Z'
+        >
+        </path>
+      </g>
+      <g>
+        <path
+          fill='#109288'
+          d='M196.501 151.758c-7.128 0-12.947-5.819-12.947-12.948V13.12c0-7.128 5.819-12.947 12.947-12.947 7.128 0 12.947 5.82 12.947 12.947v125.836c0 7.128-5.819 12.947-12.947 12.947v-.145Z'
+        >
+        </path>
+        <path
+          fill='#03413B'
+          d='M196.501 106.37c-7.128 0-12.947-5.819-12.947-12.948V13.12c0-7.128 5.819-12.947 12.947-12.947 7.128 0 12.947 5.82 12.947 12.947v80.448c0 7.128-5.819 12.947-12.947 12.947v-.145Z'
+        >
+        </path>
+      </g>
+      <g>
+        <path
+          fill='#109288'
+          d='M239.125 163.25c-2.182 0-4.364-.582-6.401-1.745-6.11-3.492-8.292-11.493-4.655-17.603l62.845-108.96c3.491-6.11 11.492-8.292 17.602-4.656 6.11 3.492 8.292 11.493 4.656 17.603l-62.845 108.96c-2.328 4.074-6.692 6.401-11.202 6.401Z'
+        >
+        </path>
+        <path
+          fill='#03413B'
+          d='M272.885 104.918c-2.182 0-4.364-.582-6.401-1.745-6.11-3.492-8.292-11.493-4.655-17.603l29.241-50.625c3.491-6.11 11.492-8.292 17.602-4.655 6.11 3.491 8.292 11.492 4.655 17.602l-29.24 50.625c-2.328 4.074-6.692 6.401-11.202 6.401Z'
+        >
+        </path>
+      </g>
+      <g>
+        <path
+          fill='#109288'
+          d='M270.409 194.383c-4.51 0-8.728-2.328-11.201-6.401-3.492-6.11-1.455-14.111 4.655-17.603l108.96-62.845c6.11-3.637 14.111-1.455 17.603 4.655 3.491 6.11 1.455 14.111-4.655 17.603L276.81 192.637c-2.037 1.164-4.219 1.746-6.401 1.746Z'
+        >
+        </path>
+        <path
+          fill='#03413B'
+          d='M347.802 149.721c-4.509 0-8.728-2.327-11.201-6.401-3.492-6.11-1.455-14.111 4.655-17.602l31.713-18.33c6.11-3.637 14.111-1.455 17.603 4.655 3.491 6.11 1.455 14.111-4.655 17.603l-31.714 18.329c-2.036 1.164-4.219 1.746-6.401 1.746Z'
+        >
+        </path>
+      </g>
+      <path
+        class='drop'
+        fill='#03413B'
+        d='M223.564 239.191c0 14.838-12.074 27.058-27.058 27.058s-27.058-12.074-27.058-27.058 27.058-53.971 27.058-53.971 27.058 39.133 27.058 53.971Z'
+      >
+      </path>
+    </svg>
+    <ul>
+      {items?.map((item, i) => <li style={{ "animation-delay": `${i * 0.1 + 0.5}s` }}>{item}</li>)}
+    </ul>
+  </div>
+  <header>
+    <Markdown tag={index === 0 ? "h1" : "h2"}>{heading}</Markdown>
+    <Markdown class='paragraph'>{paragraph}</Markdown>
+    <div class='cta-wrapper'>
+      {cta?.map(cta => <Button {...cta} />)}
+    </div>
+  </header>
+</section>
+
+<style lang='scss'>
+  .EffectiveApproach {
+    display: grid;
+    align-items: center;
+    gap: clamp(48px, calc(82vw / 7.68), 82px) 16px;
+    @media (min-width: 1000px) {
+      grid-template-columns: 1fr 1fr;
+    }
+    &[data-active="true"] {
+      .wrapper {
+        .logo {
+          animation-play-state: running;
+          g {
+            animation-play-state: running;
+          }
+          .drop {
+            animation-play-state: running;
+          }
+        }
+        li {
+          animation-play-state: running;
+        }
+      }
+    }
+  }
+  header {
+    .paragraph {
+      margin: clamp(12px, calc(20vw / 7.68), 20px) 0 clamp(24px, calc(36vw / 7.68), 36px);
+    }
+  }
+  .wrapper {
+    perspective: 300px;
+    .logo {
+      max-width: 393px;
+      width: 100%;
+      margin: 0 auto;
+      animation: EffectiveApproach-logo-spin 2s var(--easing) forwards paused;
+      @keyframes EffectiveApproach-logo-spin {
+        0% {
+          transform: rotateY(180deg) rotateX(13deg);
+        }
+      }
+      g {
+        animation: EffectiveApproach-logo-g 2s var(--easing) forwards paused;
+        @keyframes EffectiveApproach-logo-g {
+          100% {
+            transform: rotate(0);
+          }
+        }
+        &:nth-child(1) {
+          transform: rotate(60deg) translate(-5px, -68px);
+          transform-box: fill-box;
+          transform-origin: right bottom;
+        }
+        &:nth-child(2) {
+          transform: rotate(30deg) translate(27px, -23px);
+          transform-box: fill-box;
+          transform-origin: right bottom;
+          animation-delay: 0.1s;
+        }
+        &:nth-child(4) {
+          transform: rotate(-30deg) translate(-27px, -23px);
+          transform-box: fill-box;
+          transform-origin: left bottom;
+          animation-delay: 0.1s;
+        }
+        &:nth-child(5) {
+          transform: rotate(-60deg) translate(5px, -68px);
+          transform-box: fill-box;
+          transform-origin: left bottom;
+        }
+      }
+      .drop {
+        animation: EffectiveApproach-logo-drop 2s var(--easing) both paused;
+        @keyframes EffectiveApproach-logo-drop {
+          0% {
+            transform: translateY(-10%);
+          }
+          100% {
+            transform: translateY(0);
+          }
+        }
+      }
+    }
+    padding: clamp(48px, calc(74vw / 7.68), 74px) 0 clamp(42px, calc(56vw / 7.68), 56px);
+    position: relative;
+    ul {
+      li {
+        animation: EffectiveApproach-list 1s var(--easing) both paused;
+        @keyframes EffectiveApproach-list {
+          0% {
+            transform: translateY(21px);
+            opacity: 0;
+          }
+          100% {
+            transform: translateY(0);
+            opacity: 1;
+          }
+        }
+        border-radius: 4px;
+        border: 1px solid var(--primary-400, #6bd6cd);
+        background: var(--background-100, #fffcf9);
+        padding: clamp(6px, calc(9vw / 7.68), 9px) clamp(6px, calc(9vw / 7.68), 12px);
+        position: absolute;
+        &:nth-child(1) {
+          top: 0;
+          left: 7%;
+        }
+        &:nth-child(2) {
+          top: 25%;
+          right: 0;
+          font-size: 0.95em;
+        }
+        &:nth-child(3) {
+          bottom: 11%;
+          left: 0;
+          font-size: 0.9em;
+          background: var(--primary-50, #f3fefd);
+        }
+        &:nth-child(4) {
+          bottom: 0;
+          left: 32%;
+          font-size: 0.85em;
+          z-index: -1;
+        }
+        &:nth-child(5) {
+          bottom: 9%;
+          right: 6%;
+          font-size: 0.8em;
+          background: var(--primary-50, #f3fefd);
+        }
+      }
+    }
+  }
+</style>
+
+<script>
+  const options = {
+    root: null,
+    rootMargin: `0px 0px -${window.innerHeight / 3}px 0px`,
+    threshold: 0,
+  };
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.setAttribute("data-active", "true");
+        observer.unobserve(entry.target);
+      }
+    });
+  }, options);
+  document.querySelectorAll(".EffectiveApproach").forEach(element => {
+    observer.observe(element);
+  });
+</script>

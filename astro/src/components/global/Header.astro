@@ -190,7 +190,6 @@ const { links } = await sanityFetch<QueryProps>({
     const initialScroll = window.scrollY;
     const scrollThreshold = 89;
     scrollHandler = function () {
-      console.log("scrolling");
       const scrollDifference = Math.abs(window.scrollY - initialScroll);
       if (scrollDifference >= scrollThreshold) closeNav();
     };

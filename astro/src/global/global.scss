@@ -63,6 +63,7 @@
 }
 
 svg {
+  max-width: 100%;
   display: block;
   height: auto;
 }
@@ -176,7 +177,7 @@ main,
 main {
   display: grid;
   row-gap: var(--gap);
-  margin: clamp(32px, calc(42vw / 7.68), 42px) auto var(--gap);
+  margin: clamp(32px, calc(80vw / 7.68), 80px) auto var(--gap);
 }
 
 h1,

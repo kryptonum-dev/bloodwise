@@ -12,9 +12,10 @@ export type ComponentsProps = ComponentProps<typeof HeaderSection> & { _type: st
 
 type Props = {
   data: ComponentsProps;
+  indexStart?: number;
 };
 
-const { data } = Astro.props;
+const { data, indexStart = 0 } = Astro.props;
 
 const components = {
   HeroFloatingImages,
@@ -58,6 +59,6 @@ export const Components_Query = /* groq */ `
   data?.map((item, i) => {
     const DynamicComponent = components[item._type];
     if (!DynamicComponent) return null;
-    return <DynamicComponent {...item} index={i} />;
+    return <DynamicComponent {...item} index={indexStart + i} />;
   })
 }

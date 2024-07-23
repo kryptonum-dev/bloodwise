@@ -1,0 +1,124 @@
+---
+import { actions, getActionProps } from "astro:actions";
+import Markdown from "@/components/ui/markdown.astro";
+import Image, { ImageDataQuery, type ImageDataTypes } from "@/components/ui/image.astro";
+import Input from "@/components/ui/Input.astro";
+import Button from "@/components/ui/Button.astro";
+import Checkbox from "@/components/ui/Checkbox.astro";
+import FormLoader from "@/components/ui/FormLoader.astro";
+import FormState from "@/components/ui/FormState.astro";
+
+export const MailingForm_Query = `
+  group_id,
+  heading,
+  paragraph,
+  img {
+    ${ImageDataQuery}
+  },
+`;
+
+export type Props = {
+  index: number;
+  group_id: string;
+  heading: string;
+  paragraph: string;
+  img: ImageDataTypes;
+};
+
+const { index, group_id, heading, paragraph, img } = Astro.props;
+---
+
+<section class='MailingForm'>
+  <header>
+    <Markdown tag={index === 0 ? "h1" : "h2"}>{heading}</Markdown>
+    <Markdown class='paragraph'>{paragraph}</Markdown>
+    <form method='post'>
+      <input {...getActionProps(actions.mailing)} />
+      <input type='hidden' name='group_id' value={group_id} />
+      <Input name='name' label='Imię' inputProps={{ required: true, minlength: 1 }} />
+      <Input name='email' label='E-mail' inputProps={{ required: true, type: "email" }} />
+      <Checkbox
+        name='legal'
+        label={`Akceptuję <a class='link' href='/polityka-prywatnosci' target='_blank' rel='noreferrer'>politykę prywatności</a>`}
+        inputProps={{ required: true }}
+      />
+      <Button type='submit'>Zapisz się</Button>
+      <FormLoader />
+      <FormState
+        success={{
+          heading: "Dziękujemy za wysłanie wiadomości!",
+          paragraph: "Odpowiemy możliwie jak najszybciej.",
+        }}
+        error={{
+          heading: "Nie udało się wysłać wiadomości",
+          paragraph:
+            "Coś poszło nie tak. Spróbuj ponownie. Jeśli problem się powtórzy, skontaktuj się z nami przez adres: <a href='mailto:contact@bloodwise.com.pl' class='link'>contact@bloodwise.com.pl</a>",
+        }}
+      />
+    </form>
+  </header>
+  <Image data={img} sizes='saf' priority={index === 0} pictureAttributes={{ class: "img" }} />
+</section>
+
+<style lang='scss'>
+  .MailingForm {
+    display: grid;
+    align-items: flex-start;
+    gap: clamp(42px, calc(48vw / 7.68), 48px);
+    @media (min-width: 900px) {
+      .img {
+        order: -1;
+      }
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  header {
+    max-width: calc(465rem / 16);
+    .paragraph {
+      margin: clamp(12px, calc(20vw / 7.68), 20px) 0 clamp(24px, calc(32vw / 7.68), 32px);
+    }
+  }
+  form {
+    max-width: calc(392rem / 16);
+    display: grid;
+    gap: 16px;
+    position: relative;
+    &:has([data-form-state] > :not([hidden])) {
+      & > *:not([data-form-state]) {
+        display: none;
+      }
+    }
+    button {
+      margin-top: 12px;
+    }
+  }
+</style>
+
+<script>
+  import { actions, isInputError } from "astro:actions";
+
+  document.querySelectorAll<HTMLFormElement>(".MailingForm form").forEach(element => {
+    const loader = element.querySelector<HTMLDivElement>("[data-form-loader]");
+    const successState = element.querySelector<HTMLDivElement>("[data-form-state-success]");
+    const errorState = element.querySelector<HTMLDivElement>("[data-form-state-error]");
+    element.addEventListener("submit", async event => {
+      event.preventDefault();
+      loader.hidden = false;
+      const formData = new FormData(element);
+      const { data, error } = await actions.mailing.safe(formData);
+      if (data?.success) {
+        successState.hidden = false;
+      } else {
+        errorState.hidden = false;
+      }
+      loader.hidden = true;
+      element.querySelectorAll(`[data-error-name]`).forEach(error => (error.textContent = ""));
+      if (error && isInputError(error)) {
+        for (const field in error.fields) {
+          const message = error.fields[field][0];
+          element.querySelector(`[data-error-name="${field}"]`).textContent = message;
+        }
+      }
+    });
+  });
+</script>

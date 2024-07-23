@@ -1,0 +1,20 @@
+---
+import sanityFetch from "@/utils/sanity.fetch";
+import metadataFetch from "@/utils/metadata.fetch";
+import Layout from "../layouts/Layout.astro";
+import Components, { Components_Query, type ComponentsProps } from "@/components/Components.astro";
+
+const metadata = await metadataFetch("WaitingList_Page");
+
+const data = await sanityFetch<{ components: ComponentsProps }>({
+  query: `
+    *[_type == "WaitingList_Page"][0] {
+      ${Components_Query}
+    }
+  `,
+});
+---
+
+<Layout {...metadata} path='/waiting-list'>
+  <Components data={data?.components} />
+</Layout>

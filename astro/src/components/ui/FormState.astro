@@ -1,16 +1,22 @@
 ---
+import type { HTMLAttributes } from "astro/types";
 import Button from "@/components/ui/Button.astro";
 
-// export const handleFormState = (form: HTMLFormElement) => {
-//   const formState = form.querySelector("[data-form-state]");
-//   formState.style.display = "grid";
-//   form.style.display = "none";
-// };
+type Props = {
+  success: {
+    heading: string;
+    paragraph: string;
+  };
+  error: {
+    heading: string;
+    paragraph: string;
+  };
+} & HTMLAttributes<"div">;
 
-const { ...props } = Astro.props;
+const { success, error, ...props } = Astro.props;
 ---
 
-<div {...props} data-form-state aria-hidden='true'>
+<div {...props} data-form-state>
   <div data-form-state-success aria-live='polite' hidden>
     <svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' fill='none'>
       <path
@@ -30,8 +36,8 @@ const { ...props } = Astro.props;
       >
       </path>
     </svg>
-    <h3>Dziękujemy za wysłanie wiadomości!</h3>
-    <p>Odpowiemy możliwie jak najszybciej.</p>
+    <h3>{success.heading}</h3>
+    <p set:html={success.paragraph} />
   </div>
   <div data-form-state-error aria-live='assertive' hidden>
     <svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' fill='none'>
@@ -44,11 +50,8 @@ const { ...props } = Astro.props;
       >
       </path>
     </svg>
-    <h3>Nie udało się wysłać wiadomości</h3>
-    <p>
-      Coś poszło nie tak. Spróbuj ponownie. Jeśli problem się powtórzy, skontaktuj się z nami przez adres:
-      <a href='mailto:contact@bloodwise.com.pl' class='link'>contact@bloodwise.com.pl</a>
-    </p>
+    <h3>{error.heading}</h3>
+    <p set:html={error.paragraph} />
     <Button type='button'>Spróbuj ponownie</Button>
   </div>
 </div>

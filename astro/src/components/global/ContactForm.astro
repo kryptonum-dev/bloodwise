@@ -50,19 +50,29 @@ const { index, heading, paragraph, emailSection } = Astro.props;
       )
     }
   </header>
-  <form action={Astro.url.pathname} method='post'>
+  <form method='post'>
     <input {...getActionProps(actions.contact)} />
     <Input name='name' label='Imię' inputProps={{ required: true, minlength: 1 }} />
     <Input name='email' label='E-mail' inputProps={{ required: true, type: "email" }} />
     <Input name='message' label='Wiadomość' isTextarea={true} inputProps={{ required: true }} />
     <Checkbox
       name='legal'
-      label={`Akceptuję <a class='link' href='/polityka-prywatnosci' target='_blank' rel='noreferrer'>polityki prywatności</a>`}
+      label={`Akceptuję <a class='link' href='/polityka-prywatnosci' target='_blank' rel='noreferrer'>politykę prywatności</a>`}
       inputProps={{ required: true }}
     />
     <Button type='submit'>Skontaktuj się z nami</Button>
     <FormLoader />
-    <FormState />
+    <FormState
+      success={{
+        heading: "Dziękujemy za wysłanie wiadomości!",
+        paragraph: "Odpowiemy możliwie jak najszybciej.",
+      }}
+      error={{
+        heading: "Nie udało się wysłać wiadomości",
+        paragraph:
+          "Coś poszło nie tak. Spróbuj ponownie. Jeśli problem się powtórzy, skontaktuj się z nami przez adres: <a href='mailto:contact@bloodwise.com.pl' class='link'>contact@bloodwise.com.pl</a>",
+      }}
+    />
   </form>
 </section>
 

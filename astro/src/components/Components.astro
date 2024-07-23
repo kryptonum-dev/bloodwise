@@ -7,6 +7,7 @@ import Process, { Process_Query } from "@/components/global/Process.astro";
 import QuoteCards, { QuoteCards_Query } from "@/components/global/QuoteCards.astro";
 import PeopleDetails, { PeopleDetails_Query } from "@/components/global/PeopleDetails.astro";
 import ContactForm, { ContactForm_Query } from "@/components/global/ContactForm.astro";
+import MailingForm, { MailingForm_Query } from "@/components/global/MailingForm.astro";
 
 export type ComponentsProps = ComponentProps<typeof HeaderSection> & { _type: string; index: number }[];
 
@@ -25,6 +26,7 @@ const components = {
   QuoteCards,
   PeopleDetails,
   ContactForm,
+  MailingForm,
 };
 
 export const Components_Query = /* groq */ `
@@ -50,6 +52,9 @@ export const Components_Query = /* groq */ `
     },
     _type == "ContactForm" => {
       ${ContactForm_Query}
+    },
+    _type == "MailingForm" => {
+      ${MailingForm_Query}
     },
   },
 `;

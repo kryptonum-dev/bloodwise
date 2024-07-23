@@ -1,0 +1,111 @@
+---
+import Image, { ImageDataQuery, type ImageDataTypes } from "@/components/ui/image.astro";
+import Markdown from "@/components/ui/markdown.astro";
+
+export const AdvantagesShowcase_Query = `
+  heading,
+  list[] {
+    heading,
+    paragraph,
+    img {
+      ${ImageDataQuery}
+    },
+  }
+`;
+
+export type Props = {
+  index: number;
+  heading: string;
+  list: {
+    heading: string;
+    paragraph: string;
+    img: ImageDataTypes;
+  }[];
+};
+
+const { index, heading, list } = Astro.props;
+---
+
+<section class='AdvantagesShowcase'>
+  <header>
+    <Markdown tag={index === 0 ? "h1" : "h2"}>{heading}</Markdown>
+  </header>
+  <ul class='list'>
+    {
+      list?.map(({ heading, paragraph, img }, index) => (
+        <li class='list-item'>
+          <header>
+            <Markdown tag={index === 0 ? "h2" : "h3"} class='h3'>
+              {heading}
+            </Markdown>
+            <Markdown class='paragraph'>{paragraph}</Markdown>
+          </header>
+          <Image
+            data={img}
+            priority={index === 0}
+            sizes='(max-width: 499px) 100vw, 467px'
+            pictureAttributes={{
+              class: "img",
+            }}
+          />
+        </li>
+      ))
+    }
+  </ul>
+  <!-- prettier-ignore -->
+  <svg class="decoration" xmlns="http://www.w3.org/2000/svg" width="216" height="323" viewBox="0 0 216 323" fill="none"><g opacity=".6"><rect width="53.626" height="310.028" x=".5" y="-.5" stroke="#0F9288" rx="26.813" transform="matrix(1 0 0 -1 107.251 240.448)"/><rect width="53.626" height="206.352" x=".5" y="-.5" stroke="#066A62" rx="26.813" transform="matrix(1 0 0 -1 -1.725 136.771)"/><rect width="54.626" height="54.513" fill="#066A62" rx="27.256" transform="matrix(1 0 0 -1 107.251 296.419)"/><rect width="54.626" height="163.772" fill="#066A62" rx="27.313" transform="matrix(1 0 0 -1 52.625 260.419)"/><rect width="54.626" height="185.228" fill="#066A62" rx="27.313" transform="matrix(1 0 0 -1 52.625 96.648)"/><rect width="54.626" height="185.228" fill="#066A62" rx="27.313" transform="matrix(1 0 0 -1 -2 323)"/><rect width="54.626" height="100.924" fill="#0F9288" rx="27.313" transform="matrix(1 0 0 -1 52.625 260.419)"/><rect width="54.626" height="100.924" fill="#0F9288" rx="27.313" transform="matrix(1 0 0 -1 160.877 31.343)"/><rect width="53.626" height="185.519" x=".5" y="-.5" stroke="#0F9288" rx="26.813" transform="matrix(1 0 0 -1 160.877 115.938)"/></g></svg>
+</section>
+
+<style lang='scss'>
+  .AdvantagesShowcase {
+    position: relative;
+    .decoration {
+      left: calc(var(--pageMargin) * -1);
+      @media (min-width: 1280px) {
+        left: calc((100vw - 1200px) / -2);
+      }
+      width: clamp(52px, calc(157vw / 7.68), 218px);
+      position: absolute;
+      top: calc(clamp(96px, calc(132vw / 7.68), 152px) * -1);
+      z-index: -1;
+    }
+    > header {
+      max-width: calc(592rem / 16);
+      margin: 0 auto;
+      text-align: center;
+    }
+  }
+  .list {
+    display: grid;
+  }
+  .list-item {
+    header {
+      max-width: calc(467rem / 16);
+    }
+    .img {
+      max-width: 467px;
+    }
+    margin: 0 auto;
+    height: 100vh;
+    max-height: 860px;
+    padding: clamp(48px, calc(64vw / 7.68), 96px) 0;
+    background: linear-gradient(
+      rgba(255, 255, 255, 0),
+      var(--background-100, #fffcf9) clamp(48px, calc(64vw / 7.68), 96px),
+      var(--background-100, #fffcf9) calc(100% - clamp(48px, calc(64vw / 7.68), 96px)),
+      rgba(255, 255, 255, 0)
+    );
+    position: sticky;
+    top: 0;
+    display: grid;
+    gap: clamp(24px, calc(32vw / 7.68), 32px) clamp(64px, calc(96vw / 7.68), 124px);
+    align-items: center;
+    align-content: center;
+    .paragraph {
+      margin-top: clamp(12px, calc(20vw / 7.68), 20px);
+    }
+    @media (min-width: 900px) {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

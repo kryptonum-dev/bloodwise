@@ -6,6 +6,7 @@ import ContactForm from "../schema/components/ContactForm";
 import Process from "../schema/components/Process";
 import QuoteCards from "../schema/components/QuoteCards";
 import PeopleDetails from "../schema/components/PeopleDetails";
+import MailingForm from "../schema/components/MailingForm";
 
 export default defineType({
   name: 'components',
@@ -19,5 +20,6 @@ export default defineType({
     QuoteCards,
     PeopleDetails,
     ContactForm,
+    MailingForm,
   ],
 });

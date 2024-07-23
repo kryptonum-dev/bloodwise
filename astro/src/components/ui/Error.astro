@@ -9,7 +9,7 @@ type Props = {
 const { name, ...props } = Astro.props;
 ---
 
-<span class='error' role='alert' {...props}>
+<span class='error' role='alert' aria-live='assertive' {...props}>
   <Icon name='error' size={16} />
   <span data-error-name={name}></span>
 </span>

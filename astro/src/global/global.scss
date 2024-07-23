@@ -105,7 +105,7 @@ select {
   border-radius: 0;
 }
 ul,
-li {
+ol {
   list-style-type: none;
 }
 summary {
@@ -265,20 +265,24 @@ h3,
   }
 }
 
-.orderedList,
-.unorderedList {
+.ordered-list,
+.unordered-list {
   display: grid;
   gap: 8px;
 }
-.unorderedList {
+.unordered-list {
   li {
     display: grid;
     grid-template-columns: auto 1fr;
-    gap: 4px;
+    gap: 8px;
     svg {
-      margin-top: clamp(2px, calc(4vw / 7.68), 4px);
+      margin-top: 8px;
     }
   }
+}
+.ordered-list {
+  list-style-type: decimal;
+  padding-left: 1.5rem;
 }
 
 .cta-wrapper {

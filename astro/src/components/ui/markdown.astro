@@ -22,8 +22,17 @@ class CustomRenderer extends marked.Renderer {
     const externalLinkAttrs = isExternalLink(href) ? 'target="_blank" rel="noopener"' : "";
     return `<a href="${href}" class="link" ${externalLinkAttrs}>${marked.parseInline(text)}</a>`;
   }
-  listitem({ text }: { text: string }) {
-    return `<li><span>${marked.parseInline(text)}</span></li>`;
+  list({ ordered, items }: Tokens.List) {
+    if (ordered) {
+      return `<ol class='ordered-list'>${items.map(({ text }) => `<li><span>${marked.parseInline(text)}</span></li>`).join("")}</ol>`;
+    } else {
+      return `<ul class='unordered-list'>${items
+        .map(
+          ({ text }) =>
+            `<li><svg xmlns="http://www.w3.org/2000/svg" width="8" height="12" fill="#6BD6CD"><path d="M.102 6.747c.46-1.876 1.875-4.27 3.03-6.04a.964.964 0 0 1 1.62.002c1.81 2.794 2.639 4.73 2.934 6.038.336 1.488 0 4.692-3.744 4.752C.918 11.546-.393 8.77.102 6.747Z"/></svg><span>${marked.parseInline(text)}</span></li>`
+        )
+        .join("")}</ul>`;
+    }
   }
 }
 
@@ -33,3 +42,9 @@ const content = marked.parse(await Astro.slots.render("default"), {
 ---
 
 <Tag set:html={content} {...props} />
+
+<style lang='scss'>
+  ul {
+    color: #f90;
+  }
+</style>

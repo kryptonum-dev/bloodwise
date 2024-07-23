@@ -1,5 +1,6 @@
 import { defineType } from "sanity";
 import HeroFloatingImages from "../schema/components/HeroFloatingImages";
+import AdvantagesShowcase from "../schema/components/AdvantagesShowcase";
 import EffectiveApproach from "../schema/components/EffectiveApproach";
 import HeaderSection from "../schema/components/HeaderSection";
 import ContactForm from "../schema/components/ContactForm";
@@ -14,6 +15,7 @@ export default defineType({
   title: 'Komponenty',
   of: [
     HeroFloatingImages,
+    AdvantagesShowcase,
     EffectiveApproach,
     HeaderSection,
     Process,

@@ -2,6 +2,7 @@ import { defineType } from "sanity";
 import HeroFloatingImages from "../schema/components/HeroFloatingImages";
 import AdvantagesShowcase from "../schema/components/AdvantagesShowcase";
 import EffectiveApproach from "../schema/components/EffectiveApproach";
+import MarkerCalculator from "../schema/components/MarkerCalculator";
 import HeaderSection from "../schema/components/HeaderSection";
 import ContactForm from "../schema/components/ContactForm";
 import Process from "../schema/components/Process";
@@ -17,6 +18,7 @@ export default defineType({
     HeroFloatingImages,
     AdvantagesShowcase,
     EffectiveApproach,
+    MarkerCalculator,
     HeaderSection,
     Process,
     QuoteCards,

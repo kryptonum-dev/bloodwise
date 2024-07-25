@@ -115,6 +115,10 @@ const children = Astro.slots.has("default") ? Astro.slots.render("default") : te
       }
     }
     transform-origin: bottom;
+    &:disabled {
+      opacity: 0.62;
+      pointer-events: none;
+    }
     &:active {
       transform: scale(0.98);
       transition: none;

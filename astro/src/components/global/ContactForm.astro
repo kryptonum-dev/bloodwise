@@ -127,19 +127,20 @@ const { index, heading, paragraph, emailSection } = Astro.props;
       loader.hidden = false;
       const formData = new FormData(element);
       const { data, error } = await actions.contact.safe(formData);
-      if (data?.success) {
-        successState.hidden = false;
-      } else {
-        errorState.hidden = false;
-      }
-      loader.hidden = true;
       element.querySelectorAll(`[data-error-name]`).forEach(error => (error.textContent = ""));
-      if (error && isInputError(error)) {
+      if (isInputError(error)) {
         for (const field in error.fields) {
           const message = error.fields[field][0];
           element.querySelector(`[data-error-name="${field}"]`).textContent = message;
         }
+      } else {
+        if (data?.success) {
+          successState.hidden = false;
+        } else {
+          errorState.hidden = false;
+        }
       }
+      loader.hidden = true;
     });
   });
 </script>

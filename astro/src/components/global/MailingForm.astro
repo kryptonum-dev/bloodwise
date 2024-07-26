@@ -96,6 +96,7 @@ const { index, group_id, heading, paragraph, img } = Astro.props;
 
 <script>
   import { actions, isInputError } from "astro:actions";
+  import { handleError } from "@/components/ui/Error/handle-error";
 
   document.querySelectorAll<HTMLFormElement>(".MailingForm form").forEach(element => {
     const loader = element.querySelector<HTMLDivElement>("[data-form-loader]");
@@ -106,11 +107,11 @@ const { index, group_id, heading, paragraph, img } = Astro.props;
       loader.hidden = false;
       const formData = new FormData(element);
       const { data, error } = await actions.mailing.safe(formData);
-      element.querySelectorAll(`[data-error-name]`).forEach(error => (error.textContent = ""));
+      element.querySelectorAll<HTMLSpanElement>(`[data-error-name]`).forEach(error => handleError(error, ""));
       if (isInputError(error)) {
         for (const field in error.fields) {
           const message = error.fields[field][0];
-          element.querySelector(`[data-error-name="${field}"]`).textContent = message;
+          handleError(element.querySelector(`[data-error-name="${field}"]`), message);
         }
       } else {
         if (data?.success) {

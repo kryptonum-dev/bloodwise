@@ -9,9 +9,9 @@ type Props = {
 const { name, ...props } = Astro.props;
 ---
 
-<span class='error' role='alert' aria-live='assertive' {...props}>
+<span class='error' role='alert' aria-live='assertive' data-error-name={name} hidden {...props}>
   <Icon name='error' size={16} />
-  <span data-error-name={name}></span>
+  <span></span>
 </span>
 
 <style lang='scss'>
@@ -22,22 +22,11 @@ const { name, ...props } = Astro.props;
     display: flex;
     align-items: center;
     gap: 4px;
-    &:has(span:empty) {
-      display: none;
-    }
-    &:not(span:empty) {
-      animation: reveal 0.5s both;
-    }
     svg {
       flex-shrink: 0;
     }
-    @keyframes reveal {
-      0% {
-        opacity: 0;
-      }
-      100% {
-        opacity: 1;
-      }
+    &[hidden] {
+      display: none;
     }
   }
 </style>

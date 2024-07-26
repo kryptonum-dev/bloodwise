@@ -27,7 +27,7 @@ const groups = [
 ];
 ---
 
-<aside data-js-nb1d8 class='cookie-consent' aria-hidden='true'>
+<aside class='cookie-consent' aria-hidden='true'>
   <noscript>
     <iframe
       src='https://www.googletagmanager.com/ns.html?id=GTM-MHJNBK6'
@@ -171,9 +171,9 @@ const groups = [
       analytics_storage: "denied",
       personalization_storage: "denied",
     });
-    document.querySelector(".cookie-consent[data-js-nb1d8]")!.setAttribute("aria-hidden", "false");
+    document.querySelector(".cookie-consent").setAttribute("aria-hidden", "false");
   } else {
-    gtag("consent", "default", JSON.parse(getCookie("cookie-consent")!));
+    gtag("consent", "default", JSON.parse(getCookie("cookie-consent")));
   }
 </script>
 <script is:inline>
@@ -201,10 +201,10 @@ const groups = [
     gtag("consent", "update", consentMode);
     setCookie("cookie-consent", JSON.stringify(consentMode), 365);
   }
-  const $this = document.querySelector(".cookie-consent[data-js-nb1d8]")!;
-  const $agree = $this.querySelector(".agree")!;
-  const $setPreferences = $this.querySelector(".setPreferences")!;
-  const $deny = $this.querySelector(".deny")!;
+  const $this = document.querySelector(".cookie-consent");
+  const $agree = $this.querySelector(".agree");
+  const $setPreferences = $this.querySelector(".setPreferences");
+  const $deny = $this.querySelector(".deny");
   $agree.addEventListener("click", () => {
     setConsent({
       necessary: true,
@@ -217,17 +217,17 @@ const groups = [
   let setsPreferences = false;
   $setPreferences.addEventListener("click", () => {
     if (!setsPreferences) {
-      $this.querySelector<HTMLDivElement>(".header [data-header='first']")!.style.display = "none";
-      $this.querySelector<HTMLDivElement>(".header [data-header='second']")!.style.removeProperty("display");
-      $this.querySelector<HTMLDivElement>(".settings")!.style.removeProperty("display");
+      $this.querySelector<HTMLDivElement>(".header [data-header='first']").style.display = "none";
+      $this.querySelector<HTMLDivElement>(".header [data-header='second']").style.removeProperty("display");
+      $this.querySelector<HTMLDivElement>(".settings").style.removeProperty("display");
       setsPreferences = true;
     } else {
       $this.setAttribute("aria-hidden", "true");
       setConsent({
-        necessary: $this.querySelector<HTMLInputElement>('input[id="necessary"]')!.checked,
-        marketing: $this.querySelector<HTMLInputElement>('input[id="marketing"]')!.checked,
-        analytics: $this.querySelector<HTMLInputElement>('input[id="analytics"]')!.checked,
-        preferences: $this.querySelector<HTMLInputElement>('input[id="preferences"]')!.checked,
+        necessary: $this.querySelector<HTMLInputElement>('input[id="necessary"]').checked,
+        marketing: $this.querySelector<HTMLInputElement>('input[id="marketing"]').checked,
+        analytics: $this.querySelector<HTMLInputElement>('input[id="analytics"]').checked,
+        preferences: $this.querySelector<HTMLInputElement>('input[id="preferences"]').checked,
       });
     }
   });

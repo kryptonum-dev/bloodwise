@@ -24,5 +24,5 @@ export default defineConfig({
     prefetchAll: true
   },
   output: isPreviewDeployment ? "server" : 'hybrid',
-  adapter: vercel()
+  adapter: vercel(),
 });

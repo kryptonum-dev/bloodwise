@@ -224,9 +224,9 @@ h3,
   .h5,
   h6,
   .h6 {
-    color: var(--primary-50, #f3fefd);
+    color: var(--primary-200, #c4f9f5);
     strong {
-      color: #fff;
+      color: var(--primary-50, #f3fefd);
     }
   }
 }

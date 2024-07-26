@@ -3,6 +3,7 @@ import type { ComponentProps } from "astro/types";
 import HeroFloatingImages, { HeroFloatingImages_Query } from "@/components/global/HeroFloatingImages.astro";
 import AdvantagesShowcase, { AdvantagesShowcase_Query } from "@/components/global/AdvantagesShowcase.astro";
 import EffectiveApproach, { EffectiveApproach_Query } from "@/components/global/EffectiveApproach.astro";
+import MarkerCalculator, { MarkerCalculator_Query } from "@/components/global/MarkerCalculator/index.astro";
 import HeaderSection, { HeaderSection_Query } from "@/components/global/HeaderSection.astro";
 import Process, { Process_Query } from "@/components/global/Process.astro";
 import QuoteCards, { QuoteCards_Query } from "@/components/global/QuoteCards.astro";
@@ -23,6 +24,7 @@ const components = {
   HeroFloatingImages,
   AdvantagesShowcase,
   EffectiveApproach,
+  MarkerCalculator,
   HeaderSection,
   Process,
   QuoteCards,
@@ -42,6 +44,9 @@ export const Components_Query = /* groq */ `
     },
     _type == "EffectiveApproach" => {
       ${EffectiveApproach_Query}
+    },
+    _type == "MarkerCalculator" => {
+      ${MarkerCalculator_Query}
     },
     _type == "HeaderSection" => {
       ${HeaderSection_Query}

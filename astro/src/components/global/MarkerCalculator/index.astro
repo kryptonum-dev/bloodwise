@@ -1,0 +1,332 @@
+---
+import { Icon } from "astro-icon/components";
+import Markdown from "@/components/ui/markdown.astro";
+import Button from "@/components/ui/Button.astro";
+
+export const MarkerCalculator_Query = `
+  heading
+`;
+
+export type Props = {
+  index: number;
+  heading: string;
+};
+
+const markers = [
+  "Glukoza na czczo",
+  "Insulina na czczo",
+  "hsCRP",
+  "TSH",
+  "Witamina D3",
+  "Witamina B12",
+  "Żelazo",
+  "Ferrytyna",
+  "Cholesterol całkowity",
+  "AST",
+  "ALT",
+  "Trójglicerydy",
+];
+---
+
+<section class='MarkerCalculator sec-wo-margin' dark-background id='wyniki'>
+  <div class='max-width'>
+    <article class='step' data-step={1}>
+      <header>
+        <Markdown tag='h2'>Sprawdź, czy Twoje biomarkery są optymalne</Markdown>
+        <Markdown>
+          Wpisz poniżej swoje wyniki badań i sprawdź, czy są w normach funkcjonalnych. Normy funkcjonalne oznaczają
+          optymalne zakresy, czyli takie, w których funkcjonujesz najlepiej.
+        </Markdown>
+      </header>
+      <div class='actions'>
+        <p class='hint'>Wybierz swoją płeć</p>
+        <label class='button'>
+          <input type='radio' name='gender' value='woman' />
+          <Icon name='woman' />
+          <span>Kobieta</span>
+        </label>
+        <label class='button'>
+          <input type='radio' name='gender' value='man' />
+          <Icon name='man' />
+          <span>Męźczyzna</span>
+        </label>
+      </div>
+      <div class='navigation'>
+        <Button type='button' disabled data-set-step={2} class='next-step'>Uzupełnij dane</Button>
+      </div>
+    </article>
+
+    <article class='step' data-step={2} hidden>
+      <header>
+        <Markdown tag='h2'>Twój wiek</Markdown>
+        <Markdown>Dzięki tej informacji, będziemy wiedzieć, że możemy sprawdzić Twoje badania.</Markdown>
+      </header>
+      <div class='actions'>
+        <p class='hint'>Wskaż swój wiek</p>
+        <label class='button'>
+          <input type='radio' name='age' value='underage' />
+          <span>Mam mniej niż 18 lat</span>
+        </label>
+        <label class='button'>
+          <input type='radio' name='age' value='adlut' />
+          <span>Mam więcej niż 18 lat. Jestem pełnoletni.</span>
+        </label>
+      </div>
+      <div class='navigation'>
+        <Button theme='secondary' type='button' data-set-step={1} class='prev-step'>Wróć</Button>
+        <Button type='button' disabled data-set-step={3} class='next-step'>Wskaż badany marker</Button>
+      </div>
+    </article>
+
+    <article class='step' data-step={3} hidden>
+      <div data-variant={1} hidden>
+        <header>
+          <Markdown tag='h2'>Twoja zdrowa przygoda nie kończy się tutaj</Markdown>
+          <Markdown>
+            Chcesz dowiedzieć się więcej o swoim zdrowiu? Umów się na bezpłatną 20-minutową konsultację.
+          </Markdown>
+          <Button href='https://calendly.com/amelia-pietryka-bloodwise/20min'>Umów się na konsultację</Button>
+        </header>
+      </div>
+      <div data-variant={2} hidden>
+        <header>
+          <Markdown tag='h2'>Wskaż marker krwi, który chcesz sprawdzić</Markdown>
+          <Markdown>Wybierz 1 z 11 markerów i sprawdź, czy Twoje wyniki sa prawidłowe.</Markdown>
+        </header>
+        <div class='actions'>
+          <p class='hint'>Wskaż swój marker</p>
+          {
+            markers.map(name => (
+              <label class='button'>
+                <input type='radio' name='marker' value={name} />
+                <span>{name}</span>
+              </label>
+            ))
+          }
+        </div>
+      </div>
+      <div class='navigation'>
+        <Button theme='secondary' type='button' data-set-step={2} class='prev-step'>Wróć</Button>
+        <Button type='button' disabled data-set-step={4} class='next-step'>Wpisz wynik</Button>
+      </div>
+    </article>
+
+    <article class='step' data-step={4} hidden>
+      <header>
+        <Markdown tag='h2'>Podaj wynik badania</Markdown>
+        <Markdown>Podaj wynik i przeanalizuj swoje badania.</Markdown>
+      </header>
+      <div class='input'>
+        <p>Wynik badania</p>
+        <input type='number' />
+        <span>mg/dL</span>
+      </div>
+      <div class='navigation'>
+        <Button theme='secondary' type='button' data-set-step={3} class='prev-step'>Wróć</Button>
+        <Button type='button' disabled data-set-step={5} class='next-step'>Zobacz analizę</Button>
+      </div>
+    </article>
+
+    <article class='step' data-step={5} hidden>
+      <header>
+        <Markdown tag='h2'><span class='h3'>Twój wynik badania</span></Markdown>
+        <div class='result-bar'>
+          <div>
+            <span class='value'></span>
+            <div class='bar'></div>
+            <p>Niskie</p>
+          </div>
+          <div>
+            <span class='value'></span>
+            <div class='bar'></div>
+            <p>Granicznie niskie</p>
+          </div>
+          <div>
+            <span class='value'></span>
+            <div class='bar'></div>
+            <p>Optymalne</p>
+          </div>
+          <div>
+            <span class='value'></span>
+            <div class='bar'></div>
+            <p>Granicznie wysokie</p>
+          </div>
+          <div>
+            <span class='value'></span>
+            <div class='bar'></div>
+            <p>Wysokie</p>
+          </div>
+        </div>
+        <div class='result-decreased'>
+          <p>Twój wynik jest obniżony? Zobacz potencjalne przyczyny:</p>
+          <ul class='unorderedList'></ul>
+        </div>
+        <div class='result-increased'>
+          <p>Twój wynik jest podwyższony? Zobacz potencjalne przyczyny:</p>
+          <ul class='unorderedList'></ul>
+        </div>
+      </header>
+      <div class='navigation'>
+        <Button theme='secondary' type='button' data-set-step={4} class='prev-step'>Wróć</Button>
+        <Button type='button' data-set-step={3} class='next-step'>Sprawdź inny marker</Button>
+      </div>
+    </article>
+  </div>
+</section>
+
+<style lang='scss'>
+  .MarkerCalculator {
+    border-radius: 8px;
+    background: linear-gradient(230deg, #006860, #01403b 62%);
+    padding: clamp(48px, calc(80vw / 7.68), 80px) 0;
+  }
+  header {
+    max-width: calc(592rem / 16);
+    margin: 0 auto 48px;
+    display: grid;
+    gap: clamp(12px, calc(16vw / 7.68), 16px);
+    text-align: center;
+    justify-items: center;
+  }
+
+  .step {
+    &[data-step="2"] {
+      .actions {
+        label {
+          flex-grow: 1;
+        }
+      }
+    }
+    &[data-step="5"] {
+      .result-bar {
+        font-size: calc(12rem / 16);
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+        text-align: center;
+        .bar {
+          margin: 8px 0 12px;
+          height: 8px;
+        }
+        > div:nth-child(1) .bar,
+        > div:nth-child(5) .bar {
+          background: var(--notification-red-500, #bb0c0c);
+        }
+        > div:nth-child(2) .bar,
+        > div:nth-child(4) .bar {
+          background: var(--notification-orange-500, #ff8e3d);
+        }
+        > div:nth-child(3) .bar {
+          background: var(--notification-green-500, #00923e);
+        }
+      }
+    }
+  }
+
+  .actions {
+    max-width: calc(592rem / 16);
+    margin: 0 auto 48px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    .hint {
+      width: 100%;
+      text-align: center;
+      color: var(--background-300, #dfd1c2);
+    }
+  }
+  .button {
+    cursor: pointer;
+    border-radius: 4px;
+    border: 1px solid var(--primary-400, #6bd6cd);
+    background: var(--primary-50, #f3fefd);
+    color: var(--primary-900, #001b19);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 12px 24px;
+    width: fit-content;
+    @media (max-width: 499px) {
+      width: 100%;
+    }
+    transition:
+      transform 0.5s var(--easing),
+      background-color 0.5s var(--easing);
+    transform-origin: bottom;
+    input {
+      opacity: 0;
+      position: absolute;
+    }
+    &:has(input:checked) {
+      transition-duration: 0s;
+      background: var(--primary-300);
+    }
+    &:hover {
+      background: var(--primary-200);
+    }
+    &:active {
+      transition-duration: 0s;
+      transform: scale(0.95);
+    }
+  }
+
+  .navigation {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+</style>
+
+<script>
+  import resultData from "./resultData.json";
+
+  function setStep(step: number) {
+    document.querySelectorAll<HTMLDivElement>(".MarkerCalculator .step").forEach(element => (element.hidden = true));
+    document.querySelector<HTMLDivElement>(`.MarkerCalculator .step[data-step="${step}"]`).hidden = false;
+  }
+
+  document.querySelectorAll(".MarkerCalculator").forEach(section => {
+    section.querySelectorAll<HTMLDivElement>(".step").forEach(step => {
+      step.querySelectorAll<HTMLInputElement>("input").forEach(input => {
+        input.addEventListener("change", function () {
+          step.querySelector<HTMLButtonElement>(".next-step").disabled = false;
+        });
+      });
+
+      step.querySelector(".prev-step")?.addEventListener("click", function () {
+        setStep(this.dataset.setStep);
+        const currentStep = section.querySelector<HTMLDivElement>(
+          `.step[data-step='${Number(this.dataset.setStep) + 1}']`
+        );
+        currentStep.querySelector<HTMLButtonElement>(".next-step")?.removeAttribute("style");
+        currentStep.querySelector<HTMLDivElement>("[data-variant]:not([hidden])")?.setAttribute("hidden", "true");
+      });
+
+      step.querySelector(".next-step")?.addEventListener("click", function () {
+        if (step.dataset.step === "2") {
+          const nextStep = section.querySelector<HTMLDivElement>(".step[data-step='3']");
+          if (step.querySelector<HTMLInputElement>("input:checked").value === "underage") {
+            nextStep.querySelector<HTMLButtonElement>(".next-step").style.display = "none";
+            nextStep.querySelector<HTMLDivElement>("[data-variant='1']").hidden = false;
+          } else {
+            nextStep.querySelector<HTMLDivElement>("[data-variant='2']").hidden = false;
+          }
+        }
+        if (step.dataset.step === "4") {
+          const nextStep = section.querySelector<HTMLDivElement>(".step[data-step='5']");
+          const marker = section.querySelector<HTMLInputElement>(".step[data-step='3'] input:checked").value;
+          nextStep.querySelector<HTMLHeadingElement>("h2").innerHTML =
+            `<span class='h3'>Twój wynik badania na ${marker}, jest</span></br>Poniżej poziomu optymalnego`;
+          const resultValue = nextStep.querySelectorAll<HTMLSpanElement>(".result-bar .value");
+          resultValue.forEach((value, index) => {
+            value.innerHTML = resultData[marker].ranges[index];
+          });
+        }
+        setStep(this.dataset.setStep);
+      });
+    });
+  });
+</script>

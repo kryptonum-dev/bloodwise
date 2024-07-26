@@ -42,9 +42,3 @@ const content = marked.parse(await Astro.slots.render("default"), {
 ---
 
 <Tag set:html={content} {...props} />
-
-<style lang='scss'>
-  ul {
-    color: #f90;
-  }
-</style>

@@ -27,7 +27,7 @@ const groups = [
 ];
 ---
 
-<aside data-js-nb1d8 class='cookie-consent' aria-hidden='true'>
+<aside class='cookie-consent' aria-hidden='true'>
   <noscript>
     <iframe
       src='https://www.googletagmanager.com/ns.html?id=GTM-MHJNBK6'
@@ -152,35 +152,11 @@ const groups = [
     }
   }
 </style>
-<script is:inline>
-  window.dataLayer = window.dataLayer || [];
-  // eslint-disable-next-line no-unused-vars
-  function gtag() {
-    window.dataLayer.push(arguments);
-  }
-</script>
 <script>
-  import { getCookie } from "@/utils/get-cookie";
-  if (getCookie("cookie-consent") === null) {
-    gtag("consent", "default", {
-      functionality_storage: "denied",
-      security_storage: "denied",
-      ad_storage: "denied",
-      ad_user_data: "denied",
-      ad_personalization: "denied",
-      analytics_storage: "denied",
-      personalization_storage: "denied",
-    });
-    document.querySelector(".cookie-consent[data-js-nb1d8]")!.setAttribute("aria-hidden", "false");
-  } else {
-    gtag("consent", "default", JSON.parse(getCookie("cookie-consent")!));
+  if (window.getCookie("cookie-consent") === null) {
+    document.querySelector(".cookie-consent")!.setAttribute("aria-hidden", "false");
   }
-</script>
-<script is:inline>
-  // prettier-ignore
-  (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({"gtm.start":new Date().getTime(),event:"gtm.js"});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!="dataLayer"?"&l="+l:"";j.async=true;j.src="https://www.googletagmanager.com/gtm.js?id="+i+dl;f.parentNode.insertBefore(j,f);})(window,document,"script","dataLayer","GTM-K6FMQBQD");
-</script>
-<script>
+
   import { setCookie } from "@/utils/set-cookie";
   type Consent = {
     necessary: boolean;
@@ -201,10 +177,10 @@ const groups = [
     gtag("consent", "update", consentMode);
     setCookie("cookie-consent", JSON.stringify(consentMode), 365);
   }
-  const $this = document.querySelector(".cookie-consent[data-js-nb1d8]")!;
-  const $agree = $this.querySelector(".agree")!;
-  const $setPreferences = $this.querySelector(".setPreferences")!;
-  const $deny = $this.querySelector(".deny")!;
+  const $this = document.querySelector(".cookie-consent");
+  const $agree = $this.querySelector(".agree");
+  const $setPreferences = $this.querySelector(".setPreferences");
+  const $deny = $this.querySelector(".deny");
   $agree.addEventListener("click", () => {
     setConsent({
       necessary: true,

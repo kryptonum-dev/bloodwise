@@ -81,16 +81,11 @@ const { index, heading, list } = Astro.props;
       max-width: 467px;
       width: 100%;
     }
-    margin: 0 auto;
-    padding: calc(clamp(58px, calc(92vw / 7.68), 92px) * 1.5) 0;
-    background: linear-gradient(
-      rgba(255, 255, 255, 0),
-      #feffff clamp(58px, calc(92vw / 7.68), 92px),
-      #feffff calc(100% - clamp(58px, calc(92vw / 7.68), 92px)),
-      rgba(255, 255, 255, 0)
-    );
     position: sticky;
-    top: 0;
+    top: 58px;
+    padding: clamp(58px, calc(92vw / 7.68), 92px) 0;
+    margin: 0 auto;
+    background: #feffff;
     display: grid;
     gap: clamp(24px, calc(32vw / 7.68), 32px) clamp(64px, calc(96vw / 7.68), 124px);
     align-items: center;

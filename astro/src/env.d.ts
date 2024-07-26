@@ -3,5 +3,4 @@
 
 interface Window {
   dataLayer: Object[];
-  getCookie: (name: string) => string;
 }

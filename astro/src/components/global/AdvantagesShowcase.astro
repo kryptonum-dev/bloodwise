@@ -33,7 +33,7 @@ const { index, heading, list } = Astro.props;
     </header>
     <ul class='list'>
       {
-        list?.map(({ heading, paragraph, img }, index) => (
+        list?.map(({ heading, paragraph, img }) => (
           <li class='list-item'>
             <header>
               <Markdown tag={index === 0 ? "h2" : "h3"} class='h3'>

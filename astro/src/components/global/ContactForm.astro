@@ -31,7 +31,7 @@ export type Props = {
 const { index, heading, paragraph, emailSection } = Astro.props;
 ---
 
-<section class='ContactForm'>
+<section class='ContactForm' id='kontakt'>
   <header>
     <Markdown tag={index === 0 ? "h1" : "h2"}>{heading}</Markdown>
     <Markdown class='paragraph'>{paragraph}</Markdown>

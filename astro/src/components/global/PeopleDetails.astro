@@ -40,7 +40,7 @@ const Subheading = index === 0 ? "h2" : "h3";
       {
         list?.map(({ img, name, description }) => (
           <li>
-            <Image data={img} priority={index === 0} sizes='180px' pictureAttributes={{ class: "img" }} />
+            <Image data={img} priority={index === 0} sizes='180px' class='img' />
             <div>
               <Subheading class='h3 heading'>{name}</Subheading>
               <Markdown class='description'>{description}</Markdown>

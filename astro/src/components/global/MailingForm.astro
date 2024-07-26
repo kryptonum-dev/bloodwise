@@ -57,12 +57,7 @@ const { index, group_id, heading, paragraph, img } = Astro.props;
       />
     </form>
   </header>
-  <Image
-    data={img}
-    sizes='(max-width: 899px) 100vw, 576px'
-    priority={index === 0}
-    pictureAttributes={{ class: "img" }}
-  />
+  <Image data={img} sizes='(max-width: 899px) 100vw, 576px' priority={index === 0} class='img' />
 </section>
 
 <style lang='scss'>

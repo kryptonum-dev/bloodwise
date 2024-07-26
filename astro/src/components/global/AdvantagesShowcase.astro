@@ -40,14 +40,7 @@ const { index, heading, list } = Astro.props;
             </Markdown>
             <Markdown class='paragraph'>{paragraph}</Markdown>
           </header>
-          <Image
-            data={img}
-            priority={index === 0}
-            sizes='(max-width: 499px) 100vw, 467px'
-            pictureAttributes={{
-              class: "img",
-            }}
-          />
+          <Image data={img} priority={index === 0} sizes='(max-width: 499px) 100vw, 467px' class='img' />
         </li>
       ))
     }
@@ -84,6 +77,7 @@ const { index, heading, list } = Astro.props;
     }
     .img {
       max-width: 467px;
+      width: 100%;
     }
     margin: 0 auto;
     padding: calc(clamp(58px, calc(92vw / 7.68), 92px) * 1.5) 0;

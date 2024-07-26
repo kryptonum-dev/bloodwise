@@ -38,9 +38,7 @@ const { index, heading, paragraph, cta, img } = Astro.props;
       data={img}
       priority={index === 0}
       sizes='(max-width: 499px) 450px, (max-width: 899px) 595px, 520px'
-      pictureAttributes={{
-        class: "img",
-      }}
+      class='img'
     />
   </div>
 </section>
@@ -63,6 +61,7 @@ const { index, heading, paragraph, cta, img } = Astro.props;
   }
   .img {
     max-width: calc(595rem / 16);
+    width: 100%;
   }
   .paragraph {
     margin: clamp(12px, calc(20vw / 7.68), 20px) 0 clamp(24px, calc(36vw / 7.68), 36px);

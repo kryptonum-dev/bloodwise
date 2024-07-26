@@ -38,7 +38,7 @@ const { index, heading, paragraph, list } = Astro.props;
     {
       list.map(({ logo, paragraph, link }) => (
         <li>
-          <Image data={logo} sizes='173px' pictureAttributes={{ class: "img" }} />
+          <Image data={logo} sizes='173px' class='img' />
           <svg xmlns='http://www.w3.org/2000/svg' width='17' height='13' fill='none'>
             <path
               fill='#1CB6AA'

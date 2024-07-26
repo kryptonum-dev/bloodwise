@@ -1,6 +1,6 @@
 ---
 import type { ComponentProps } from "astro/types";
-import { Picture } from "astro:assets";
+import { Image as AstroImage } from "astro:assets";
 
 export type ImageDataTypes = {
   asset: {
@@ -36,12 +36,12 @@ type Props = {
   data: ImageDataTypes;
   sizes: string;
   priority?: boolean;
-} & Partial<ComponentProps<typeof Picture>>;
+} & Partial<ComponentProps<typeof AstroImage>>;
 
 const { data, priority, ...props } = Astro.props;
 ---
 
-<Picture
+<AstroImage
   {...{
     src: data.asset.url,
     alt: data.asset.altText || "",
@@ -56,12 +56,11 @@ const { data, priority, ...props } = Astro.props;
       fetchpriority: "high",
     }),
     widths: [48, 64, 96, 128, 256, 384, 640, 750, 828, 1080, 1200, 1920, 2048, 3840],
-    formats: ["avif", "webp"],
     ...(data.asset.extension === "svg" && {
-      formats: ["svg"],
+      format: ["svg"],
       widths: undefined,
       sizes: undefined,
     }),
     ...props,
-  } as ComponentProps<typeof Picture>}
+  } as ComponentProps<typeof AstroImage>}
 />

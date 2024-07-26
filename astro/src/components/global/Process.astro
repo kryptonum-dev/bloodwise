@@ -37,7 +37,7 @@ const Subheading = index === 0 ? "h2" : "h3";
       list?.map(({ icon, heading, paragraph }) => (
         <li class='item'>
           <div class='wrapper'>
-            <Image data={icon} priority={index === 0} sizes='180px' pictureAttributes={{ class: "icon" }} />
+            <Image data={icon} priority={index === 0} sizes='180px' class='img' />
             <div>
               <Subheading class='h3 heading'>{heading}</Subheading>
               <Markdown class='description'>{paragraph}</Markdown>

@@ -136,7 +136,7 @@ const { index, heading, paragraph, cta, images } = Astro.props;
           &:not(.chart4) {
             animation:
               chart 1s var(--easing) both paused,
-              chart-scroll linear both;
+              chart-scroll linear forwards;
             animation-timeline: auto, view();
           }
           &.chart0 {

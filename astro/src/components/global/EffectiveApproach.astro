@@ -93,7 +93,7 @@ const { index, heading, paragraph, cta, items } = Astro.props;
       </path>
     </svg>
     <ul>
-      {items?.map((item, i) => <li style={{ "animation-delay": `${i * 0.1 + 0.5}s` }}>{item}</li>)}
+      {items?.map((item, i) => <li style={{ "animation-delay": `${i * 0.12 + 0.5}s` }}>{item}</li>)}
     </ul>
   </div>
   <header>
@@ -148,7 +148,7 @@ const { index, heading, paragraph, cta, items } = Astro.props;
         }
       }
       g {
-        animation: EffectiveApproach-logo-g 2s var(--easing) forwards paused;
+        animation: EffectiveApproach-logo-g 2.5s var(--easing) forwards paused;
         @keyframes EffectiveApproach-logo-g {
           100% {
             transform: rotate(0);
@@ -178,7 +178,7 @@ const { index, heading, paragraph, cta, items } = Astro.props;
         }
       }
       .drop {
-        animation: EffectiveApproach-logo-drop 2s var(--easing) both paused;
+        animation: EffectiveApproach-logo-drop 2.5s var(--easing) both paused;
         @keyframes EffectiveApproach-logo-drop {
           0% {
             transform: translateY(-10%);
@@ -193,7 +193,7 @@ const { index, heading, paragraph, cta, items } = Astro.props;
     position: relative;
     ul {
       li {
-        animation: EffectiveApproach-list 1s var(--easing) both paused;
+        animation: EffectiveApproach-list 1.1s var(--easing) both paused;
         @keyframes EffectiveApproach-list {
           0% {
             transform: translateY(21px);

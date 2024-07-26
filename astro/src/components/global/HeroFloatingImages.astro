@@ -56,13 +56,13 @@ const { index, heading, paragraph, cta, images } = Astro.props;
     />
     <Image
       data={images.foreground}
-      priority={index === 0}
+      loading={index === 0 ? "eager" : "lazy"}
       sizes='(max-width: 1089px) 150vw, 882px'
       class='foreground'
     />
     {
       images?.charts.map((img, i) => (
-        <Image data={img} priority={index === 0} sizes='203px' class={`chart chart${i}`} />
+        <Image data={img} loading={index === 0 ? "eager" : "lazy"} sizes='203px' class={`chart chart${i}`} />
       ))
     }
   </div>

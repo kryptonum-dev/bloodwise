@@ -132,6 +132,42 @@ const { index, heading, paragraph, cta, images } = Astro.props;
         top: 0;
         z-index: 3;
         animation: chart 1s var(--easing) both paused;
+        @supports (animation-timeline: view()) {
+          &:not(.chart4) {
+            animation:
+              chart 1s var(--easing) both paused,
+              chart-scroll linear both;
+            animation-timeline: auto, view();
+          }
+          &.chart0 {
+            animation-range:
+              normal,
+              65% 130%;
+          }
+          &.chart1 {
+            animation-range:
+              normal,
+              60% 120%;
+          }
+          &.chart2 {
+            animation-range:
+              normal,
+              55% 110%;
+          }
+          &.chart3 {
+            animation-range:
+              normal,
+              50% 100%;
+          }
+          @keyframes chart-scroll {
+            from {
+              transform: translateY(0);
+            }
+            to {
+              transform: translateY(-89px);
+            }
+          }
+        }
         @keyframes chart {
           0% {
             transform: translateY(21px);

@@ -153,8 +153,20 @@ const groups = [
   }
 </style>
 <script>
-  if (window.getCookie("cookie-consent") === null) {
-    document.querySelector(".cookie-consent")!.setAttribute("aria-hidden", "false");
+  import { getCookie } from "@/utils/get-cookie";
+  if (getCookie("cookie-consent") === null) {
+    gtag("consent", "default", {
+      functionality_storage: "denied",
+      security_storage: "denied",
+      ad_storage: "denied",
+      ad_user_data: "denied",
+      ad_personalization: "denied",
+      analytics_storage: "denied",
+      personalization_storage: "denied",
+    });
+    document.querySelector(".cookie-consent").setAttribute("aria-hidden", "false");
+  } else {
+    gtag("consent", "default", JSON.parse(getCookie("cookie-consent")));
   }
 
   import { setCookie } from "@/utils/set-cookie";
@@ -193,17 +205,17 @@ const groups = [
   let setsPreferences = false;
   $setPreferences.addEventListener("click", () => {
     if (!setsPreferences) {
-      $this.querySelector<HTMLDivElement>(".header [data-header='first']")!.style.display = "none";
-      $this.querySelector<HTMLDivElement>(".header [data-header='second']")!.style.removeProperty("display");
-      $this.querySelector<HTMLDivElement>(".settings")!.style.removeProperty("display");
+      $this.querySelector<HTMLDivElement>(".header [data-header='first']").style.display = "none";
+      $this.querySelector<HTMLDivElement>(".header [data-header='second']").style.removeProperty("display");
+      $this.querySelector<HTMLDivElement>(".settings").style.removeProperty("display");
       setsPreferences = true;
     } else {
       $this.setAttribute("aria-hidden", "true");
       setConsent({
-        necessary: $this.querySelector<HTMLInputElement>('input[id="necessary"]')!.checked,
-        marketing: $this.querySelector<HTMLInputElement>('input[id="marketing"]')!.checked,
-        analytics: $this.querySelector<HTMLInputElement>('input[id="analytics"]')!.checked,
-        preferences: $this.querySelector<HTMLInputElement>('input[id="preferences"]')!.checked,
+        necessary: $this.querySelector<HTMLInputElement>('input[id="necessary"]').checked,
+        marketing: $this.querySelector<HTMLInputElement>('input[id="marketing"]').checked,
+        analytics: $this.querySelector<HTMLInputElement>('input[id="analytics"]').checked,
+        preferences: $this.querySelector<HTMLInputElement>('input[id="preferences"]').checked,
       });
     }
   });

@@ -28,7 +28,7 @@ const { index, heading, list } = Astro.props;
 const Subheading = index === 0 ? "h2" : "h3";
 ---
 
-<section class='Process'>
+<section class='Process' id='proces'>
   <header>
     <Markdown tag={index === 0 ? "h1" : "h2"} class='heading'>{heading}</Markdown>
   </header>

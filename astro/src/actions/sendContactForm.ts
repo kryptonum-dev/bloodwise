@@ -26,7 +26,8 @@ export async function sendContactEmail({ name, email, message }: Props) {
       },
       body: JSON.stringify({
         from: `${name} ze strony Bloodwise <formularz@bloodwise.com.pl>`,
-        to: 'bogumil@kryptonum.eu',
+        to: 'contact@bloodwise.com.pl',
+        bcc: 'bogumil@kryptonum.eu',
         reply_to: `${name} <${email}>`,
         subject: `${name} przesyła wiadomość przez formularz kontaktowy`,
         html: body,

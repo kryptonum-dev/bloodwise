@@ -1,0 +1,100 @@
+---
+import Markdown from "@/components/ui/markdown.astro";
+
+type Props = {
+  summary: string;
+};
+
+const { summary } = Astro.props;
+---
+
+<details>
+  <summary>
+    <svg xmlns='http://www.w3.org/2000/svg' width='10' height='7' fill='none' stroke='#1CB6AA'>
+      <path stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m9 5.677-4-4-4 4'></path>
+    </svg>
+    <span>{summary}</span>
+  </summary>
+  <div class='content'>
+    <Markdown class='paragraph'><slot /></Markdown>
+  </div>
+</details>
+
+<style lang='scss'>
+  details {
+    width: 100%;
+    display: grid;
+    text-align: left;
+    summary {
+      color: var(--primary-200, #c4f9f5);
+      padding: 12px;
+      border-radius: 2px;
+      border-bottom: 1px solid var(--primary-700, #066a62);
+      background: var(--primary-800, #01403b);
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 8px;
+      svg {
+        margin-top: 8px;
+        transition: transform 0.5s var(--easing);
+      }
+    }
+    &[open] {
+      summary {
+        svg {
+          transform: rotate(180deg);
+        }
+      }
+    }
+  }
+  .content {
+    .paragraph {
+      padding: 12px;
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll("details").forEach(details => {
+    const content = details.querySelector<HTMLDivElement>(".content");
+    content.style.height = details.open ? content.scrollHeight + "px" : "0px";
+    details.querySelector<HTMLDivElement>("summary").addEventListener("click", event => {
+      event.preventDefault();
+      if (details.open) {
+        content.style.height = content.scrollHeight + "px";
+        requestAnimationFrame(() => {
+          content.style.height = "0px";
+        });
+        content.addEventListener(
+          "transitionend",
+          () => {
+            details.open = false;
+            content.style.height = "";
+          },
+          { once: true }
+        );
+      } else {
+        details.open = true;
+        const startHeight = content.scrollHeight + "px";
+        content.style.height = "0px";
+        requestAnimationFrame(() => {
+          content.style.height = startHeight;
+        });
+        content.addEventListener(
+          "transitionend",
+          () => {
+            content.style.height = "";
+          },
+          { once: true }
+        );
+      }
+    });
+  });
+</script>
+
+<style>
+  .content {
+    overflow: hidden;
+    transition: height 0.5s var(--easing);
+  }
+</style>

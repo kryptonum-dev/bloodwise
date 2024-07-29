@@ -6,12 +6,13 @@ type Props = {
   name: string;
   label: string;
   inputProps?: HTMLAttributes<"input">;
+  isDarkMode?: boolean;
 } & HTMLAttributes<"label">;
 
-const { name, label, inputProps, ...props } = Astro.props;
+const { name, label, inputProps, isDarkMode = true, ...props } = Astro.props;
 ---
 
-<label {...props}>
+<label {...props} data-is-dark-mode={isDarkMode.toString()}>
   <div class='tick'>
     <input name={name} type='checkbox' {...inputProps} />
     <svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' fill='none'>
@@ -84,6 +85,11 @@ const { name, label, inputProps, ...props } = Astro.props;
       .tick {
         outline: 2px solid var(--primary-800, #01403b);
         outline-offset: 3px;
+      }
+      &[data-is-dark-mode="false"] {
+        .tick {
+          outline-color: #e5f9f8;
+        }
       }
     }
     &[aria-invalid="true"] {

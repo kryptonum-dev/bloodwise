@@ -1,0 +1,83 @@
+---
+import { actions, getActionProps } from "astro:actions";
+import Markdown from "@/components/ui/markdown.astro";
+import Checkbox from "@/components/ui/Checkbox.astro";
+import Input from "@/components/ui/Input.astro";
+import Button from "@/components/ui/Button.astro";
+import FormLoader from "@/components/ui/FormLoader.astro";
+import FormState from "@/components/ui/FormState.astro";
+
+const { group_id, heading, paragraph } = Astro.props;
+---
+
+<section class='MailingForm'>
+  <header>
+    <Markdown tag='h2'>{heading}</Markdown>
+    <Markdown class='paragraph'>{paragraph}</Markdown>
+  </header>
+  <form method='post'>
+    <input {...getActionProps(actions.mailing)} />
+    <input type='hidden' name='group_id' value={group_id} />
+    <Input name='name' label='Imię' inputProps={{ required: true, minlength: 1 }} />
+    <Input name='email' label='E-mail' inputProps={{ required: true, type: "email" }} />
+    <Checkbox
+      name='legal'
+      label={`Akceptuję <a class='link' href='/polityka-prywatnosci' target='_blank' rel='noreferrer'>politykę prywatności</a>`}
+      inputProps={{ required: true }}
+      isDarkMode={false}
+    />
+    <Button type='submit'>Zapisz się</Button>
+    <FormLoader />
+    <FormState
+      success={{
+        heading: "Dziękujemy za zapis!",
+        paragraph: "Niebawem dostaniesz informację na temat aplikacji.",
+      }}
+      error={{
+        heading: "Nie udało się zapisać",
+        paragraph:
+          "Coś poszło nie tak. Spróbuj ponownie. Jeśli problem się powtórzy, skontaktuj się z nami przez adres: <a href='mailto:contact@bloodwise.com.pl' class='link'>contact@bloodwise.com.pl</a>",
+      }}
+    />
+  </form>
+</section>
+
+<style lang='scss'>
+  .MailingForm {
+    margin-top: clamp(64px, calc(82vw / 7.68), 82px);
+    display: grid;
+    gap: 32px clamp(82px, calc(96vw / 7.68), 96px);
+    justify-content: space-between;
+    @media (min-width: 900px) {
+      grid-template-columns: 1fr 1fr;
+      form {
+        margin-left: auto;
+      }
+    }
+    padding: clamp(20px, calc(48vw / 7.68), 48px) clamp(16px, calc(48vw / 7.68), 48px);
+    border-radius: 8px;
+    border: 1px solid var(--primary-600, #0f9288);
+    background: var(--primary-800, #01403b);
+  }
+  header {
+    max-width: calc(517rem / 16);
+    h2 {
+      margin-bottom: clamp(12px, calc(16vw / 7.68), 16px);
+    }
+  }
+  form {
+    width: 100%;
+    max-width: calc(392rem / 16);
+    display: grid;
+    gap: 16px;
+    position: relative;
+    &:has([data-form-state] > :not([hidden])) {
+      & > *:not([data-form-state]) {
+        display: none;
+      }
+    }
+    button {
+      margin-top: 12px;
+    }
+  }
+</style>

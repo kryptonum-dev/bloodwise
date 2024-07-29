@@ -65,12 +65,12 @@ const { success, error, ...props } = Astro.props;
   }
   [data-form-state-success] {
     h3 {
-      color: var(--notification-green-500, #00923e);
+      color: var(--success-color);
     }
   }
   [data-form-state-error] {
     h3 {
-      color: var(--notification-red-500, #bb0c0c);
+      color: var(--error-color);
     }
   }
 </style>

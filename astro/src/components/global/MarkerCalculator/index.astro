@@ -1,16 +1,27 @@
 ---
 import { Icon } from "astro-icon/components";
+import MailingForm from "./MailingForm.astro";
 import Markdown from "@/components/ui/markdown.astro";
 import Button from "@/components/ui/Button.astro";
 
 export const MarkerCalculator_Query = `
-  heading
+  mailingForm {
+    group_id,
+    heading,
+    paragraph,
+  },
 `;
 
 export type Props = {
   index: number;
-  heading: string;
+  mailingForm: {
+    group_id: string;
+    heading: string;
+    paragraph: string;
+  };
 };
+
+const { mailingForm } = Astro.props;
 
 const markers = [
   "Glukoza na czczo",
@@ -135,7 +146,7 @@ const markers = [
       </div>
     </article>
 
-    <article class='step' data-step={5} hidden>
+    <article class='step' data-step={5}>
       <header>
         <Markdown tag='h2'><span class='h3'>Twój wynik badania</span></Markdown>
         <div class='result-bar'>
@@ -178,6 +189,7 @@ const markers = [
         <Button theme='secondary' type='button' data-set-step={4} class='prev-step'>Wróć</Button>
         <Button type='button' data-set-step={3} class='next-step'>Sprawdź inny marker</Button>
       </div>
+      <MailingForm {...mailingForm} />
     </article>
   </div>
 </section>

@@ -1,5 +1,4 @@
 import { defineField } from 'sanity';
-import { removeMarkdown } from '../../utils/remove-markdown';
 
 const title = '[04] Kalulator znaczników';
 const icon = () => '📐';
@@ -11,21 +10,29 @@ export default defineField({
   icon,
   fields: [
     defineField({
-      name: 'heading',
-      type: 'markdown',
-      title: 'Nagłówek',
+      name: 'mailingForm',
+      type: 'object',
+      title: 'Formularz do zapisu na listę mailingową',
+      fields: [
+        defineField({
+          name: 'heading',
+          type: 'markdown',
+          title: 'Nagłówek',
+          validation: Rule => Rule.required(),
+        }),
+        defineField({
+          name: 'description',
+          type: 'markdown',
+          title: 'Paragraf',
+          validation: Rule => Rule.required(),
+        }),
+      ],
       validation: Rule => Rule.required(),
     }),
   ],
   preview: {
-    select: {
-      heading: 'heading',
-      media: 'img',
-    },
-    prepare: ({ heading, media }) => ({
+    prepare: () => ({
       title: title,
-      subtitle: removeMarkdown(heading),
-      media,
       icon,
     }),
   },

@@ -15,23 +15,35 @@ const icon = {
   }),
 };
 
+export type OpenGraphImageProps = {
+  url: string;
+  height: string;
+};
+
 type Props = {
   path: string;
   title: string;
   description: string;
+  openGraphImage?: OpenGraphImageProps;
 };
 
-const seo = await sanityFetch<{ OpenGraphImageUrl: string }>({
+const seo = await sanityFetch<{ openGraphImage: OpenGraphImageProps }>({
   query: `
-    *[_type == "global"][0] {
-      "OpenGraphImageUrl": seo.OpenGraphImage.asset -> url + "?w=1200",
+    *[_type == "global"][0].seo {
+      "openGraphImage": {
+        "url": OpenGraphImage.asset -> url + "?w=1200",
+        "height": round(1200 / OpenGraphImage.asset -> metadata.dimensions.aspectRatio),
+      },
     }
   `,
 });
 
-const OpenGraphImageUrl = seo?.OpenGraphImageUrl || "";
+const { path, title, description, openGraphImage } = Astro.props;
 
-const { path, title, description } = Astro.props;
+const OpenGraphImage = {
+  url: openGraphImage?.url || seo.openGraphImage?.url,
+  height: openGraphImage.height || seo.openGraphImage.height,
+};
 
 const url = `${DOMAIN}${path}`;
 ---
@@ -52,14 +64,14 @@ const url = `${DOMAIN}${path}`;
 <meta property='og:description' content={description} />
 <meta property='og:site_name' content={title} />
 <meta property='og:locale' content={LOCALE} />
-<meta property='og:image' content={OpenGraphImageUrl} />
+<meta property='og:image' content={OpenGraphImage.url} />
 <meta property='og:image:width' content='1200' />
-<meta property='og:image:height' content='630' />
+<meta property='og:image:height' content={OpenGraphImage.height} />
 <meta property='og:type' content='website' />
 <meta name='twitter:card' content='summary_large_image' />
 <meta name='twitter:title' content={title} />
 <meta name='twitter:description' content={description} />
-<meta name='twitter:image' content={OpenGraphImageUrl} />
+<meta name='twitter:image' content={OpenGraphImage.url} />
 <meta name='twitter:image:width' content='1200' />
-<meta name='twitter:image:height' content='630' />
+<meta name='twitter:image:height' content={OpenGraphImage.height} />
 <link rel='sitemap' href='/sitemap-index.xml' />

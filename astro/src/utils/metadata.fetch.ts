@@ -1,12 +1,10 @@
 import sanityFetch from "@/utils/sanity.fetch";
+import type { OpenGraphImageProps } from "@/src/layouts/Head.astro";
 
 type QueryProps = {
   title: string;
   description: string;
-  openGraphImage?: {
-    url: string;
-    height: number;
-  };
+  openGraphImage?: OpenGraphImageProps;
 };
 
 export default async function metadataFetch(type: string, slug?: string): Promise<QueryProps> {

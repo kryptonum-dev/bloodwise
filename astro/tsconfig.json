@@ -4,6 +4,7 @@
     "verbatimModuleSyntax": true,
     "baseUrl": ".",
     "paths": {
+      "@/src/*": ["./src/*"],
       "@/global/*": ["./src/global/*"],
       "@/components/*": ["./src/components/*"],
       "@/utils/*": ["./src/utils/*"],

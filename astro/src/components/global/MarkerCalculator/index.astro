@@ -316,6 +316,9 @@ const markers = results.map(({ name }) => name);
     justify-content: center;
     gap: 12px;
     margin-top: 64px;
+    @media (max-width: 499px) {
+      flex-direction: column-reverse;
+    }
   }
 </style>
 

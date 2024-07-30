@@ -1,0 +1,73 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+type Props = {
+  inputProps?: HTMLAttributes<"input">;
+};
+
+const { inputProps } = Astro.props;
+---
+
+<div class='result-input'>
+  <p>Wynik badania</p>
+  <input
+    type='number'
+    onkeydown="return ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Decimal', 'NumpadDecimal'].includes(event.code) ||
+      (event.metaKey || event.ctrlKey) ||
+      (event.key >= '0' && event.key <= '9') ||
+      event.code === 'Comma' ||
+      event.code === 'Period' ||
+      event.key === '.'"
+    {...inputProps}
+  />
+  <span>mg/dL</span>
+</div>
+
+<style lang='scss'>
+  .result-input {
+    margin: 32px auto;
+    p {
+      margin: 0 12px 4px;
+      font-size: calc(12rem / 16);
+    }
+    width: 180px;
+    input {
+      &[data-variant="red"] {
+        border-color: var(--notification-red-500, #bb0c0c);
+        color: var(--notification-red-500, #bb0c0c);
+      }
+      &[data-variant="orange"] {
+        border-color: var(--notification-orange-500, #ff8e3d);
+        color: var(--notification-orange-500, #ff8e3d);
+      }
+      &[data-variant="green"] {
+        border-color: var(--notification-green-500, #00923e);
+        color: var(--notification-green-500, #00923e);
+      }
+      border: 1px solid rgba(255, 255, 255, 0);
+      width: 100%;
+      border-radius: 2px;
+      background: var(--background-200, #fef6ed);
+      color: #000;
+      padding: 6px calc(24px + 45px + 12px) 6px 24px;
+      text-align: right;
+      -moz-appearance: textfield;
+      &::-webkit-outer-spin-button,
+      &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+      }
+      &:focus-visible {
+        outline: none;
+        background: var(--background-100);
+      }
+    }
+    position: relative;
+    span {
+      pointer-events: none;
+      position: absolute;
+      right: 24px;
+      bottom: 6px;
+      color: var(--background-500, #806850);
+    }
+  }
+</style>

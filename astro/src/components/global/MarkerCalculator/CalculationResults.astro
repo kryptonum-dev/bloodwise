@@ -1,0 +1,106 @@
+---
+import Accordion from "@/components/ui/Accordion.astro";
+import type { Props as MarkerCalculatorProps } from "./index.astro";
+import ResultInput from "./ResultInput.astro";
+
+type Props = {
+  results: MarkerCalculatorProps["results"];
+};
+
+const { results } = Astro.props;
+---
+
+{
+  results.map(result => (
+    <div class='result' data-step-variant={result.name} hidden>
+      <ResultInput inputProps={{ disabled: true }} />
+      {result.isGenderSpecific ? (
+        <div class='result-gender'>
+          <Accordion summary='Jestem kobietą' data-gender='female'>
+            <div class='result-bar'>
+              {result.scopeGenederSpecific.female.map(({ value, name, color }) => (
+                <div class='result-bar-item'>
+                  <span>{value}</span>
+                  <div data-variant={color} />
+                  <p>{name}</p>
+                </div>
+              ))}
+            </div>
+          </Accordion>
+          <Accordion summary='Jestem mężczyzną' data-gender='male'>
+            <div class='result-bar'>
+              {result.scopeGenederSpecific.male.map(({ value, name, color }) => (
+                <div class='result-bar-item'>
+                  <span>{value}</span>
+                  <div data-variant={color} />
+                  <p>{name}</p>
+                </div>
+              ))}
+            </div>
+          </Accordion>
+        </div>
+      ) : (
+        <div class='result-bar'>
+          {result.scope.map(({ value, name, color }) => (
+            <div class='result-bar-item'>
+              <span>{value}</span>
+              <div data-variant={color} />
+              <p>{name}</p>
+            </div>
+          ))}
+        </div>
+      )}
+      <div class='details'>
+        <Accordion summary={result.lowCauses.title}>{result.lowCauses.description}</Accordion>
+        <Accordion summary={result.highCauses.title}>{result.highCauses.description}</Accordion>
+      </div>
+    </div>
+  ))
+}
+
+<style lang='scss'>
+  .result-gender {
+    max-width: calc(820rem / 16);
+    margin: 0 auto;
+    display: grid;
+    gap: clamp(24px, calc(32vw / 7.68), 32px);
+  }
+  .result-bar {
+    max-width: calc(820rem / 16);
+    margin: 0 auto;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    font-size: calc(12rem / 16);
+    line-height: 158%;
+    .result-bar-item {
+      flex: 1 1 0px;
+      max-width: calc(164rem / 16);
+      > div {
+        margin: 8px 0 12px;
+        height: 8px;
+        &[data-variant="red"] {
+          background: var(--notification-red-500, #bb0c0c);
+        }
+        &[data-variant="orange"] {
+          background: var(--notification-orange-500, #ff8e3d);
+        }
+        &[data-variant="green"] {
+          background: var(--notification-green-500, #00923e);
+        }
+      }
+    }
+  }
+  .accordionFemale {
+    margin-bottom: clamp(32px, calc(48vw / 7.68), 48px);
+  }
+  .details {
+    margin: clamp(48px, calc(64vw / 7.68), 64px) auto 0;
+    max-width: calc(992rem / 16);
+    display: grid;
+    gap: 16px;
+    @media (min-width: 900px) {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

@@ -3,8 +3,39 @@ import { Icon } from "astro-icon/components";
 import MailingForm from "./MailingForm.astro";
 import Markdown from "@/components/ui/markdown.astro";
 import Button from "@/components/ui/Button.astro";
+import ResultInput from "./ResultInput.astro";
+import CalculationResults from "./CalculationResults.astro";
 
 export const MarkerCalculator_Query = `
+  results {
+    name,
+    isGenderSpecific,
+    scope {
+      value,
+      name,
+      color,
+    }[],
+    scopeGenederSpecific {
+      female {
+        value,
+        name,
+        color,
+      }[],
+      male {
+        value,
+        name,
+        color,
+      }[],
+    },
+    lowCauses {
+      title,
+      description,
+    },
+    highCauses {
+      title,
+      description,
+    },
+  }[],
   mailingForm {
     group_id,
     heading,
@@ -14,6 +45,35 @@ export const MarkerCalculator_Query = `
 
 export type Props = {
   index: number;
+  results: {
+    name: string;
+    isGenderSpecific: boolean;
+    scope: {
+      value: string;
+      name: string;
+      color: "red" | "orange" | "green";
+    }[];
+    scopeGenederSpecific: {
+      female: {
+        value: string;
+        name: string;
+        color: "red" | "orange" | "green";
+      }[];
+      male: {
+        value: string;
+        name: string;
+        color: "red" | "orange" | "green";
+      }[];
+    };
+    lowCauses: {
+      title: string;
+      description: string;
+    };
+    highCauses: {
+      title: string;
+      description: string;
+    };
+  }[];
   mailingForm: {
     group_id: string;
     heading: string;
@@ -21,22 +81,9 @@ export type Props = {
   };
 };
 
-const { mailingForm } = Astro.props;
+const { results, mailingForm } = Astro.props;
 
-const markers = [
-  "Glukoza na czczo",
-  "Insulina na czczo",
-  "hsCRP",
-  "TSH",
-  "Witamina D3",
-  "Witamina B12",
-  "Żelazo",
-  "Ferrytyna",
-  "Cholesterol całkowity",
-  "AST",
-  "ALT",
-  "Trójglicerydy",
-];
+const markers = results.map(({ name }) => name);
 ---
 
 <section class='MarkerCalculator sec-wo-margin' dark-background id='wyniki'>
@@ -52,13 +99,13 @@ const markers = [
       <div class='actions'>
         <p class='hint'>Wybierz swoją płeć</p>
         <label class='button'>
-          <input type='radio' name='gender' value='woman' />
-          <Icon name='woman' />
+          <input type='radio' name='gender' value='female' />
+          <Icon name='female' />
           <span>Kobieta</span>
         </label>
         <label class='button'>
-          <input type='radio' name='gender' value='man' />
-          <Icon name='man' />
+          <input type='radio' name='gender' value='male' />
+          <Icon name='male' />
           <span>Męźczyzna</span>
         </label>
       </div>
@@ -90,7 +137,7 @@ const markers = [
     </article>
 
     <article class='step' data-step={3} hidden>
-      <div data-variant={1} hidden>
+      <div data-step-variant={1} hidden>
         <header>
           <Markdown tag='h2'>Twoja zdrowa przygoda nie kończy się tutaj</Markdown>
           <Markdown>
@@ -99,7 +146,7 @@ const markers = [
           <Button href='https://calendly.com/amelia-pietryka-bloodwise/20min'>Umów się na konsultację</Button>
         </header>
       </div>
-      <div data-variant={2} hidden>
+      <div data-step-variant={2} hidden>
         <header>
           <Markdown tag='h2'>Wskaż marker krwi, który chcesz sprawdzić</Markdown>
           <Markdown>Wybierz 1 z 11 markerów i sprawdź, czy Twoje wyniki sa prawidłowe.</Markdown>
@@ -132,59 +179,18 @@ const markers = [
         <p class='marker-name'></p>
         <button class='marker-button link prev-step' data-set-step={3}>Zmień biomarker</button>
       </div>
-      <div class='input'>
-        <p>Wynik badania</p>
-        <input
-          type='number'
-          onkeydown="return ['Backspace','Delete','ArrowLeft','ArrowRight'].includes(event.code) || (event.metaKey || event.ctrlKey) ? true : !isNaN(Number(event.key)) && event.code!=='Space'"
-        />
-        <span>mg/dL</span>
-      </div>
+      <ResultInput />
       <div class='navigation'>
         <Button theme='secondary' type='button' data-set-step={3} class='prev-step'>Wróć</Button>
         <Button type='button' disabled data-set-step={5} class='next-step'>Zobacz analizę</Button>
       </div>
     </article>
 
-    <article class='step' data-step={5}>
+    <article class='step' data-step={5} hidden>
       <header>
-        <Markdown tag='h2'><span class='h3'>Twój wynik badania</span></Markdown>
-        <div class='result-bar'>
-          <div>
-            <span class='value'></span>
-            <div class='bar'></div>
-            <p>Niskie</p>
-          </div>
-          <div>
-            <span class='value'></span>
-            <div class='bar'></div>
-            <p>Granicznie niskie</p>
-          </div>
-          <div>
-            <span class='value'></span>
-            <div class='bar'></div>
-            <p>Optymalne</p>
-          </div>
-          <div>
-            <span class='value'></span>
-            <div class='bar'></div>
-            <p>Granicznie wysokie</p>
-          </div>
-          <div>
-            <span class='value'></span>
-            <div class='bar'></div>
-            <p>Wysokie</p>
-          </div>
-        </div>
-        <div class='result-decreased'>
-          <p>Twój wynik jest obniżony? Zobacz potencjalne przyczyny:</p>
-          <ul class='unorderedList'></ul>
-        </div>
-        <div class='result-increased'>
-          <p>Twój wynik jest podwyższony? Zobacz potencjalne przyczyny:</p>
-          <ul class='unorderedList'></ul>
-        </div>
+        <Markdown tag='h2'><span class='h3'>Twój wynik badania dla</span><span class='heading-marker'></span></Markdown>
       </header>
+      <CalculationResults results={results} />
       <div class='navigation'>
         <Button theme='secondary' type='button' data-set-step={4} class='prev-step'>Wróć</Button>
         <Button type='button' data-set-step={3} class='next-step'>Sprawdź inny marker</Button>
@@ -217,6 +223,13 @@ const markers = [
         }
       }
     }
+    &[data-step="3"] {
+      @media (max-width: 499px) {
+        .actions {
+          justify-content: left;
+        }
+      }
+    }
     &[data-step="4"] {
       .marker {
         text-align: center;
@@ -229,60 +242,11 @@ const markers = [
           background: var(--primary-700, #066a62);
         }
       }
-      .input {
-        margin: 32px auto 0;
-        p {
-          margin: 0 12px 4px;
-          font-size: calc(12rem / 16);
-        }
-        width: 180px;
-        input {
-          width: 100%;
-          border-radius: 2px;
-          background: var(--background-200, #fef6ed);
-          color: #000;
-          padding: 6px calc(24px + 45px + 12px) 6px 24px;
-          text-align: right;
-          -moz-appearance: textfield;
-          &::-webkit-outer-spin-button,
-          &::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-          }
-          &:focus-visible {
-            outline: none;
-            background: var(--background-100);
-          }
-        }
-        position: relative;
-        span {
-          pointer-events: none;
-          position: absolute;
-          right: 24px;
-          bottom: 6px;
-          color: var(--background-500, #806850);
-        }
-      }
     }
     &[data-step="5"] {
-      .result-bar {
-        font-size: calc(12rem / 16);
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-        text-align: center;
-        .bar {
-          margin: 8px 0 12px;
-          height: 8px;
-        }
-        > div:nth-child(1) .bar,
-        > div:nth-child(5) .bar {
-          background: var(--notification-red-500, #bb0c0c);
-        }
-        > div:nth-child(2) .bar,
-        > div:nth-child(4) .bar {
-          background: var(--notification-orange-500, #ff8e3d);
-        }
-        > div:nth-child(3) .bar {
-          background: var(--notification-green-500, #00923e);
+      h2 {
+        span {
+          display: block;
         }
       }
     }
@@ -324,7 +288,8 @@ const markers = [
     }
     transition:
       transform 0.5s var(--easing),
-      background-color 0.5s var(--easing);
+      background-color 0.5s var(--easing),
+      color 0.5s var(--easing);
     transform-origin: bottom;
     input {
       opacity: 0;
@@ -332,7 +297,8 @@ const markers = [
     }
     &:has(input:checked) {
       transition-duration: 0s;
-      background: var(--primary-300);
+      color: var(--background-100, #fffcf9);
+      background: var(--primary-700, #066a62);
     }
     &:hover {
       background: var(--primary-200);
@@ -354,7 +320,53 @@ const markers = [
 </style>
 
 <script>
-  import resultData from "./resultData.json";
+  function getRanges(parent: HTMLElement) {
+    const rangeElements = parent.querySelectorAll(".result-bar-item");
+    const ranges = [];
+    rangeElements.forEach(element => {
+      const rangeText = element.querySelector("span").textContent.trim();
+      const variant = element.querySelector("div").getAttribute("data-variant");
+      let min: number | null = null;
+      let max: number | null = null;
+      if (rangeText.startsWith("<")) {
+        max = parseFloat(rangeText.slice(1));
+      } else if (rangeText.startsWith(">")) {
+        min = parseFloat(rangeText.slice(1));
+      } else {
+        const parts = rangeText.split("-").map(val => parseFloat(val.trim()));
+        min = parts[0];
+        max = parts.length > 1 ? parts[1] : null;
+      }
+      ranges.push({ min, max, variant });
+    });
+    return ranges;
+  }
+
+  function updateInputVariantRanges(
+    inputElement: HTMLInputElement,
+    ranges: { min: number | null; max: number | null; variant: string }[]
+  ) {
+    const value = parseFloat(inputElement.value);
+    if (isNaN(value)) {
+      inputElement.removeAttribute("data-variant");
+      return;
+    }
+    let matchingRange = ranges.find(range => {
+      if (range.min === null && range.max !== null) {
+        return value < range.max;
+      } else if (range.min !== null && range.max === null) {
+        return value >= range.min;
+      } else if (range.min !== null && range.max !== null) {
+        return value >= range.min && value <= range.max;
+      }
+      return false;
+    });
+    if (matchingRange) {
+      inputElement.setAttribute("data-variant", matchingRange.variant);
+    } else {
+      inputElement.removeAttribute("data-variant");
+    }
+  }
 
   function setStep(step: number) {
     document.querySelectorAll<HTMLDivElement>(".MarkerCalculator .step").forEach(element => (element.hidden = true));
@@ -380,7 +392,10 @@ const markers = [
             `.step[data-step='${Number(this.dataset.setStep) + 1}']`
           );
           currentStep.querySelector<HTMLButtonElement>(".next-step")?.removeAttribute("style");
-          currentStep.querySelector<HTMLDivElement>("[data-variant]:not([hidden])")?.setAttribute("hidden", "true");
+          currentStep
+            .querySelectorAll<HTMLDivElement>("[data-step-variant]:not([hidden])")
+            ?.forEach(element => (element.hidden = true));
+          if (step.dataset.step === "5") section.scrollIntoView({ behavior: "smooth" });
         });
       });
 
@@ -389,27 +404,38 @@ const markers = [
           const nextStep = section.querySelector<HTMLDivElement>(".step[data-step='3']");
           if (step.querySelector<HTMLInputElement>("input:checked").value === "underage") {
             nextStep.querySelector<HTMLButtonElement>(".next-step").style.display = "none";
-            nextStep.querySelector<HTMLDivElement>("[data-variant='1']").hidden = false;
+            nextStep.querySelector<HTMLDivElement>("[data-step-variant='1']").hidden = false;
           } else {
-            nextStep.querySelector<HTMLDivElement>("[data-variant='2']").hidden = false;
+            nextStep.querySelector<HTMLDivElement>("[data-step-variant='2']").hidden = false;
           }
         }
         if (step.dataset.step === "3") {
           const step4 = section.querySelector<HTMLDivElement>(".step[data-step='4']");
           step4.querySelector<HTMLButtonElement>(".marker-name").textContent =
             step.querySelector<HTMLInputElement>("input:checked").value;
-          step4.querySelector<HTMLInputElement>(".input input").value = "";
+          step4.querySelector<HTMLInputElement>(".result-input input").value = "";
           step4.querySelector<HTMLButtonElement>(".next-step").disabled = true;
         }
         if (step.dataset.step === "4") {
-          const nextStep = section.querySelector<HTMLDivElement>(".step[data-step='5']");
+          const step5 = section.querySelector<HTMLDivElement>(".step[data-step='5']");
+          const headingMarker = step5.querySelector<HTMLDivElement>(".heading-marker");
           const marker = section.querySelector<HTMLInputElement>(".step[data-step='3'] input:checked").value;
-          nextStep.querySelector<HTMLHeadingElement>("h2").innerHTML =
-            `<span class='h3'>Twój wynik badania na ${marker}, jest</span></br>Poniżej poziomu optymalnego`;
-          const resultValue = nextStep.querySelectorAll<HTMLSpanElement>(".result-bar .value");
-          resultValue.forEach((value, index) => {
-            value.innerHTML = resultData[marker].ranges[index];
-          });
+          const selectedVariant = step5.querySelector<HTMLDivElement>(`.result[data-step-variant="${marker}"]`);
+          const gender = section.querySelector<HTMLInputElement>(".step[data-step='1'] input:checked").value;
+          const resultInput = selectedVariant.querySelector<HTMLInputElement>(".result-input input");
+          resultInput.value = step.querySelector<HTMLInputElement>(".result-input input").value;
+          selectedVariant.hidden = false;
+          const specificGenderDetails = step5.querySelector<HTMLDetailsElement>(
+            `.result[data-step-variant="${marker}"] details[data-gender="${gender}"]`
+          );
+          if (specificGenderDetails) {
+            specificGenderDetails.open = true;
+          }
+          updateInputVariantRanges(resultInput, getRanges(specificGenderDetails || selectedVariant));
+          headingMarker.textContent = marker;
+        }
+        if (step.dataset.step === "5") {
+          section.scrollIntoView({ behavior: "smooth" });
         }
         setStep(this.dataset.setStep);
       });

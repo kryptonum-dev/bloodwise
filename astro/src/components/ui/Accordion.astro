@@ -1,14 +1,15 @@
 ---
+import type { HTMLAttributes } from "astro/types";
 import Markdown from "@/components/ui/markdown.astro";
 
 type Props = {
   summary: string;
-};
+} & HTMLAttributes<"details">;
 
-const { summary } = Astro.props;
+const { summary, ...props } = Astro.props;
 ---
 
-<details>
+<details {...props}>
   <summary>
     <svg xmlns='http://www.w3.org/2000/svg' width='10' height='7' fill='none' stroke='#1CB6AA'>
       <path stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m9 5.677-4-4-4 4'></path>
@@ -57,7 +58,6 @@ const { summary } = Astro.props;
 <script>
   document.querySelectorAll("details").forEach(details => {
     const content = details.querySelector<HTMLDivElement>(".content");
-    content.style.height = details.open ? content.scrollHeight + "px" : "0px";
     details.querySelector<HTMLDivElement>("summary").addEventListener("click", event => {
       event.preventDefault();
       if (details.open) {

@@ -216,13 +216,6 @@ const markers = results.map(({ name }) => name);
   }
 
   .step {
-    &[data-step="2"] {
-      .actions {
-        label {
-          flex-grow: 1;
-        }
-      }
-    }
     &[data-step="3"] {
       @media (max-width: 499px) {
         .actions {
@@ -261,7 +254,7 @@ const markers = results.map(({ name }) => name);
     max-width: calc(592rem / 16);
     margin: 0 auto;
     display: flex;
-    gap: 12px;
+    gap: 8px;
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
@@ -275,11 +268,33 @@ const markers = results.map(({ name }) => name);
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 12px;
+    gap: 8px;
     padding: 12px 24px;
     width: fit-content;
+    position: relative;
+    &::before {
+      content: "";
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      border: 1px solid var(--primary-500, #1cb6aa);
+    }
+    &::after {
+      content: "";
+      position: absolute;
+      left: 26px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: var(--primary-200, #c4f9f5);
+      transition: transform 0.5s var(--easing);
+      transform: scale(0);
+    }
     &[data-variant="small"] {
-      padding: 10px 12px;
+      padding: 8px 10px;
+      &::after {
+        left: 12px;
+      }
     }
     &:not([data-variant="small"]) {
       @media (max-width: 499px) {
@@ -299,13 +314,16 @@ const markers = results.map(({ name }) => name);
       transition-duration: 0s;
       color: var(--background-100, #fffcf9);
       background: var(--primary-700, #066a62);
+      &::after {
+        transform: scale(1);
+      }
     }
     &:hover {
       background: var(--primary-200);
     }
     &:active {
       transition-duration: 0s;
-      transform: scale(0.95);
+      transform: scale(0.98);
     }
   }
 

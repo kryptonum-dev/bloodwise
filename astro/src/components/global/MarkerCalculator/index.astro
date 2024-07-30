@@ -193,7 +193,7 @@ const markers = results.map(({ name }) => name);
       <CalculationResults results={results} />
       <div class='navigation'>
         <Button theme='secondary' type='button' data-set-step={4} class='prev-step'>Wróć</Button>
-        <Button type='button' data-set-step={3} class='next-step'>Sprawdź inny marker</Button>
+        <Button type='button' data-set-step={3} class='prev-step'>Sprawdź inny marker</Button>
       </div>
       <MailingForm {...mailingForm} />
     </article>
@@ -391,9 +391,7 @@ const markers = results.map(({ name }) => name);
       step.querySelectorAll(".prev-step")?.forEach(prevStepButton => {
         prevStepButton.addEventListener("click", function () {
           setStep(this.dataset.setStep);
-          const currentStep = section.querySelector<HTMLDivElement>(
-            `.step[data-step='${Number(this.dataset.setStep) + 1}']`
-          );
+          const currentStep = section.querySelector<HTMLDivElement>(`.step[data-step='${step.dataset.step}']`);
           currentStep.querySelector<HTMLButtonElement>(".next-step")?.removeAttribute("style");
           currentStep
             .querySelectorAll<HTMLDivElement>("[data-step-variant]:not([hidden])")

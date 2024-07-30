@@ -76,7 +76,18 @@ const { results } = Astro.props;
     .result-bar-item {
       flex: 1 1 0px;
       max-width: calc(164rem / 16);
-      > div {
+      @keyframes result-bar-item {
+        0% {
+          transform: translateY(0);
+        }
+        100% {
+          transform: translateY(-3px);
+        }
+      }
+      &[data-variant="active"] {
+        animation: result-bar-item 0.5s 0.3s both;
+      }
+      & > div {
         margin: 8px 0 12px;
         height: 8px;
         &[data-variant="red"] {

@@ -387,6 +387,7 @@ const markers = results.map(({ name }) => name);
     } else {
       inputElement.removeAttribute("data-variant");
     }
+    return ranges.indexOf(matchingRange);
   }
 
   function setStep(step: number) {
@@ -450,7 +451,15 @@ const markers = results.map(({ name }) => name);
           if (specificGenderDetails) {
             specificGenderDetails.open = true;
           }
-          updateInputVariantRanges(resultInput, getRanges(specificGenderDetails || selectedVariant));
+          const calculatedRangeIndex = updateInputVariantRanges(
+            resultInput,
+            getRanges(specificGenderDetails || selectedVariant)
+          );
+          selectedVariant
+            .querySelectorAll<HTMLDivElement>(".result-bar-item")
+            .forEach(resultBar => (resultBar.dataset.variant = ""));
+          selectedVariant.querySelectorAll<HTMLDivElement>(".result-bar-item")[calculatedRangeIndex].dataset.variant =
+            "active";
           headingMarker.textContent = marker;
         }
         if (step.dataset.step === "5") {

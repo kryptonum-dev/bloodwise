@@ -28,6 +28,8 @@ const ScopeItemSchama = defineField({
           { title: 'Pomarańczowy', value: 'orange' },
           { title: 'Zielony', value: 'green' },
         ],
+        layout: "radio",
+        direction: "horizontal"
       },
       title: 'Kolor',
       validation: Rule => Rule.required(),

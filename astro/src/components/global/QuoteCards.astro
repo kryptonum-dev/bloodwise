@@ -60,7 +60,8 @@ const { index, heading, paragraph, list } = Astro.props;
 <style lang='scss'>
   header {
     max-width: calc(696rem / 16);
-    margin-bottom: clamp(36px, calc(42vw / 7.68), 42px);
+    margin: 0 auto clamp(36px, calc(42vw / 7.68), 42px);
+    text-align: center;
     .paragraph {
       margin-top: clamp(12px, calc(16vw / 7.68), 16px);
     }

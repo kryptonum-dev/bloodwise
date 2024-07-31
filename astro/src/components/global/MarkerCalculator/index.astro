@@ -403,18 +403,18 @@ const markers = results.map(({ name, unit }) => ({
       inputElement.removeAttribute("data-variant");
     }
 
-    let heading = "";
+    let status = null;
     const greenRange = ranges.find(range => range.variant === "green");
     if (greenRange) {
       if (value < greenRange.min) {
-        heading = "Poniżej poziomu optymalnego";
+        status = "below_optimal";
       } else if (value > greenRange.max) {
-        heading = "Powyżej poziomu optymalnego";
+        status = "above_optimal";
       } else if (value >= greenRange.min && value <= greenRange.max) {
-        heading = "W normie";
+        status = "optimal";
       }
     }
-    return { rangeIndex: ranges.indexOf(matchingRange), heading: heading };
+    return { rangeIndex: ranges.indexOf(matchingRange), status: status };
   }
 
   function highlightResultBar(parent: HTMLDivElement | HTMLDetailsElement, index: number) {
@@ -452,6 +452,7 @@ const markers = results.map(({ name, unit }) => ({
       });
 
       step.querySelector(".next-step")?.addEventListener("click", function () {
+        setStep(this.dataset.setStep);
         if (step.dataset.step === "2") {
           const nextStep = section.querySelector<HTMLDivElement>(".step[data-step='3']");
           if (step.querySelector<HTMLInputElement>("input:checked").value === "underage") {
@@ -465,7 +466,9 @@ const markers = results.map(({ name, unit }) => ({
           const step4 = section.querySelector<HTMLDivElement>(".step[data-step='4']");
           const selectedMarker = step.querySelector<HTMLInputElement>("input:checked");
           step4.querySelector<HTMLButtonElement>(".marker-name").textContent = selectedMarker.value;
-          step4.querySelector<HTMLInputElement>(".result-input input").value = "";
+          const resultInput = step4.querySelector<HTMLInputElement>(".result-input input");
+          resultInput.value = "";
+          resultInput.focus();
           step4.querySelector<HTMLInputElement>(".result-input-unit").textContent = selectedMarker.dataset.unit;
           step4.querySelector<HTMLButtonElement>(".next-step").disabled = true;
         }
@@ -483,22 +486,30 @@ const markers = results.map(({ name, unit }) => ({
           const resultValue = step.querySelector<HTMLInputElement>(".result-input input").value;
           const resultInput = selectedVariant.querySelector<HTMLInputElement>(".result-input input");
           resultInput.value = resultValue;
-          const specificGenderDetails = step5.querySelector<HTMLDetailsElement>(
+          const specificGenderResult = step5.querySelector<HTMLDetailsElement>(
             `.result[data-step-variant="${selectedMarker.value}"] details[data-gender="${gender}"]`
           );
-          const { heading, rangeIndex } = generateResultRange(
+          const { status, rangeIndex } = generateResultRange(
             resultInput,
-            getRanges(specificGenderDetails || selectedVariant)
+            getRanges(specificGenderResult || selectedVariant)
+          );
+          selectedVariant.querySelector<HTMLDetailsElement>(`.details details[open]`)?.removeAttribute("open");
+          const specificGenderDetails = selectedVariant.querySelector<HTMLDetailsElement>(
+            `.details details[data-status="${status}"]`
           );
           if (specificGenderDetails) specificGenderDetails.open = true;
-          highlightResultBar(specificGenderDetails || selectedVariant, rangeIndex);
+          if (specificGenderResult) specificGenderResult.open = true;
+          highlightResultBar(specificGenderResult || selectedVariant, rangeIndex);
           step5Heading.querySelector(".h3").textContent = `Twój wynik badania na ${selectedMarker.value}, jest`;
-          step5Heading.querySelector(".result").textContent = heading;
+          step5Heading.querySelector(".result").textContent = {
+            below_optimal: "Poniżej poziomu optymalnego",
+            above_optimal: "Powyżej poziomu optymalnego",
+            optimal: "W normie",
+          }[status];
         }
         if (step.dataset.step === "5") {
           section.scrollIntoView({ behavior: "smooth" });
         }
-        setStep(this.dataset.setStep);
       });
     });
   });

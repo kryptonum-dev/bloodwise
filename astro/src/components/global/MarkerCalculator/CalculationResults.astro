@@ -51,8 +51,12 @@ const { results } = Astro.props;
         </div>
       )}
       <div class='details'>
-        <Accordion summary={result.lowCauses.title}>{result.lowCauses.description}</Accordion>
-        <Accordion summary={result.highCauses.title}>{result.highCauses.description}</Accordion>
+        <Accordion summary={result.lowCauses.title} data-status='below_optimal'>
+          {result.lowCauses.description}
+        </Accordion>
+        <Accordion summary={result.highCauses.title} data-status='above_optimal'>
+          {result.highCauses.description}
+        </Accordion>
       </div>
     </div>
   ))

@@ -193,7 +193,10 @@ const markers = results.map(({ name, unit }) => ({
 
     <article class='step' data-step={5} hidden>
       <header>
-        <Markdown tag='h2'><span class='h3'>Twój wynik badania dla</span><span class='heading-marker'></span></Markdown>
+        <Markdown tag='h2' class='heading'>
+          <span class='h3'>Twój wynik badania na witaminę D3, jest</span>
+          <span class='result'>Powyżej poziomu optymalnego</span>
+        </Markdown>
       </header>
       <CalculationResults results={results} />
       <div class='navigation'>
@@ -374,10 +377,11 @@ const markers = results.map(({ name, unit }) => ({
     return ranges;
   }
 
-  function updateInputVariantRanges(
+  function generateResultRange(
     inputElement: HTMLInputElement,
     ranges: { min: number | null; max: number | null; variant: string }[]
   ) {
+    console.log(ranges);
     const value = parseFloat(inputElement.value);
     if (isNaN(value)) {
       inputElement.removeAttribute("data-variant");
@@ -398,7 +402,19 @@ const markers = results.map(({ name, unit }) => ({
     } else {
       inputElement.removeAttribute("data-variant");
     }
-    return ranges.indexOf(matchingRange);
+
+    let heading = "";
+    const greenRange = ranges.find(range => range.variant === "green");
+    if (greenRange) {
+      if (value < greenRange.min) {
+        heading = "Poniżej poziomu optymalnego";
+      } else if (value > greenRange.max) {
+        heading = "Powyżej poziomu optymalnego";
+      } else if (value >= greenRange.min && value <= greenRange.max) {
+        heading = "W normie";
+      }
+    }
+    return { rangeIndex: ranges.indexOf(matchingRange), heading: heading };
   }
 
   function highlightResultBar(parent: HTMLDivElement | HTMLDetailsElement, index: number) {
@@ -452,36 +468,32 @@ const markers = results.map(({ name, unit }) => ({
           step4.querySelector<HTMLInputElement>(".result-input input").value = "";
           step4.querySelector<HTMLInputElement>(".result-input-unit").textContent = selectedMarker.dataset.unit;
           step4.querySelector<HTMLButtonElement>(".next-step").disabled = true;
-          const step5 = section.querySelector<HTMLDivElement>(".step[data-step='5']");
-          const resultSelectedVariant = step5.querySelector<HTMLDivElement>(
-            `.result[data-step-variant="${selectedMarker.value}"]`
-          );
-          resultSelectedVariant.hidden = false;
-          resultSelectedVariant.querySelector<HTMLInputElement>(".result-input-unit").textContent =
-            selectedMarker.dataset.unit;
         }
         if (step.dataset.step === "4") {
           const step5 = section.querySelector<HTMLDivElement>(".step[data-step='5']");
-          const headingMarker = step5.querySelector<HTMLDivElement>(".heading-marker");
-          const marker = section.querySelector<HTMLInputElement>(".step[data-step='3'] input:checked").value;
-          const selectedVariant = step5.querySelector<HTMLDivElement>(`.result[data-step-variant="${marker}"]`);
-          const gender = section.querySelector<HTMLInputElement>(".step[data-step='1'] input:checked").value;
-          const resultInput = selectedVariant.querySelector<HTMLInputElement>(".result-input input");
-          resultInput.value = step.querySelector<HTMLInputElement>(".result-input input").value;
-          const specificGenderDetails = step5.querySelector<HTMLDetailsElement>(
-            `.result[data-step-variant="${marker}"] details[data-gender="${gender}"]`
+          const step5Heading = step5.querySelector<HTMLDivElement>(".heading");
+          const selectedMarker = section.querySelector<HTMLInputElement>(".step[data-step='3'] input:checked");
+          const selectedVariant = step5.querySelector<HTMLDivElement>(
+            `.result[data-step-variant="${selectedMarker.value}"]`
           );
-          const calculatedRangeIndex = updateInputVariantRanges(
+          selectedVariant.hidden = false;
+          selectedVariant.querySelector<HTMLInputElement>(".result-input-unit").textContent =
+            selectedMarker.dataset.unit;
+          const gender = section.querySelector<HTMLInputElement>(".step[data-step='1'] input:checked").value;
+          const resultValue = step.querySelector<HTMLInputElement>(".result-input input").value;
+          const resultInput = selectedVariant.querySelector<HTMLInputElement>(".result-input input");
+          resultInput.value = resultValue;
+          const specificGenderDetails = step5.querySelector<HTMLDetailsElement>(
+            `.result[data-step-variant="${selectedMarker.value}"] details[data-gender="${gender}"]`
+          );
+          const { heading, rangeIndex } = generateResultRange(
             resultInput,
             getRanges(specificGenderDetails || selectedVariant)
           );
-          if (specificGenderDetails) {
-            specificGenderDetails.open = true;
-            highlightResultBar(specificGenderDetails, calculatedRangeIndex);
-          } else {
-            highlightResultBar(selectedVariant, calculatedRangeIndex);
-          }
-          headingMarker.textContent = marker;
+          if (specificGenderDetails) specificGenderDetails.open = true;
+          highlightResultBar(specificGenderDetails || selectedVariant, rangeIndex);
+          step5Heading.querySelector(".h3").textContent = `Twój wynik badania na ${selectedMarker.value}, jest`;
+          step5Heading.querySelector(".result").textContent = heading;
         }
         if (step.dataset.step === "5") {
           section.scrollIntoView({ behavior: "smooth" });

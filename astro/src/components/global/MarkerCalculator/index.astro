@@ -465,6 +465,12 @@ const markers = results.map(({ name, unit }) => ({
           if (step.querySelector<HTMLInputElement>("input:checked").value === "underage") {
             nextStep.querySelector<HTMLButtonElement>(".next-step").style.display = "none";
             nextStep.querySelector<HTMLDivElement>("[data-step-variant='1']").hidden = false;
+            const gender = section.querySelector<HTMLInputElement>(".step[data-step='1'] input:checked").value;
+
+            gtag("event", "calculator_uncompleted", {
+              reason: "underage",
+              gender: gender,
+            });
           } else {
             nextStep.querySelector<HTMLDivElement>("[data-step-variant='2']").hidden = false;
           }

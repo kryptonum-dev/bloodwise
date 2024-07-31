@@ -85,7 +85,10 @@ export type Props = {
 
 const { results, mailingForm } = Astro.props;
 
-const markers = results.map(({ name }) => name);
+const markers = results.map(({ name, unit }) => ({
+  name: name,
+  unit: unit,
+}));
 ---
 
 <section class='MarkerCalculator sec-wo-margin' dark-background id='wyniki'>
@@ -156,9 +159,9 @@ const markers = results.map(({ name }) => name);
         <div class='actions'>
           <p class='hint'>Wskaż swój marker</p>
           {
-            markers.map(name => (
+            markers.map(({ name, unit }) => (
               <label class='button' data-variant='small'>
-                <input type='radio' name='marker' value={name} />
+                <input type='radio' name='marker' value={name} data-unit={unit} />
                 <span>{name}</span>
               </label>
             ))
@@ -398,6 +401,11 @@ const markers = results.map(({ name }) => name);
     return ranges.indexOf(matchingRange);
   }
 
+  function highlightResultBar(parent: HTMLDivElement | HTMLDetailsElement, index: number) {
+    parent.querySelectorAll<HTMLDivElement>(".result-bar-item")?.forEach(resultBar => (resultBar.dataset.variant = ""));
+    parent.querySelectorAll<HTMLDivElement>(".result-bar-item")[index].dataset.variant = "active";
+  }
+
   function setStep(step: number) {
     document.querySelectorAll<HTMLDivElement>(".MarkerCalculator .step").forEach(element => (element.hidden = true));
     document.querySelector<HTMLDivElement>(`.MarkerCalculator .step[data-step="${step}"]`).hidden = false;
@@ -421,7 +429,7 @@ const markers = results.map(({ name }) => name);
           const currentStep = section.querySelector<HTMLDivElement>(`.step[data-step='${step.dataset.step}']`);
           currentStep.querySelector<HTMLButtonElement>(".next-step")?.removeAttribute("style");
           currentStep
-            .querySelectorAll<HTMLDivElement>("[data-step-variant]:not([hidden])")
+            .querySelectorAll<HTMLDivElement>("[data-step-variant]")
             ?.forEach(element => (element.hidden = true));
           if (step.dataset.step === "5") section.scrollIntoView({ behavior: "smooth" });
         });
@@ -439,10 +447,18 @@ const markers = results.map(({ name }) => name);
         }
         if (step.dataset.step === "3") {
           const step4 = section.querySelector<HTMLDivElement>(".step[data-step='4']");
-          step4.querySelector<HTMLButtonElement>(".marker-name").textContent =
-            step.querySelector<HTMLInputElement>("input:checked").value;
+          const selectedMarker = step.querySelector<HTMLInputElement>("input:checked");
+          step4.querySelector<HTMLButtonElement>(".marker-name").textContent = selectedMarker.value;
           step4.querySelector<HTMLInputElement>(".result-input input").value = "";
+          step4.querySelector<HTMLInputElement>(".result-input-unit").textContent = selectedMarker.dataset.unit;
           step4.querySelector<HTMLButtonElement>(".next-step").disabled = true;
+          const step5 = section.querySelector<HTMLDivElement>(".step[data-step='5']");
+          const resultSelectedVariant = step5.querySelector<HTMLDivElement>(
+            `.result[data-step-variant="${selectedMarker.value}"]`
+          );
+          resultSelectedVariant.hidden = false;
+          resultSelectedVariant.querySelector<HTMLInputElement>(".result-input-unit").textContent =
+            selectedMarker.dataset.unit;
         }
         if (step.dataset.step === "4") {
           const step5 = section.querySelector<HTMLDivElement>(".step[data-step='5']");
@@ -452,22 +468,19 @@ const markers = results.map(({ name }) => name);
           const gender = section.querySelector<HTMLInputElement>(".step[data-step='1'] input:checked").value;
           const resultInput = selectedVariant.querySelector<HTMLInputElement>(".result-input input");
           resultInput.value = step.querySelector<HTMLInputElement>(".result-input input").value;
-          selectedVariant.hidden = false;
           const specificGenderDetails = step5.querySelector<HTMLDetailsElement>(
             `.result[data-step-variant="${marker}"] details[data-gender="${gender}"]`
           );
-          if (specificGenderDetails) {
-            specificGenderDetails.open = true;
-          }
           const calculatedRangeIndex = updateInputVariantRanges(
             resultInput,
             getRanges(specificGenderDetails || selectedVariant)
           );
-          selectedVariant
-            .querySelectorAll<HTMLDivElement>(".result-bar-item")
-            .forEach(resultBar => (resultBar.dataset.variant = ""));
-          selectedVariant.querySelectorAll<HTMLDivElement>(".result-bar-item")[calculatedRangeIndex].dataset.variant =
-            "active";
+          if (specificGenderDetails) {
+            specificGenderDetails.open = true;
+            highlightResultBar(specificGenderDetails, calculatedRangeIndex);
+          } else {
+            highlightResultBar(selectedVariant, calculatedRangeIndex);
+          }
           headingMarker.textContent = marker;
         }
         if (step.dataset.step === "5") {

@@ -71,6 +71,12 @@ export default defineField({
               validation: Rule => Rule.required(),
             }),
             defineField({
+              name: 'unit',
+              type: 'string',
+              title: 'Jednostka',
+              validation: Rule => Rule.required(),
+            }),
+            defineField({
               name: 'isGenderSpecific',
               type: 'boolean',
               title: 'Czy biomarker jest zależny od płci?',

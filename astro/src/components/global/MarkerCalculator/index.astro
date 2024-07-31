@@ -377,11 +377,18 @@ const markers = results.map(({ name, unit }) => ({
     return ranges;
   }
 
+  function resultStatus(status: string) {
+    return {
+      below_optimal: "Poniżej poziomu optymalnego",
+      above_optimal: "Powyżej poziomu optymalnego",
+      optimal: "W normie",
+    }[status];
+  }
+
   function generateResultRange(
     inputElement: HTMLInputElement,
     ranges: { min: number | null; max: number | null; variant: string }[]
   ) {
-    console.log(ranges);
     const value = parseFloat(inputElement.value);
     if (isNaN(value)) {
       inputElement.removeAttribute("data-variant");
@@ -480,8 +487,8 @@ const markers = results.map(({ name, unit }) => ({
             `.result[data-step-variant="${selectedMarker.value}"]`
           );
           selectedVariant.hidden = false;
-          selectedVariant.querySelector<HTMLInputElement>(".result-input-unit").textContent =
-            selectedMarker.dataset.unit;
+          const resultInputUnit = selectedVariant.querySelector<HTMLInputElement>(".result-input-unit");
+          resultInputUnit.textContent = selectedMarker.dataset.unit;
           const gender = section.querySelector<HTMLInputElement>(".step[data-step='1'] input:checked").value;
           const resultValue = step.querySelector<HTMLInputElement>(".result-input input").value;
           const resultInput = selectedVariant.querySelector<HTMLInputElement>(".result-input input");
@@ -501,11 +508,15 @@ const markers = results.map(({ name, unit }) => ({
           if (specificGenderResult) specificGenderResult.open = true;
           highlightResultBar(specificGenderResult || selectedVariant, rangeIndex);
           step5Heading.querySelector(".h3").textContent = `Twój wynik badania na ${selectedMarker.value}, jest`;
-          step5Heading.querySelector(".result").textContent = {
-            below_optimal: "Poniżej poziomu optymalnego",
-            above_optimal: "Powyżej poziomu optymalnego",
-            optimal: "W normie",
-          }[status];
+          step5Heading.querySelector(".result").textContent = resultStatus(status);
+
+          gtag("event", "calculator_completed", {
+            gender: gender,
+            marker: selectedMarker.value,
+            status: resultStatus(status),
+            resultValue: resultValue,
+            resultUnit: resultInputUnit.textContent,
+          });
         }
         if (step.dataset.step === "5") {
           section.scrollIntoView({ behavior: "smooth" });

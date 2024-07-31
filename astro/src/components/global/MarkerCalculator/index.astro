@@ -149,7 +149,7 @@ const markers = results.map(({ name }) => name);
       <div data-step-variant={2} hidden>
         <header>
           <Markdown tag='h2'>Wskaż marker krwi, który chcesz sprawdzić</Markdown>
-          <Markdown>Wybierz 1 z 11 markerów i sprawdź, czy Twoje wyniki sa prawidłowe.</Markdown>
+          <Markdown>Wybierz 1 z {markers.length} markerów i sprawdź, czy Twoje wyniki sa prawidłowe.</Markdown>
         </header>
         <div class='actions'>
           <p class='hint'>Wskaż swój marker</p>

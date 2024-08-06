@@ -42,7 +42,7 @@ const { path, title, description, openGraphImage } = Astro.props;
 
 const OpenGraphImage = {
   url: openGraphImage?.url || seo.openGraphImage?.url,
-  height: openGraphImage.height || seo.openGraphImage.height,
+  height: openGraphImage?.height || seo.openGraphImage?.height,
 };
 
 const url = `${DOMAIN}${path}`;

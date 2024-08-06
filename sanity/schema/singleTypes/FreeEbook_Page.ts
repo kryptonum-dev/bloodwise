@@ -1,12 +1,12 @@
 import { defineField, defineType } from "sanity"
 
-const title = 'Waiting List';
+const title = 'Darmowy ebook';
 
 export default defineType({
-  name: 'WaitingList_Page',
+  name: 'FreeEbook_Page',
   type: 'document',
   title: title,
-  icon: () => '🕒',
+  icon: () => '📚',
   fields: [
     defineField({
       name: 'components',

@@ -25,4 +25,7 @@ export default defineConfig({
   },
   output: isPreviewDeployment ? "server" : 'hybrid',
   adapter: vercel(),
+  redirects: {
+    '/waiting-list': '/darmowy-ebook',
+  }
 });

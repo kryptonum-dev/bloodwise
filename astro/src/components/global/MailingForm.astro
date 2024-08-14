@@ -106,7 +106,7 @@ const { index, group_id, heading, paragraph, img } = Astro.props;
       event.preventDefault();
       loader.hidden = false;
       const formData = new FormData(element);
-      const { data, error } = await actions.mailing.safe(formData);
+      const { data, error } = await actions.mailing(formData);
       element.querySelectorAll<HTMLSpanElement>(`[data-error-name]`).forEach(error => handleError(error, ""));
       if (isInputError(error)) {
         for (const field in error.fields) {

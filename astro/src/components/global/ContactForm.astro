@@ -127,7 +127,7 @@ const { index, heading, paragraph, emailSection } = Astro.props;
       event.preventDefault();
       loader.hidden = false;
       const formData = new FormData(element);
-      const { data, error } = await actions.contact.safe(formData);
+      const { data, error } = await actions.contact(formData);
       element.querySelectorAll<HTMLSpanElement>(`[data-error-name]`).forEach(error => handleError(error, ""));
       if (isInputError(error)) {
         for (const field in error.fields) {
